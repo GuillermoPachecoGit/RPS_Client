@@ -4,17 +4,18 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { ValidateService } from "../../services/validate-service.service";
 import { Router } from '@angular/router';
 import { NavbarComponent } from "../navbar/navbar.component";
+import { SharedDataSessionService } from "../../services/shared-data-session.service";
 
 @Component({
   selector: 'my-login',
   templateUrl:'./login.component.html',
   styleUrls: [ './login.component.css' ],
-  providers: [ ValidateService]
+  providers: [ ValidateService, SharedDataSessionService]
 })
 export class LoginComponent {
  
 
-	constructor(private validate: ValidateService, private router: Router, private navbar : NavbarComponent) {}
+	constructor(private validate: ValidateService, private router: Router, private navbar : NavbarComponent, private sharedData: SharedDataSessionService) {}
 	user =  new UserLogin('',''); 
   error = '';
   invalid = false;
@@ -35,6 +36,7 @@ export class LoginComponent {
                       this.navbar.changeMode();
                       this.id_user = data.id_user;
                       console.log(this.id_user);
+                      this.sharedData.setUserId(this.id_user);
                       this.router.navigateByUrl('/profile');
                       console.log('SUCCESS');
 

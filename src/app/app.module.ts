@@ -8,6 +8,7 @@ import { ValidateService } from './services/validate-service.service'
 import { RegisterService  }  from './services/register.service'
 import { UploadFileService } from './services/upload-file.service';
 import { CountryService} from './services/country.service';
+import { SharedDataSessionService } from "./services/shared-data-session.service";
 
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -17,6 +18,7 @@ import { ProfileNavbar } from './components/profile-navbar/profile-navbar.compon
 import { FormsModule }   from '@angular/forms';
 
 import { HttpModule } from '@angular/http';
+import { ProjectTreeComponent } from './components/project-tree/project-tree.component';
 
 
 @NgModule({
@@ -32,9 +34,10 @@ import { HttpModule } from '@angular/http';
       Register,
       NavbarComponent,
       FooterComponent,
-      ProfileNavbar
+      ProfileNavbar,
+      ProjectTreeComponent
   ],
-  providers: [ RegisterService,CountryService, UploadFileService],
+  providers: [ RegisterService,CountryService, UploadFileService,SharedDataSessionService],
   bootstrap:    [ AppComponent ]
 })
 export class AppModule { }

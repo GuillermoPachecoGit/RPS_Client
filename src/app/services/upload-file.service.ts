@@ -30,12 +30,13 @@ export class UploadFileService{
             xhr.send(formData);
         });
     }
-    makeProjectRequest(project : string,description : string,params: Array<string>, files: Array<File>) {
+    makeProjectRequest(project : string,description : string, idUser : string ,params: Array<string>, files: Array<File>) {
         return new Promise((resolve, reject) => {
             var formData: any = new FormData();
             var xhr = new XMLHttpRequest();
             formData.append("name_project",project);
             formData.append("description",description);
+            formData.append("id_user",idUser);
             for(var i = 0; i < files.length; i++) {
                 formData.append("uploads[]", files[i], files[i].name);
             }
