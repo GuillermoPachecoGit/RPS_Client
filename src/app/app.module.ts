@@ -8,7 +8,6 @@ import { ValidateService } from './services/validate-service.service'
 import { RegisterService  }  from './services/register.service'
 import { UploadFileService } from './services/upload-file.service';
 import { CountryService} from './services/country.service';
-import { SharedDataSessionService } from "./services/shared-data-session.service";
 
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -19,6 +18,7 @@ import { FormsModule }   from '@angular/forms';
 
 import { HttpModule } from '@angular/http';
 import { ProjectTreeComponent } from './components/project-tree/project-tree.component';
+import { DashboardRpsComponent } from './components/dashboard-rps/dashboard-rps.component';
 
 
 @NgModule({
@@ -35,9 +35,10 @@ import { ProjectTreeComponent } from './components/project-tree/project-tree.com
       NavbarComponent,
       FooterComponent,
       ProfileNavbar,
-      ProjectTreeComponent
+      ProjectTreeComponent,
+      DashboardRpsComponent
   ],
-  providers: [ RegisterService,CountryService, UploadFileService,SharedDataSessionService],
+  providers: [ RegisterService,CountryService, UploadFileService],
   bootstrap:    [ AppComponent ]
 })
 export class AppModule { }

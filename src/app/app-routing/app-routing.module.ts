@@ -4,23 +4,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from "../components/login/login.component";
 import { Register } from "../components/register/register.component";
 import { ProfileNavbar } from '../components/profile-navbar/profile-navbar.component';
+import { DashboardRpsComponent } from "../components/dashboard-rps/dashboard-rps.component";
 
 const routes: Routes =[
     {
-      path: 'login',
-      component: LoginComponent
-    },
-    {
-      path: 'register',
-      component: Register
-    },
-    {
-      path: 'profile',
-      component: ProfileNavbar
+      path: 'dashboard',
+      component: DashboardRpsComponent
     },
     {
       path: '',
-      redirectTo: '/login',
+      redirectTo: '/dashboard',
       pathMatch: 'full'
     },
   ];
