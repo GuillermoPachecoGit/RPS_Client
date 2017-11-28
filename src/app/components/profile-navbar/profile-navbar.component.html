@@ -19,8 +19,8 @@
               </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-                <li *ngIf="logged_out"><a data-toggle="modal" data-target="#login" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li *ngIf="logged_out"><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>      
+                <li *ngIf="logged_out"><a ><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li *ngIf="logged_out"><a data-toggle="modal" data-target="#login" ><span class="glyphicon glyphicon-log-in"></span> Login</a></li>      
                 <li *ngIf="logged_in" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
                   class="glyphicon glyphicon-envelope"></span>Inbox <span class="label label-info">32</span>
                 </a>
@@ -90,7 +90,7 @@
         <div class="modal-footer">
         <div class="btn-group btn-group-justified" role="group" aria-label="group button">
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
+            <button type="button" id="hideAddDataset" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
         </div>
         <div class="btn-group btn-delete hidden" role="group">
             <button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Close</button>
@@ -131,7 +131,7 @@
             <div class="modal-footer">
                 <div class="btn-group btn-group-justified" role="group" aria-label="group button">
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
+                        <button type="button" id="hideAddProject" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
                     </div>
                     <div class="btn-group btn-delete hidden" role="group">
                         <button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Close</button>
@@ -140,7 +140,7 @@
 </div>
 
 <!-- Modal Login-->
-<div class="modal fade" id="Login" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+<div class="modal fade"   id="login" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
     
@@ -151,13 +151,41 @@
                 <!--body modal-->    
                 <div class="modal-body">    
                     <!--SEGUIR ACA -->
+                 <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+                    <div class="form-group">
+                        <label for="email"> Email </label>
+                        <input type="text"  class="form-control"  id="email" required [(ngModel)]="user.email" name="email"  #email="ngModel"> 
+                        <div [hidden]="email.valid || email.pristine"
+                            class="alert alert-danger" id="invalid_email">
+                            Email is required
+                        </div>
+                    </div>
+                <div class="form-group">
+                        <label for="pass"> Password </label>
+                        <input type="password" class="form-control" id="pass"  required [(ngModel)]="user.pass" name="pass" placeholder="" #pass="ngModel">                    
+                        <div [hidden]="pass.valid || pass.pristine"
+                            class="alert alert-danger" id="invalid_pass">
+                            Password is required
+                        </div>
+                  </div>
+                  <button type="submit" class="btn btn-success" [disabled]="!loginForm.form.valid">Submit</button>
+                   <div class="form-group" *ngIf="invalid">
+                        <label id="error_Register">{{error}}</label>
+                 </div>
+                 <div class="login-help">
+                    <a routerLink="/register" href="#">Register</a> - <a href="#">Forgot Password</a>
+                 </div>
+
+                 </form>
+               
+                
                 </div>
             
                 <!-- footer modal -->
                 <div class="modal-footer">
                     <div class="btn-group btn-group-justified" role="group" aria-label="group button">
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
+                            <button id="hideLogin" type="button" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
                         </div>
                         <div class="btn-group btn-delete hidden" role="group">
                             <button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Close</button>
