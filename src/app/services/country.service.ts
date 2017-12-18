@@ -12,16 +12,10 @@ import { Country } from '../components/register/country';
 export class CountryService{
     url = 'http://localhost:8080/initialization/get_countries';
 
- constructor(private http: Http){ }
+   constructor(private http: Http){ }
 
    getCountry(): Observable<Country[]> {
     return this.http.get(this.url)
         .map( response => response.json() as Country[]);
     } 
-    /*
-    private handleErrorObservable (error: Response | any) {
-        console.error(error.message || error);
-        return Observable.throw(error.message || error);
-    } */
-
 }

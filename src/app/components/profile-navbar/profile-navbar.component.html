@@ -67,14 +67,17 @@
         <div class="modal-body">    
             <form method="post"  enctype="multipart/form-data"> 
                     <div class="form-group">
-                    <label for="country"  class="control-label">Select Project to dataset</label>
+                    <label for="project_for_data"  class="control-label">Select Project to dataset</label>
                         <div>
-                            <select id="project" name="prject"  class="selectpicker">
-                    <option value="">p1</option>
-                    <option value="Afganistan">p2</option>
-                    <option value="Albania">p3</option>
+                            <select  id="project_for_data" name="project_for_data"  class="form-control"  required [(ngModel)]="dataset.project_for_data" #project_for_data="ngModel">
+                                <option value="default">Select a project</option>
+                                <option *ngFor="let procj of project_list" [value]="procj.id">{{procj.name}}</option>
                             </select>
                         </div> 
+                    </div>
+                    <div class="form-group">
+                        <label>Name dataset: </label>
+                        <input type="text"  class="form-control"  id="name_dataset" required [(ngModel)]="dataset.name_dataset" name="name_dataset" placeholder="Name" #name_dataset="ngModel"> 
                     </div>
                     <div class="form-group">
                     <label>File input</label>

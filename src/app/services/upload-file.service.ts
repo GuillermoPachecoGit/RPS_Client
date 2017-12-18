@@ -10,7 +10,7 @@ export class UploadFileService{
     url = "http://localhost:8080/uploadFile";
     url_project = "http://localhost:8080/register/addProject";
 
-    makeFileRequest(params: Array<string>, files: Array<File>) {
+    makeFileRequest(params: Array<string>, files: Array<File>,) {
         return new Promise((resolve, reject) => {
             var formData: any = new FormData();
             var xhr = new XMLHttpRequest();
