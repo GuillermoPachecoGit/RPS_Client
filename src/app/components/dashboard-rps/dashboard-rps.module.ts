@@ -29,6 +29,6 @@ import { UploadFileService } from '../../services/upload-file.service';
     NavbarDashboardComponent,
     ResultDashboardComponent
   ],
-  providers: []
+  providers: [UploadFileService]
 })
 export class DashboardRPSModule { }

@@ -45,7 +45,7 @@ confirmProject() {
     });
 }
 
-fileChangeEvent(fileInput: any){
+fileChangeEvent(fileInput: any) {
     this.filesToUpload = <Array<File>> fileInput.target.files;
 }
 
