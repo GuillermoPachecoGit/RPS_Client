@@ -1,0 +1,17 @@
+/****** LOGIN MODAL ******/
+#container_signin {
+    padding: 20px;
+    max-width: 350px;
+    width: 100% !important;
+    background-color: rgb(31, 11, 11);
+    margin: auto;
+    border-radius: 5px;
+  }
+
+  label  {
+      color: aliceblue
+  }
+
+  #emailHelp {
+    color: aliceblue
+  }  

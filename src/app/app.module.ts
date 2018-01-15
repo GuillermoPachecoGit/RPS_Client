@@ -1,47 +1,34 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
-
-import { ValidateService } from './services/validate-service.service'
-import { RegisterService  }  from './services/register.service'
-import { UploadFileService } from './services/upload-file.service';
-import { CountryService} from './services/country.service';
-import { GetProjectsService } from "./services/get-projects.service";
-
-import { AppRoutingModule } from './app-routing/app-routing.module';
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { Register } from './components/register/register.component';
-import { ProfileNavbar } from './components/profile-navbar/profile-navbar.component';
+import { HttpModule } from '@angular/http';
 import { FormsModule }   from '@angular/forms';
 
-import { HttpModule } from '@angular/http';
-import { ProjectTreeComponent } from './components/project-tree/project-tree.component';
-import { DashboardRpsComponent } from './components/dashboard-rps/dashboard-rps.component';
-import { ProfileCollapseComponent } from './components/profile-collapse/profile-collapse.component';
+/**
+ * Components
+ */
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './/app-routing.module';
+import { FooterMainComponent } from "./components/footer-main/footer-main.component";
 
+/**
+ * Services
+ */
+import { AuthGuardService } from "./services/auth-guard.service";
+import { AuthService } from "./services/auth.service";
+import { UserService } from "./services/user.service";
 
 @NgModule({
-  imports:      [ 
+  declarations: [
+    AppComponent,
+    FooterMainComponent
+  ],
+  imports: [
     BrowserModule,
-    AppRoutingModule,
     FormsModule,
-	  HttpModule
+    HttpModule,
+    AppRoutingModule
   ],
-  declarations: [ 
-      AppComponent, 
-      LoginComponent,
-      Register,
-      NavbarComponent,
-      FooterComponent,
-      ProfileNavbar,
-      ProjectTreeComponent,
-      DashboardRpsComponent,
-      ProfileCollapseComponent
-  ],
-  providers: [ RegisterService,CountryService, UploadFileService, GetProjectsService],
-  bootstrap:    [ AppComponent ]
+  providers: [AuthGuardService,AuthService,UserService],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

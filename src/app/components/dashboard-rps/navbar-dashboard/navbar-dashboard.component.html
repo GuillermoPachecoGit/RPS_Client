@@ -1,0 +1,140 @@
+
+<div class="container-fluid">
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a class="navbar-brand"  >RPS Online</a></li>
+                <li><a data-toggle="modal" data-target="#addProject"  ><span class="glyphicon glyphicon-plus"></span>Add Project</a></li>
+                <li><a data-toggle="modal" data-target="#uploadFile"  ><span class="glyphicon glyphicon-open"></span>Upload Dataset</a></li>
+                <li><a data-toggle="modal" data-target="#myModal"  ><span class="glyphicon glyphicon-download-alt"></span>Download Dataset</a></li>
+                <li class="dropdown"><a   class="dropdown-toggle" data-toggle="dropdown"><span
+                    class="glyphicon glyphicon-list-alt"></span>Analysis<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a  >Procrustes Analysis</a></li>
+                        <li><a  >Distances</a></li>
+                        <li><a  >Ordinations</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">  
+                  <li   class="dropdown"><a   class="dropdown-toggle" data-toggle="dropdown"><span
+                    class="glyphicon glyphicon-envelope"></span>Inbox <span class="label label-info">32</span>
+                  </a>
+                  <ul   class="dropdown-menu">
+                        <li><a  ><span class="label label-warning">4:00 AM</span>Favourites Snippet</a></li>
+                        <li><a  ><span class="label label-warning">4:30 AM</span>Email marketing</a></li>
+                        <li><a  ><span class="label label-warning">5:00 AM</span>Subscriber focused email
+                            design</a></li>
+                        <li class="divider"></li>
+                        <li><a   class="text-center">View All</a></li>
+                 </ul>
+                 </li>
+                <li   class="dropdown"><a   class="dropdown-toggle" data-toggle="dropdown"><span
+                    class="glyphicon glyphicon-user"></span>Admin <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a  ><span class="glyphicon glyphicon-user"></span>Profile</a></li>
+                        <li><a  ><span class="glyphicon glyphicon-cog"></span>Settings</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/"><span class="glyphicon glyphicon-off"></span>Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+    </nav>
+  </div>
+  
+  
+  
+  
+  <!--MODALS -->
+  
+  <!--Modal Nuevo dataset -->
+  <div class="modal fade" id="uploadFile" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+  
+              <!--header modal-->
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+              <h3 class="modal-title" id="lineModalLabel">Upload Dataset File</h3></div>
+  
+              <!--body modal-->    
+          <div class="modal-body">    
+              <form method="post"  enctype="multipart/form-data"> 
+                      <div class="form-group">
+                      <label for="project_for_data"  class="control-label">Select Project to dataset</label>
+                          <div>
+                              <select  id="project_for_data" name="project_for_data"  class="form-control"  required [(ngModel)]="dataset.project_for_data" #project_for_data="ngModel">
+                                  <option value="default">Select a project</option>
+                                  <option *ngFor="let procj of project_list" [value]="procj.id">{{procj.name}}</option>
+                              </select>
+                          </div> 
+                      </div>
+                      <div class="form-group">
+                          <label>Name dataset: </label>
+                          <input type="text"  class="form-control"  id="name_dataset" required [(ngModel)]="dataset.name_dataset" name="name_dataset" placeholder="Name" #name_dataset="ngModel"> 
+                      </div>
+                      <div class="form-group">
+                      <label>File input</label>
+                      <input type="file" (change)="fileChangeEvent($event)" placeholder="Upload file..." />
+                      </div>  
+                      <button type="button" class="btn btn-success btn-s"
+                              (click)="upload()">
+                          <span class="glyphicon glyphicon-upload"></span> Upload
+                      </button>
+                  </form></div>
+          
+              <!-- footer modal -->
+          <div class="modal-footer">
+          <div class="btn-group btn-group-justified" role="group" aria-label="group button">
+          <div class="btn-group" role="group">
+              <button type="button" id="hideAddDataset" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
+          </div>
+          <div class="btn-group btn-delete hidden" role="group">
+              <button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Close</button>
+          </div>
+          </div></div></div>
+      </div>
+  </div>
+  
+  <!-- Modal Nuevo proyecto -->
+  <div class="modal fade" id="addProject" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+  
+              <!--header modal-->
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                  <h3 class="modal-title" id="lineModalLabel">Add new Project</h3> </div>
+              <!--body modal-->    
+              <div class="modal-body">    
+                  <form method="post"  enctype="multipart/form-data"> 
+                  <div class="form-group">
+                      <label for="country"  class="control-label">Project Name: </label>
+                      <input type="text"  class="form-control"  id="name_project" required [(ngModel)]="project.name" name="name" placeholder="Project name" #name="ngModel">
+                      <label for="country"  class="control-label">Project Description: </label>
+                      <input type="text"  class="form-control"  id="description_project" required [(ngModel)]="project.description" name="name" placeholder="Project description" #name="ngModel"> 
+                  </div>
+                  <div class="form-group">
+                      <label>File input (optional)</label>
+                      <input type="file" (change)="fileChangeEvent($event)" placeholder="Upload file..." />
+                  </div>  
+                  <button type="button" class="btn btn-success btn-s"
+                              (click)="confirmProject()">
+                          <span class="glyphicon glyphicon-upload"></span> Confirm
+                      </button>
+                  </form></div>
+          
+              <!-- footer modal -->
+              <div class="modal-footer">
+                  <div class="btn-group btn-group-justified" role="group" aria-label="group button">
+                      <div class="btn-group" role="group">
+                          <button type="button" id="hideAddProject" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
+                      </div>
+                      <div class="btn-group btn-delete hidden" role="group">
+                          <button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Close</button>
+                      </div>
+                  </div></div></div></div>
+  </div>
+  
