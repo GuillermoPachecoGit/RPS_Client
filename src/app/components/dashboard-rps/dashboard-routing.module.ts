@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-//public components
-import { DashboardRpsComponent } from "./dashboard-rps.component";
+// public components
+import { DashboardRpsComponent } from './dashboard-rps.component';
 
 const routes_dashboard: Routes = [
-  { path : '', 
+  { path : '',
     component: DashboardRpsComponent
   },
   { path: '',   redirectTo: '/dashboard', pathMatch: 'full' },

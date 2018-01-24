@@ -6,20 +6,20 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class AuthGuardService implements CanActivate{
 
-  
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    let url: string = state.url;
+    const url: string = state.url;
 
     return this.checkLogin(url);
   }
 
   checkLogin(url: string): boolean {
 
-    if (this.authService.isLoggedIn) 
-    { 
-      return true; 
+    if (this.authService.isLoggedIn)
+    // tslint:disable-next-line:one-line
+    {
+      return true;
     }
     // Store the attempted URL for redirecting
     this.authService.redirectUrl = url;

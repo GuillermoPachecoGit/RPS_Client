@@ -14,7 +14,7 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 
 // Services
 import { UploadFileService } from '../../services/upload-file.service';
-
+import { SharedDatasetService } from '../../services/shared-dataset.service';
 
 @NgModule({
   imports: [
@@ -29,6 +29,6 @@ import { UploadFileService } from '../../services/upload-file.service';
     NavbarDashboardComponent,
     ResultDashboardComponent
   ],
-  providers: [UploadFileService]
+  providers: [UploadFileService, SharedDatasetService]
 })
 export class DashboardRPSModule { }

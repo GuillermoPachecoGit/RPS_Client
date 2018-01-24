@@ -9,7 +9,7 @@ export class GetProjectsService {
 
   constructor(private http : Http) { }
 
-  private url_request = 'http://localhost:8080/validate/get_projects';
+  private url_request = 'http://localhost:3000/validate/get_projects';
 
   getProjectsByData(id_user : string){
       this.generateRequest(id_user);

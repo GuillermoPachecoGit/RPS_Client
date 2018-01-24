@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 /**
  * Data Components
  */
@@ -9,6 +8,7 @@ import { Dataset } from './dataset';
 
 // Services
 import { UploadFileService } from '../../../services/upload-file.service';
+import { SharedDatasetService } from '../../../services/shared-dataset.service';
 
 @Component({
   selector: 'app-navbar-dashboard',
@@ -21,15 +21,14 @@ export class NavbarDashboardComponent implements OnInit {
   project = new Project('', '', '');
   dataset = new Dataset('default', 'default');
 
-  constructor(private uploadService: UploadFileService) { }
+  constructor(private uploadService: UploadFileService, private sharedDatasetService: SharedDatasetService) { }
 
   ngOnInit() {
   }
 
-
   upload() {
     this.uploadService.makeFileRequest([], this.filesToUpload).then((result) => {
-        console.log(result);
+        this.sharedDatasetService.sendMessage(result);
         document.getElementById('hideAddDataset').click();
     }, (error) => {
         console.log(error);
@@ -38,7 +37,6 @@ export class NavbarDashboardComponent implements OnInit {
 
 confirmProject() {
     this.uploadService.makeProjectRequest(this.project.name, this.project.description, '', [], this.filesToUpload).then((result) => {
-        console.log(result);
         document.getElementById('hideAddProject').click();
     }, (error) => {
         console.log(error);
