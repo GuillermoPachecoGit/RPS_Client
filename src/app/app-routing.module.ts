@@ -12,9 +12,9 @@ const routes: Routes = [
   { path: 'main',
     loadChildren: 'app/components/main-rps/main-rps.module#MainRpsModule'
   },
-  { path: 'dashboard',
-    loadChildren: 'app/components/dashboard-rps/dashboard-rps.module#DashboardRPSModule'/*,
-    canActivate: [AuthGuardService]*/
+  { path: 'dashboard/:id',
+    loadChildren: 'app/components/dashboard-rps/dashboard-rps.module#DashboardRPSModule',
+    canActivate: [AuthGuardService]
   },
   { path: '', redirectTo: '/main', pathMatch: 'full' }
 ];

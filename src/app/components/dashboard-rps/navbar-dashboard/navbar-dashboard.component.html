@@ -116,10 +116,6 @@
                       <label for="country"  class="control-label">Project Description: </label>
                       <input type="text"  class="form-control"  id="description_project" required [(ngModel)]="project.description" name="name" placeholder="Project description" #name="ngModel"> 
                   </div>
-                  <div class="form-group">
-                      <label>File input (optional)</label>
-                      <input type="file" (change)="fileChangeEvent($event)" placeholder="Upload file..." />
-                  </div>  
                   <button type="button" class="btn btn-success btn-s"
                               (click)="confirmProject()">
                           <span class="glyphicon glyphicon-upload"></span> Confirm

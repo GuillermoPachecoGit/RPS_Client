@@ -14,12 +14,18 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 
 // Services
 import { UploadFileService } from '../../services/upload-file.service';
-import { SharedDatasetService } from '../../services/shared-dataset.service';
+
+/**
+ * Tree view
+ */
+import { TreeModule } from 'angular-tree-component';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    TreeModule,
     DashboardRoutingModule
   ],
   declarations: [
@@ -29,6 +35,6 @@ import { SharedDatasetService } from '../../services/shared-dataset.service';
     NavbarDashboardComponent,
     ResultDashboardComponent
   ],
-  providers: [UploadFileService, SharedDatasetService]
+  providers: [UploadFileService]
 })
 export class DashboardRPSModule { }

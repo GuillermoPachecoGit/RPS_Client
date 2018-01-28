@@ -23,12 +23,15 @@ export class UserService {
                             .map( response => response.json());
     }
 
+    // tslint:disable-next-line:member-ordering
     url_validate = 'http://localhost:3000/db_request_user/validate_user';
-    validateUser(email : string, pass : string){
+
+    validateUser(email: string, pass: string) {
         // console.log(user);
-        var headers = new Headers();
-        headers.append('Content-Type','application/json');
-        return this.http.post(this.url_validate,JSON.stringify({'email': email, 'pass': pass}),{ headers : headers })
+        // tslint:disable-next-line:prefer-const
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(this.url_validate, JSON.stringify({'email': email, 'pass': pass}), { headers : headers })
                             .map( response => response.json());
     }
 

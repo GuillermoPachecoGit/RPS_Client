@@ -30,29 +30,12 @@ export class UploadFileService {
             xhr.send(formData);
         });
     }
-    makeProjectRequest(project: string, description: string, idUser: string , params: Array<string>, files: Array<File>) {
-        return new Promise((resolve, reject) => {
-            const formData: any = new FormData();
-            // tslint:disable-next-line:prefer-const
-            let xhr = new XMLHttpRequest();
-            formData.append('name_project', project);
-            formData.append('description', description);
-            formData.append('id_user', idUser);
-            for (let i = 0; i < files.length; i++) {
-                formData.append('uploads[]', files[i], files[i].name);
-            }
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        resolve(JSON.parse(xhr.response));
-                    } else {
-                        reject(xhr.response);
-                    }
-                }
-            };
-            xhr.open('POST', this.url_project, true);
-            xhr.send(formData);
-        });
+    makeProjectRequest(project: any) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        console.log(JSON.stringify(project));
+        return this.http.post(this.url_project, JSON.stringify(project), { headers : headers })
+                            .map( response => response.json());
     }
 }
 
