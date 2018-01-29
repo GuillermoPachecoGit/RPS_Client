@@ -9,7 +9,7 @@ export class GetProjectsService {
 
   constructor(private http: Http) { }
 
-  private url_request = 'http://localhost:3000/validate/get_projects';
+  private url_request = 'http://localhost:3000/db_request_project/get_projects';
 
   getProjectsByData(id_user: string) {
       this.generateRequest(id_user);
@@ -20,9 +20,9 @@ export class GetProjectsService {
   }
 
   private generateRequest(id_user: string) {
-     this.url_request += '?'
-     //filter by id_user
-     this.url_request += 'id_user=${id_user}'
+     this.url_request += '?';
+     // filter by id_user
+     this.url_request += 'id_user=' + id_user;
   }
 
 

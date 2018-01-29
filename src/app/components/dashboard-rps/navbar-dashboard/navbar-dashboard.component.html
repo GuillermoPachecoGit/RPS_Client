@@ -65,9 +65,8 @@
                       <div class="form-group">
                       <label for="project_for_data"  class="control-label">Select Project to dataset</label>
                           <div>
-                              <select  id="project_for_data" name="project_for_data"  class="form-control"  required [(ngModel)]="dataset.project_for_data" #project_for_data="ngModel">
-                                  <option value="default">Select a project</option>
-                                  <option *ngFor="let procj of project_list" [value]="procj.id">{{procj.name}}</option>
+                              <select  id="project_for_data"   class="form-control"  required [(ngModel)]="dataset.project_for_data" name="project_for_data" #project_for_data="ngModel">
+                                  <option *ngFor="let procj of project_list" [value]="procj.project_id">{{procj.project_name}}</option>
                               </select>
                           </div> 
                       </div>

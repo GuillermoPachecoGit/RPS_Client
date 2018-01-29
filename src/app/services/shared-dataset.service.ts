@@ -7,6 +7,8 @@ import { Subject } from 'rxjs/Subject';
 export class SharedDatasetService {
     private subject = new Subject<any>();
     private subjectProject = new Subject<any>();
+    private userProjects = new Subject<any>();
+
 
     sendMessage(message: any) {
         this.subject.next(JSON.parse(message));
@@ -14,6 +16,12 @@ export class SharedDatasetService {
 
     setNameProject(value: any) {
         this.subjectProject.next(value);
+    }
+
+    getNewProject(): Observable<any> {
+
+        console.log('retorno el id');
+        return this.subjectProject.asObservable();
     }
 
     clearMessage() {
@@ -24,9 +32,13 @@ export class SharedDatasetService {
         return this.subject.asObservable();
     }
 
-    getNewProject(): Observable<any> {
+    setProjects(value: any) {
+        this.userProjects.next(value);
+    }
+
+    getUserProjects(): Observable<any> {
 
         console.log('retorno el id');
-        return this.subjectProject.asObservable();
+        return this.userProjects.asObservable();
     }
 }

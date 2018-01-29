@@ -26,12 +26,12 @@ export class GraphicsDashboardComponent implements OnInit {
   constructor(private sharedDatasetService: SharedDatasetService) {
       this.count = 0;
       // subscribe to home component messages
-      this.subscription = this.sharedDatasetService.getMessage().subscribe(
+     /*  this.subscription = this.sharedDatasetService.getMessage().subscribe(
         message => {
           const name = this.generateTab();
           this.count++;
           this.generateNewGraphics(message, name);
-      });
+      });*/
   }
 
   generateTab(): string {

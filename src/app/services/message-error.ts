@@ -1,5 +1,5 @@
 export class MessageError {
     constructor(
-        public msg : string
-    ){}
+        public msg: string
+    ) {}
 }

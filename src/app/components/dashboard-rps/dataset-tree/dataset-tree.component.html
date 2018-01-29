@@ -1,9 +1,11 @@
-<tree-root [nodes]="nodes"  (toggleExpanded)="onOpen($event)" (activate)="onClick($event,node)">
-    <ng-template #treeNodeTemplate let-node let-index="index">
+<p>Projects: </p>
+<tree-root [nodes]="nodes" >
+    <ng-template #treeNodeTemplate let-node let-index="index" style="width:60px">
       <span *ngIf="node.isCollapsed && node.data.isProject" class="glyphicon glyphicon-folder-close"></span>
       <span *ngIf="node.isExpanded && node.data.isProject" class="glyphicon glyphicon-folder-open"></span>
       <span *ngIf="node.data.isLandmark" class="glyphicon glyphicon-screenshot"></span>
       <span *ngIf="node.data.isSpecimen" class="glyphicon glyphicon-inbox"></span>
+      <span *ngIf="node.data.isDataset" class="glyphicon glyphicon-inbox"></span>
       <span>{{ node.data.name }}</span>
     </ng-template>
-  </tree-root>
+</tree-root>

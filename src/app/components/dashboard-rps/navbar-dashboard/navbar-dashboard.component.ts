@@ -12,6 +12,7 @@ import { Dataset } from './dataset';
 // Services
 import { UploadFileService } from '../../../services/upload-file.service';
 import { SharedDatasetService } from '../../../services/shared-dataset.service';
+import { GetProjectsService } from '../../../services/get-projects.service';
 
 @Component({
   selector: 'app-navbar-dashboard',
@@ -20,24 +21,44 @@ import { SharedDatasetService } from '../../../services/shared-dataset.service';
 })
 export class NavbarDashboardComponent implements OnInit {
   filesToUpload: Array<File>;
-  project_list = new Array();
+  project_list = [];
   project = new Project('', '', '');
-  dataset = new Dataset('default', 'default');
+  dataset = new Dataset('', '');
   idUser = '';
 
-  constructor(private uploadService: UploadFileService, private sharedDatasetService: SharedDatasetService, private route: ActivatedRoute) {
-  }
+  constructor(
+    private uploadService: UploadFileService,
+    private sharedDatasetService: SharedDatasetService,
+    private route: ActivatedRoute,
+    private projectService: GetProjectsService
+  ) { }
 
   ngOnInit() {
     // subscribe to router event
     this.route.params.subscribe((params: Params) => {
         this.idUser = params['id'];
-       console.log(this.idUser);
      });
+
+     this.initialize();
+
+  }
+
+
+  initialize(): void {
+    this.getProject();
+  }
+
+
+  getProject(): void {
+    this.projectService.getProjectsByData(this.idUser).then
+      ( result => {
+          this.project_list = result;
+          this.sharedDatasetService.setProjects(result);
+       });
   }
 
   upload() {
-    this.uploadService.makeFileRequest([], this.filesToUpload).then((result) => {
+    this.uploadService.makeFileRequest([], this.dataset, this.filesToUpload).then((result) => {
         this.sharedDatasetService.sendMessage(result);
         document.getElementById('hideAddDataset').click();
     }, (error) => {

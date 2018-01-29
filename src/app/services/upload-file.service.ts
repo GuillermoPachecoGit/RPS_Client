@@ -1,6 +1,7 @@
 import { Injectable  } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { Dataset } from '../components/dashboard-rps/navbar-dashboard/dataset';
 
 @Injectable()
 export class UploadFileService {
@@ -10,9 +11,11 @@ export class UploadFileService {
     url = 'http://localhost:3000/uploadFile';
     url_project = 'http://localhost:3000/db_request_project_w/addProject';
 
-    makeFileRequest(params: Array<string>, files: Array<File>) {
+    makeFileRequest(params: Array<string>, data: Dataset, files: Array<File>) {
         return new Promise((resolve, reject) => {
             const formData: any = new FormData();
+            formData.append('name_dataset', data.name_dataset);
+            formData.append('project_id', data.project_for_data);
             const xhr = new XMLHttpRequest();
             for (let i = 0; i < files.length; i++) {
                 formData.append('uploads[]', files[i], files[i].name);
@@ -31,6 +34,7 @@ export class UploadFileService {
         });
     }
     makeProjectRequest(project: any) {
+        // tslint:disable-next-line:prefer-const
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         console.log(JSON.stringify(project));
