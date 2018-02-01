@@ -14,6 +14,7 @@ declare var $: any;
 
 declare var Highcharts: any;
 
+declare var Plotly: any;
 @Component({
   selector: 'app-graphics-dashboard',
   templateUrl: './graphics-dashboard.component.html',
@@ -26,162 +27,92 @@ export class GraphicsDashboardComponent implements OnInit {
   constructor(private sharedDatasetService: SharedDatasetService) {
       this.count = 0;
       // subscribe to home component messages
-     /*  this.subscription = this.sharedDatasetService.getMessage().subscribe(
-        message => {
-          const name = this.generateTab();
+       this.subscription = this.sharedDatasetService.getMessage().subscribe(
+        params => {
+          const infoTab = this.generateTab();
+          const containerGrap = infoTab.idGrap;
+          const tab = infoTab.id;
+          this.activaTab(tab);
           this.count++;
-          this.generateNewGraphics(message, name);
-      });*/
+          this.generateGraphicsPlotly(params, containerGrap);
+      });
   }
 
-  generateTab(): string {
+  generateTab(): any {
     // tslint:disable-next-line:max-line-length
-    $('#tab_index_id').append('<li class="active"><a data-toggle="tab" href="#tab' + this.count + '"' + '>Dataset ' + this.count + ' </a></li>');
+    $('#tab_index_id').append('<li ><a data-toggle="tab" href="#tab' + this.count + '"' + '>Dataset ' + this.count + ' </a></li>');
     $('#tab_content_id').append(
-      '<div id="tab' + this.count + '"' + 'class="tab-pane fade in active">'
-       + '<div id="dataset' + this.count  + '"></div>'
+      '<div id="tab' + this.count + '"' + 'class="tab-pane" >'
+       + '<div id="dataset' + this.count  + '"  style="height: 300px; width: 100%;"></div>'
     + '</div>'
 
     );
-    return 'dataset' + this.count;
+    return { idGrap: ('dataset' + this.count), id: ('tab' + this.count)} ;
   }
+
+  activaTab(tab) {
+    $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+  };
+
 
   ngOnInit() {
+   // this.generateGraphicsPlotly();
   }
+      generateGraphicsPlotly(params, tab){
 
-   generateNewGraphics(params, nameTab) {
-        // Set up the chart
-         // Give the points a 3D feel by adding a radial gradient
+        console.log(params);
+        let data = [];
 
-        Highcharts.getOptions().colors = $.map(Highcharts.getOptions().colors, function(color) {
-          return {
-            radialGradient: {
-              cx: 0.4,
-              cy: 0.3,
-              r: 0.5
-            },
-            stops: [
-              [0, color],
-              [1, Highcharts.Color(color).brighten(-0.2).get('rgb')]
-            ]
+        let specimens = params['specimens'];
+        let colors = params['colors'];
+        let names = params['names_specimen'];
+
+        for (let index = 0; index < specimens.length; index++) {
+          const element = specimens[index]['specimen' + index];
+
+         let resultArray = this.generateArrayPlot(element, params.dim);
+
+          var trace = {
+            x: resultArray[0],
+            y: resultArray[1],
+            z: resultArray[2],
+            mode: 'markers',
+            marker: {
+              size: 4,
+              line: {
+              color: colors[index],
+              width: 0.5},
+              opacity: 0.8},
+            type: 'scatter3d',
+            name: names[index]
           };
-        });
-        // tslint:disable-next-line:prefer-const
-      console.log(nameTab);
-      var chart = new Highcharts.Chart({
-          chart: {
-            renderTo: nameTab,
-            margin: 20,
-            type: 'scatter',
-            options3d: {
-              enabled: true,
-              alpha: 10,
-              beta: 30,
-              depth: 250,
-              viewDistance: 2,
-              fitToPlot: false,
-              frame: {
-                bottom: {
-                  size: 1,
-                  color: 'rgba(0,0,0,0.02)'
-                },
-                back: {
-                  size: 1,
-                  color: 'rgba(0,0,0,0.04)'
-                },
-                side: {
-                  size: 1,
-                  color: 'rgba(0,0,0,0.06)'
-                }
-              }
-            }
-          },
-          plotOptions: {
-            scatter: {
-              width: 5,
-              height: 5,
-              depth: 5
-            }
-          },
-          yAxis: {
-            min: -20,
-            max: 20,
-            title: null
-          },
-          xAxis: {
-            min: -20,
-            max: 20,
-            gridLineWidth: 1
-          },
-          zAxis: {
-            min: -20,
-            max: 20,
-            showFirstLabel: false
-          },
-          legend: {
-            enabled: false
-          },
-          series: []
-        });
-
-
-        for (let index = 0; index < params['specimens'].length; index++) {
-          var element = params['names_specimen'][index];
-          console.log(element);
-          console.log(params['specimens'][index]['specimen'+index]);
-
-          let nameSpecimen;
-          if (!params['names_specimen'][index])
-          {
-              nameSpecimen = element;
-          }
-          
-          console.log("LLEGUE HASTA ACA");
-          chart.addSeries(
-            {
-              planeProjection: {
-                enabled: false,
-              },
-              name: nameSpecimen,
-              colors: ['#800000'],
-              data: params['specimens'][index]['specimen'+index]
-            }
-          );
-          console.log("SALI DE ACA");
+          data.push(trace);
         }
-        // Add mouse events for rotation
-        $(chart.container).on('mousedown.hc touchstart.hc', function(eStart) {
-          eStart = chart.pointer.normalize(eStart);
 
-          // tslint:disable-next-line:prefer-const
-          let posX = eStart.pageX,
-            // tslint:disable-next-line:prefer-const
-            posY = eStart.pageY,
-            // tslint:disable-next-line:prefer-const
-            alpha = chart.options.chart.options3d.alpha,
-            // tslint:disable-next-line:prefer-const
-            beta = chart.options.chart.options3d.beta,
-            newAlpha,
-            newBeta,
-            // tslint:disable-next-line:prefer-const
-            sensitivity = 5; // lower is more sensitive
+        var layout = {margin: {
+          l: 2,
+          r: 2,
+          b: 2,
+          t: 2
+          }};
+        Plotly.newPlot(tab, data, layout);
+      }
 
-          $(document).on({
-            'mousemove.hc touchdrag.hc': function(e) {
-              // Run beta
-              newBeta = beta + (posX - e.pageX) / sensitivity;
-              chart.options.chart.options3d.beta = newBeta;
 
-              // Run alpha
-              newAlpha = alpha + (e.pageY - posY) / sensitivity;
-              chart.options.chart.options3d.alpha = newAlpha;
+      generateArrayPlot(specimen, dim) {
+        let result = [[], [], []];
+        for (let index = 0; index < specimen.length; index++) {
+          const element = specimen[index];
 
-              chart.redraw(false);
-            },
-            'mouseup touchend': function() {
-              $(document).off('.hc');
-            }
-          });
-        });
+              result[0].push(element[0]);
+              result[1].push(element[1]);
+
+              if (dim === 3) {
+                result[2].push(element[2]);
+              } else {
+                result[2].push(0);
+              }
+        }
+        return result;
       }
 }
