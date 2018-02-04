@@ -60,7 +60,6 @@ export class GraphicsDashboardComponent implements OnInit {
   }
       generateGraphicsPlotly(params, tab){
 
-        console.log(params);
         let data = [];
 
         let specimens = params['specimens'];

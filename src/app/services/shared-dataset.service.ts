@@ -19,8 +19,6 @@ export class SharedDatasetService {
     }
 
     getNewProject(): Observable<any> {
-
-        console.log('retorno el id');
         return this.subjectProject.asObservable();
     }
 
@@ -37,8 +35,6 @@ export class SharedDatasetService {
     }
 
     getUserProjects(): Observable<any> {
-
-        console.log('retorno el id');
         return this.userProjects.asObservable();
     }
 }

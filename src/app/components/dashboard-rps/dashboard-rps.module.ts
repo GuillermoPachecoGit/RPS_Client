@@ -15,6 +15,8 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 // Services
 import { UploadFileService } from '../../services/upload-file.service';
 import { GetProjectsService } from '../../services/get-projects.service';
+import { AnalyzeService  } from "../../services/analyze.service";
+
 /**
  * Tree view
  */
@@ -35,6 +37,6 @@ import { TreeModule } from 'angular-tree-component';
     NavbarDashboardComponent,
     ResultDashboardComponent
   ],
-  providers: [UploadFileService, GetProjectsService]
+  providers: [UploadFileService, GetProjectsService, AnalyzeService]
 })
 export class DashboardRPSModule { }

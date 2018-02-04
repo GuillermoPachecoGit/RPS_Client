@@ -12,17 +12,26 @@ export class GetProjectsService {
   private url_request = 'http://localhost:3000/db_request_project/get_projects';
 
   getProjectsByData(id_user: string) {
-      this.generateRequest(id_user);
       return this.http
-      .get(this.url_request)
+      .get(this.generateRequest(this.url_request, id_user))
       .map((response) => response.json())
       .toPromise();
   }
 
-  private generateRequest(id_user: string) {
-     this.url_request += '?';
+  private url_request_dataset = 'http://localhost:3000/db_request_dataset/get_datasets';
+
+  getDatasetsByProject(project_id: string) {
+    return this.http
+    .get(this.generateRequest(this.url_request_dataset,project_id))
+    .map((response) => response.json())
+    .toPromise();
+}
+
+  private generateRequest(url_request,id_user: string) : string {
+     url_request += '?';
      // filter by id_user
-     this.url_request += 'id_user=' + id_user;
+     url_request += 'id=' + id_user;
+     return url_request;
   }
 
 

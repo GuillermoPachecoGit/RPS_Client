@@ -34,7 +34,7 @@ export class DatasetTreeComponent implements OnInit {
     this.subscription = this.sharedDatasetService.getUserProjects().subscribe(
       value => {
         value.forEach(element => {
-          this.addProject(element.id, element.project_name);
+          this.addProject(element.project_id, element.project_name);
         });
     });
 
@@ -73,13 +73,19 @@ export class DatasetTreeComponent implements OnInit {
 
   addDataset(idProject, element) {
     console.log(this.nodes);
+    console.log(idProject);
     let found = false;
     let i = 0;
     for (let index = 0; index < this.nodes.length && !found; index++) {
       // tslint:disable-next-line:no-shadowed-variable
       const element = this.nodes[index];
-      found = element.id === idProject ? true : false;
-      i = index;
+      console.log(element.id +"-->"+idProject);
+      if(element.id == idProject){
+        found = true;
+        i = index;
+      }
+      
+      
     }
 
     // tslint:disable-next-line:max-line-length
@@ -96,7 +102,6 @@ export class DatasetTreeComponent implements OnInit {
     for (let index = 0; index < specimens.length; index++) {
       const element = specimens[index];
       // tslint:disable-next-line:max-line-length
-      console.log(element);
       resultArray.push({id: (valueIds+1), name: specimen_names[index], children: this.generateLandmarkArray(element['specimen' + index], dim), isSpecimen: true});
       valueIds += n_land;
     }
