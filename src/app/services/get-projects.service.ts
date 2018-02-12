@@ -19,13 +19,22 @@ export class GetProjectsService {
   }
 
   private url_request_dataset = 'http://localhost:3000/db_request_dataset/get_datasets';
+  private url_request_datasetById = 'http://localhost:3000/db_request_dataset/get_datasetById';
 
   getDatasetsByProject(project_id: string) {
     return this.http
     .get(this.generateRequest(this.url_request_dataset,project_id))
     .map((response) => response.json())
     .toPromise();
-}
+  }
+
+
+  getDatasetsById(dataset_id: string) {
+    return this.http
+    .get(this.generateRequest(this.url_request_datasetById,dataset_id))
+    .map((response) => response.json())
+    .toPromise();
+  }
 
   private generateRequest(url_request,id_user: string) : string {
      url_request += '?';

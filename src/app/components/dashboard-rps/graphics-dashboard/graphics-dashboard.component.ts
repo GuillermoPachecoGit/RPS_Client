@@ -29,7 +29,7 @@ export class GraphicsDashboardComponent implements OnInit {
       // subscribe to home component messages
        this.subscription = this.sharedDatasetService.getMessage().subscribe(
         params => {
-          const infoTab = this.generateTab();
+          const infoTab = this.generateTab(params);
           const containerGrap = infoTab.idGrap;
           const tab = infoTab.id;
           this.activaTab(tab);
@@ -38,16 +38,16 @@ export class GraphicsDashboardComponent implements OnInit {
       });
   }
 
-  generateTab(): any {
+  generateTab(params): any {
     // tslint:disable-next-line:max-line-length
-    $('#tab_index_id').append('<li ><a data-toggle="tab" href="#tab' + this.count + '"' + '>Dataset ' + this.count + ' </a></li>');
+    $('#tab_index_id').append('<li ><a data-toggle="tab" href="#tab'+'_'+params.dataset_id + '"' + '>'+params.dataset_name+ ' </a></li>');
     $('#tab_content_id').append(
-      '<div id="tab' + this.count + '"' + 'class="tab-pane" >'
-       + '<div id="dataset' + this.count  + '"  style="height: 300px; width: 100%;"></div>'
+      '<div id="tab'+'_'+params.dataset_id + '"' + 'class="tab-pane" >'
+       + '<div id="dataset'+'_'+params.dataset_id  + '"  style="height: 300px; width: 100%;"></div>'
     + '</div>'
 
     );
-    return { idGrap: ('dataset' + this.count), id: ('tab' + this.count)} ;
+    return { idGrap: ('dataset'+'_'+params.dataset_id), id: ('tab'+'_'+params.dataset_id)} ;
   }
 
   activaTab(tab) {
@@ -55,21 +55,19 @@ export class GraphicsDashboardComponent implements OnInit {
   };
 
 
-  ngOnInit() {
-   // this.generateGraphicsPlotly();
-  }
+  ngOnInit() { }
       generateGraphicsPlotly(params, tab){
 
         let data = [];
 
         let specimens = params['specimens'];
         let colors = params['colors'];
-        let names = params['names_specimen'];
+        let names = params['specimen_name'];
 
         for (let index = 0; index < specimens.length; index++) {
           const element = specimens[index]['specimen' + index];
 
-         let resultArray = this.generateArrayPlot(element, params.dim);
+         let resultArray = this.generateArrayPlot(element, params.dimention);
 
           var trace = {
             x: resultArray[0],

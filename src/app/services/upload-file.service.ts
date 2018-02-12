@@ -14,7 +14,7 @@ export class UploadFileService {
     makeFileRequest(params: Array<string>, data: Dataset, files: Array<File>) {
         return new Promise((resolve, reject) => {
             const formData: any = new FormData();
-            formData.append('name_dataset', data.name_dataset);
+            formData.append('dataset_name', data.dataset_name);
             formData.append('project_id', data.project_for_data);
             const xhr = new XMLHttpRequest();
             for (let i = 0; i < files.length; i++) {

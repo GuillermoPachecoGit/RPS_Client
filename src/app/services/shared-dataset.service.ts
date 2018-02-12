@@ -11,6 +11,7 @@ export class SharedDatasetService {
 
 
     sendMessage(message: any) {
+        console.log(message);
         this.subject.next(JSON.parse(message));
     }
 

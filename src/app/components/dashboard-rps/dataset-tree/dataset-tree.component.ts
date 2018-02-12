@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TreeModule, TreeComponent } from 'angular-tree-component';
-// tslint:disable-next-line:import-blacklist
 import { Subscription } from 'rxjs';
 
 
@@ -8,6 +7,7 @@ import { Subscription } from 'rxjs';
  * Services
  */
 import { SharedDatasetService } from '../../../services/shared-dataset.service';
+import { GetProjectsService } from '../../../services/get-projects.service';
 import { ValueTransformer } from '@angular/compiler/src/util';
 import { count } from 'rxjs/operator/count';
 
@@ -19,16 +19,16 @@ import { count } from 'rxjs/operator/count';
 export class DatasetTreeComponent implements OnInit {
   nodes = [];
   options = {};
-
+  index = 0;
   @ViewChild(TreeComponent)
   private tree: TreeComponent;
 
   subscription: Subscription;
-  constructor(private sharedDatasetService: SharedDatasetService) {
+  constructor(private sharedDatasetService: SharedDatasetService, private datasetService : GetProjectsService) {
 
     this.subscription = this.sharedDatasetService.getNewProject().subscribe(
       value => {
-        this.addProjectNew(value);
+        this.addProjectNew(value.project_id,value.project_name);
     });
 
     this.subscription = this.sharedDatasetService.getUserProjects().subscribe(
@@ -40,82 +40,122 @@ export class DatasetTreeComponent implements OnInit {
 
     this.subscription = this.sharedDatasetService.getMessage().subscribe(
       value => {
-        console.log(value);
-        // tslint:disable-next-line:no-shadowed-variable
-        this.addDataset(value.project_id, value);
+
+        if(!this.expanded_nodes.includes(value.project_id)){
+          this.addDataset(value.project_id, value);
+        }
+       
     });
 
    }
 
-  ngOnInit() {
+  ngOnInit() { }
 
-  }
+  
+  onOpen(e) { }
 
-  /*
-  onOpen(e) {
-    console.log('click');
+  expanded_nodes = [];
+  expanded_nodes_dataset = [];
+
+  loadDatasetsByProject(currentNode){
+    this.expanded_nodes.push(currentNode.project_id);
+    this.datasetService.getDatasetsByProject(currentNode.project_id).then((result) =>{
+      result.forEach(element => {
+        this.addDatasetOnly(currentNode.project_id,element);
+      });
+    });
   }
 
   onClick(e) {
-    console.log(e);
-  }*/
+    var currentNode = e.node.data;
+    if(currentNode.isProject && !this.expanded_nodes.includes(currentNode.project_id)){
+        this.loadDatasetsByProject(currentNode);
+    }
+
+    if(currentNode.isDataset && !this.expanded_nodes_dataset.includes(currentNode.dataset_id)){
+      this.expanded_nodes_dataset.push(currentNode.dataset_id);
+      this.datasetService.getDatasetsById(currentNode.dataset_id).then((result) =>{
+          this.expanded_nodes_dataset.push(currentNode.dataset_id);
+          this.sharedDatasetService.sendMessage(result);
+          this.addDatasetData(currentNode.id,JSON.parse(result));
+      });
+    }
+
+  }
 
 
-  addProject(id, nameProject) {
-    this.nodes.push( { id: id, name: nameProject, children: [], isProject: true});
+  getIndexByProjectId(project_id){
+    for (let index = 0; index < this.nodes.length; index++) {
+      const element = this.nodes[index];
+      if(element.project_id == project_id){
+        return index;
+      }
+    }
+  }
+
+
+  addDatasetOnly(project_id,element){
+    let i = this.getIndexByProjectId(project_id);
+    this.nodes[i].children.push( { id: this.getID(), name: element.dataset_name, dataset_id: element.dataset_id, children: [], isDataset : true });
     this.tree.treeModel.update();
   }
 
-  addProjectNew(nameProject) {
-    this.nodes.push( { id: this.nodes.length, name: nameProject, children: [], isProject: true});
+  getID(){
+    this.index += 1;
+    return this.index;
+  }
+
+  addProject(id, nameProject) {
+    this.nodes.push( { id: this.getID(), name: nameProject, children: [],project_id: id, isProject: true});
+    this.tree.treeModel.update();
+  }
+
+  addProjectNew(id,nameProject) {
+    this.nodes.push( { id: this.getID(), name: nameProject, children: [],project_id: id, isProject: true});
     this.tree.treeModel.update();
   }
 
   addDataset(idProject, element) {
-    console.log(this.nodes);
-    console.log(idProject);
     let found = false;
-    let i = 0;
-    for (let index = 0; index < this.nodes.length && !found; index++) {
-      // tslint:disable-next-line:no-shadowed-variable
-      const element = this.nodes[index];
-      console.log(element.id +"-->"+idProject);
-      if(element.id == idProject){
-        found = true;
-        i = index;
-      }
-      
-      
-    }
-
-    // tslint:disable-next-line:max-line-length
-    this.nodes[i].children.push( { id: (this.nodes[i].children.length + 1), name: element.dataset_name, children: this.generateSpecimenArray(element.specimens, element.names_specimen, element.dim, element.num_specimens, element.num_landmarks), isDataset : true });
+    let i = this.getIndexByProjectId(idProject);
+    this.nodes[i].children.push( { id: this.getID(), name: element.dataset_name, dataset_id: element.dataset_id, children: this.generateSpecimenArray(element.specimens, element.specimen_name, element.dimention, element.numbers_of_specimen, element.numbers_of_landmark), isDataset : true });
     this.tree.treeModel.update();
     this.tree.treeModel.update();
     this.tree.treeModel.update();
   }
+
+  addDatasetData(id, element) {
+    let found = false;
+    const node = this.tree.treeModel.getNodeById(id);
+    console.log(node);
+    node.data.children = this.generateSpecimenArray(element.specimens, element.specimen_name, element.dimention, element.numbers_of_specimen, element.numbers_of_landmark);
+    this.tree.treeModel.update();
+  }
+
   generateSpecimenArray(specimens, specimen_names, dim, n_spec, n_land) {
-    // tslint:disable-next-line:prefer-const
     let resultArray = [];
-    // tslint:disable-next-line:prefer-const
     let valueIds = n_spec * n_land;
     for (let index = 0; index < specimens.length; index++) {
       const element = specimens[index];
-      // tslint:disable-next-line:max-line-length
-      resultArray.push({id: (valueIds+1), name: specimen_names[index], children: this.generateLandmarkArray(element['specimen' + index], dim), isSpecimen: true});
+      var name = '';
+      if(specimen_names[index]){
+        name = specimen_names[index];
+      }
+      else{
+        name = 'trace'+index;
+      }
+      resultArray.push({id: this.getID(), name: name, children: this.generateLandmarkArray(element['specimen' + index], dim), isSpecimen: true});
       valueIds += n_land;
     }
     return resultArray;
   }
 
   generateLandmarkArray(landmarks, dim) {
-      // tslint:disable-next-line:prefer-const
       let resultArray = [];
       for (let index = 0; index < landmarks.length; index++) {
         const element = landmarks[index];
-        // tslint:disable-next-line:prefer-const
-        let nameLand = dim === 2 ? (element[0]+'-'+element[1]) : (element[0]+'-'+element[1]+'-'+element[2]);
-        resultArray.push({ id: (resultArray.length + 1), name: nameLand, children: [] , isLandmark: true});
+        let nameLand = dim === 2 ? (element[0]+' / '+element[1]) : (element[0]+' / '+element[1]+' / '+element[2]);
+        resultArray.push({ id: this.getID(), name: nameLand, children: [] , isLandmark: true});
       }
       return resultArray;
   }

@@ -16,6 +16,8 @@ import { GetProjectsService } from '../../../services/get-projects.service';
 import { AnalyzeService  } from "../../../services/analyze.service";
 import {  UserService } from "../../../services/user.service";
 import { Analyze } from './analyze';
+import { Distance } from './distance';
+import { Ordination } from './ordination';
 
 @Component({
   selector: 'app-navbar-dashboard',
@@ -30,7 +32,11 @@ export class NavbarDashboardComponent implements OnInit {
   idUser = '';
   dataset_list = [];
   datasetEnable = true;
-  analyze = new Analyze('','','',true,false);
+
+  //Analysis
+  analyze = new Analyze('','','',false,false);
+  distance = new Distance(false,'','','');
+  ordination = new Ordination(false,'','','');
 
   constructor(
     private uploadService: UploadFileService,
@@ -63,23 +69,14 @@ export class NavbarDashboardComponent implements OnInit {
        });
   }
 
-  upload() {
-    this.uploadService.makeFileRequest([], this.dataset, this.filesToUpload).then((result) => {
-        this.dataset = new Dataset('','');
-        this.filesToUpload = [];
-        this.sharedDatasetService.sendMessage(result);
-        document.getElementById('hideAddDataset').click();
-    }, (error) => {
-        console.log(error);
-    });
-}
-
 confirmProject() {
     // tslint:disable-next-line:max-line-length
     this.uploadService.makeProjectRequest({ name_project:  this.project.name, description: this.project.description, id_user: this.idUser }).subscribe(data => {
         if (data.error == 'ok') {
             this.project_list.push(data.result);
-            this.sharedDatasetService.setNameProject(this.project.name);
+            this.project = new Project('','','');
+            this.filesToUpload = [];
+            this.sharedDatasetService.setNameProject(data.result);
             document.getElementById('hideAddProject').click();
 
         }else {
@@ -99,8 +96,11 @@ fileChangeEvent(fileInput: any) {
 selectedProject(e){
     this.datasetEnable = false;
     this.loadDataset(this.analyze.project_selected);
+}
 
-    console.log(this.analyze.project_selected);
+selectedProjectDistance(e){
+    this.datasetEnable = false;
+    this.loadDataset(this.distance.project_id);
 }
 
 loadDataset(idProject){
@@ -110,12 +110,43 @@ loadDataset(idProject){
 }
 
 confirmAnalysis(){
-    /*this.show_consensus_selected this.algorithm_selected*/
     this.analizeService.runAnalyze(this.analyze).subscribe(result => {
-        this.sharedDatasetService.sendMessage(result);
-        console.log(result);
+        this.analyze = new Analyze('','','',false,false);
+        this.datasetEnable = false;
+        this.sharedDatasetService.sendMessage(result);  
         document.getElementById('hideRunAnalysis').click();
     })
+}
+
+confirmDistance(){
+    this.analizeService.runAnalyzeDistance(this.distance).subscribe(result => {
+        this.distance = new Distance(false,'','','');
+        this.datasetEnable = false;
+        console.log(result);
+        //llamar al shared pra compartir la info con los componentes result-dashboard y dataset-tree
+        document.getElementById('hideRunAnalysisDistance').click();
+    })
+}
+
+
+confirmOrdination(){
+    this.analizeService.runAnalyzeOrdination(this.ordination).subscribe(result => {
+        this.distance = new Distance(false,'','','');
+        this.datasetEnable = false;
+        console.log(result);
+        //llamar al shared pra compartir la info con los componentes result-dashboard y dataset-tree
+        document.getElementById('hideAnalysisOrdination').click();
+    })
+}
+
+upload() {
+    this.uploadService.makeFileRequest([], this.dataset, this.filesToUpload).then((result) => {
+        this.dataset = new Dataset('','');
+        this.sharedDatasetService.sendMessage(result);
+        document.getElementById('hideAddDataset').click();
+    }, (error) => {
+        console.log(error);
+    });
 }
 
 }
