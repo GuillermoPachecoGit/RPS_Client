@@ -123,6 +123,7 @@ confirmDistance(){
         this.distance = new Distance(false,'','','');
         this.datasetEnable = false;
         console.log(result);
+        this.sharedDatasetService.setDistance(result);
         //llamar al shared pra compartir la info con los componentes result-dashboard y dataset-tree
         document.getElementById('hideRunAnalysisDistance').click();
     })

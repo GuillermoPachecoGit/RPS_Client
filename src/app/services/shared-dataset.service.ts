@@ -8,7 +8,26 @@ export class SharedDatasetService {
     private subject = new Subject<any>();
     private subjectProject = new Subject<any>();
     private userProjects = new Subject<any>();
+    private distanceResult = new Subject<any>();
+    private ordinationResult = new Subject<any>();
 
+
+    setDistance(distance: any){
+        this.distanceResult.next(JSON.parse(distance));
+    }
+
+    getDistance() : Observable<any> {
+        return this.distanceResult.asObservable();
+    }
+
+    setOrdination(ordination: any){
+        this.ordinationResult.next(JSON.parse(ordination));
+    }
+
+    getOrdination() : Observable<any> {
+        return this.ordinationResult.asObservable();
+    }
+    
 
     sendMessage(message: any) {
         console.log(message);

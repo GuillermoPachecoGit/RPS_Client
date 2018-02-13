@@ -31,6 +31,15 @@ export class ResultDashboardComponent implements OnInit {
         this.activaTab(tab);
         this.generateTable(params, containerGrap);
     });
+
+    this.subscription = this.sharedDatasetService.getDistance().subscribe( params => {
+      const infoTab = this.generateTab(params.distance_id,params.distance_name);
+      const containerGrap = infoTab.idGrap;
+      const tab = infoTab.id;
+      this.activaTab(tab);
+      this.generateDistanceMatrix(params,containerGrap);
+    });
+
   }
 
   generateTab(dataset_id,dataset_name): any {
@@ -50,6 +59,63 @@ export class ResultDashboardComponent implements OnInit {
   activaTab(tab) {
     $('.nav-tabs a[href="#' + tab + '"]').tab('show');
   };
+
+
+  generateDistanceMatrix(params,tab){
+    let data = params.data;
+    let names = params['specimen_name'];
+
+    
+    $('#'+tab).append(
+          '<h2> Distance: '+params.distance_name+'</h2>'
+    );
+
+      $('#'+tab).append(
+       ' <table id="table_'+ params.distance_id+'" class="table table-bordered">'
+       + '<thead class="thead-default">'
+       +  ' <tr id="headerRow_'+params.distance_id +'" >'
+       +    '<th> Specimens </th>'
+      );
+ 
+      for (let index = 0; index < names.length; index++) {
+          const element = names[index];
+          $('#'+'headerRow_'+params.distance_id).append( 
+            '<th>'+ element +'</th>'
+          );
+      }
+
+
+      $('#table_'+ params.distance_id).append( ' </tr>'
+       + '</thead>'
+       + '<tbody id="distance_'+params.distance_id+'">'
+      );
+
+      for (let index = 0; index < data.length; index++) {
+        const element = data[index];
+        $('#distance_'+params.distance_id).append( 
+          '<tr id="row_'+index+'_'+ params.distance_id+'" >'
+          +'<th scope="row">'+names[index]+'</th>'
+        );
+
+        for (let row = 0; row < element.length; row++) {
+          const value = element[row];
+          console.log(value);
+          $('#row_'+index+'_'+ params.distance_id).append( 
+            '<td><h6>'+ value +'</h6></td>'
+          ); 
+        }
+
+        $('#distance_'+params.distance_id).append( 
+          '</tr>'
+        );
+      }
+      
+      $('#distance_'+params.distance_id).append(
+        '</tbody>'
+        +'</table>'
+       );
+  }
+    
 
   generateTable(params, tab){
     let data = [];
