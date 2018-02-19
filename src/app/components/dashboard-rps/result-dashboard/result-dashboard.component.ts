@@ -47,7 +47,7 @@ export class ResultDashboardComponent implements OnInit {
     $('#tab_index_id_result').append('<li ><a data-toggle="tab" href="#tab_result_'+dataset_id + '"' + '>'+dataset_name+ ' </a></li>');
     $('#tab_content_id_result').append(
         '<div id="tab_result_'+dataset_id+ '"' + 'class="tab-pane" >'
-          +'<div class="table-responsive" style="width: 50%;" >'
+          +'<div class="table-responsive" style="width: auto;" >'
             + '<div id="dataset_result_'+dataset_id+ '"  style="height: 300px; width: auto;"></div>'
           +'</div>'
         +'</div>'
@@ -62,6 +62,8 @@ export class ResultDashboardComponent implements OnInit {
 
 
   generateDistanceMatrix(params,tab){
+    console.log(params);
+
     let data = params.data;
     let names = params['specimen_name'];
 
@@ -71,7 +73,7 @@ export class ResultDashboardComponent implements OnInit {
     );
 
       $('#'+tab).append(
-       ' <table id="table_'+ params.distance_id+'" class="table table-bordered">'
+       ' <table id="table_'+ params.distance_id+'" class="table table-striped table-bordered">'
        + '<thead class="thead-default">'
        +  ' <tr id="headerRow_'+params.distance_id +'" >'
        +    '<th> Specimens </th>'
@@ -126,11 +128,11 @@ export class ResultDashboardComponent implements OnInit {
 
       if(names.length > 0){
         $('#'+tab).append(
-          '<h2>'+names[index]+'</h2>'
+          '<h2> Specimen: '+names[index]+'</h2>'
         );
       }else{
         $('#'+tab).append(
-          '<h2>trace '+index+'</h2>'
+          '<h2> Specimen: trace '+index+'</h2>'
         );
       }
 

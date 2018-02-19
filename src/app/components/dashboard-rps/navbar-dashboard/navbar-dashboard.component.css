@@ -109,10 +109,14 @@
 .container-fluid {
   padding-right: 0px;
   padding-left: 0px;
+
   /* margin-right: auto; */
   /* margin-left: auto; */
 }
 
+#id_navbar{
+  position: relative; top: 0px; width: 98%; margin-bottom: 10px;
+}
 
 @import url(http://fonts.googleapis.com/css?family=Roboto);
 

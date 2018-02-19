@@ -40,14 +40,29 @@ export class DatasetTreeComponent implements OnInit {
 
     this.subscription = this.sharedDatasetService.getMessage().subscribe(
       value => {
-
-        if(!this.expanded_nodes.includes(value.project_id)){
+        if(!this.expanded_nodes.includes(value.dataset_id)){
+          this.expanded_nodes_dataset.push(value.dataset_id);
           this.addDataset(value.project_id, value);
         }
-       
+      
     });
 
+
+   
+    this.subscription = this.sharedDatasetService.getDistance().subscribe( params => {
+       
+      if(!this.expanded_nodes_distance.includes(params.distance_id)){
+        this.expanded_nodes_distance.push(params.distance_id);
+        let i = this.getIndexByProjectId(params.project_id);
+        this.nodes[i].children.push( { id: this.getID(), name: params.distance_name, distance_id: params.dataset_id, children:[], isDistance : true });
+        this.tree.treeModel.update();
+      }
+
+    });
    }
+
+    expanded_nodes_distance = [];
+
 
   ngOnInit() { }
 
@@ -64,6 +79,13 @@ export class DatasetTreeComponent implements OnInit {
         this.addDatasetOnly(currentNode.project_id,element);
       });
     });
+
+    this.datasetService.getDistaceByProject(currentNode.project_id).then((result) =>{
+      result.forEach(element => {
+        this.addDistance(currentNode.project_id,element);
+      });
+    });
+    
   }
 
   onClick(e) {
@@ -81,6 +103,22 @@ export class DatasetTreeComponent implements OnInit {
       });
     }
 
+    if(currentNode.isDistance && !this.expanded_nodes_distance.includes(currentNode.distance_id)){
+      this.expanded_nodes_distance.push(currentNode.distance_id);
+      this.datasetService.getDistanceById(currentNode.distance_id).then((result) =>{
+          this.expanded_nodes_dataset.push(result.distance_id);
+          console.log(result);
+          this.sharedDatasetService.setDistance(result);
+      });
+    }
+
+  }
+
+  addDistance(project_id,params){
+    let i = this.getIndexByProjectId(project_id);
+    console.log
+    this.nodes[i].children.push( { id: this.getID(), name: params.distance_name, distance_id: params.distance_id, children: [], isDistance : true } );
+    this.tree.treeModel.update();
   }
 
 
@@ -115,12 +153,10 @@ export class DatasetTreeComponent implements OnInit {
     this.tree.treeModel.update();
   }
 
-  addDataset(idProject, element) {
+  addDataset(idProject, element){
     let found = false;
     let i = this.getIndexByProjectId(idProject);
-    this.nodes[i].children.push( { id: this.getID(), name: element.dataset_name, dataset_id: element.dataset_id, children: this.generateSpecimenArray(element.specimens, element.specimen_name, element.dimention, element.numbers_of_specimen, element.numbers_of_landmark), isDataset : true });
-    this.tree.treeModel.update();
-    this.tree.treeModel.update();
+    this.nodes[i].children.push( { id: this.getID(), name: element.dataset_name, dataset_id: element.dataset_id, children: this.generateSpecimenArray(element.specimens, element.specimen_name, element.dimention, element.numbers_of_specimen, element.numbers_of_landmark), isDataset : true } );
     this.tree.treeModel.update();
   }
 

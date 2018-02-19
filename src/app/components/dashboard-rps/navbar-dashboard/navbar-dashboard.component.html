@@ -1,6 +1,6 @@
 
 <div class="container-fluid">
-    <nav class="navbar navbar-inverse" role="navigation">
+    <nav id="id_navbar" class="navbar navbar-inverse" role="navigation">
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a class="navbar-brand"  >RPS Online</a></li>
@@ -209,7 +209,7 @@
                 <!--header modal-->
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                    <h3 class="modal-title" id="lineModalLabel">New Procrustes Analysis</h3> </div>
+                    <h3 class="modal-title" id="lineModalLabel">New Coherent Distance Matrix</h3> </div>
                 <!--body modal-->
                 <div class="modal-body">    
                     <form method="post"  enctype="multipart/form-data"> 
@@ -271,7 +271,7 @@
                     <!--header modal-->
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                        <h3 class="modal-title" id="lineModalLabel">New Procrustes Analysis</h3> </div>
+                        <h3 class="modal-title" id="lineModalLabel">New Universal Multidimensional Scaling</h3> </div>
                     <!--body modal-->
                     <div class="modal-body">    
                         <form method="post"  enctype="multipart/form-data"> 
@@ -284,10 +284,10 @@
                                     </div> 
                             </div>
                             <div class="form-group">
-                                <label for="datasets"  class="control-label">Select Dataset to analyze: </label>
+                                <label for="distances"  class="control-label">Select Distance Matrix to analyze: </label>
                                     <div>
-                                        <select  [disabled]="datasetEnable" id="datasets"   class="form-control"  required [(ngModel)]="ordination.dataset_id" name="project_for_data" #project_for_data="ngModel">
-                                            <option *ngFor="let dataset of dataset_list" [value]="ordination.dataset_id">{{dataset.dataset_name}}</option>
+                                        <select  [disabled]="distanceEnable" id=""   class="form-control"  required [(ngModel)]="ordination.distance_id" name="project_for_data" #project_for_data="ngModel">
+                                            <option *ngFor="let distance of distance_list" [value]="distance.distance_id">{{distance.distance_name}}</option>
                                         </select>
                                     </div> 
                             </div>

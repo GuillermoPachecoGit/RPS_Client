@@ -1,9 +1,13 @@
-<p>Projects: </p>
-<tree-root #tree [nodes]="nodes" (toggleExpanded)="onOpen($event)" (activate)="onClick($event,node)" >
-    <ng-template #treeNodeTemplate let-node let-index="index" style="width:60px">
-      <span *ngIf="node.isCollapsed && node.data.isProject" class="glyphicon glyphicon-folder-close"></span>
-      <span *ngIf="node.isExpanded && node.data.isProject" class="glyphicon glyphicon-folder-open"></span>
-      <span *ngIf="node.data.isDataset" class="glyphicon glyphicon-file"></span>
-      <span>{{ node.data.name }}</span>
-    </ng-template>
-</tree-root>
+
+<div id="container_tree">
+  <h3>Projects: </h3>
+  <tree-root #tree [nodes]="nodes" (toggleExpanded)="onOpen($event)" (activate)="onClick($event,node)" >
+      <ng-template #treeNodeTemplate let-node let-index="index" style="width:60px">
+        <span *ngIf="node.isCollapsed && node.data.isProject" class="glyphicon glyphicon-folder-close"></span>
+        <span *ngIf="node.isExpanded && node.data.isProject" class="glyphicon glyphicon-folder-open"></span>
+        <span *ngIf="node.data.isDatasetContainer" class="glyphicon glyphicon-file"></span>
+        <span>{{ node.data.name }}</span>
+      </ng-template>
+  </tree-root>
+
+</div>

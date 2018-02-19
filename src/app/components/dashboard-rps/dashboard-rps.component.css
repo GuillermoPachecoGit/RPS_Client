@@ -1,3 +1,26 @@
+
+
+#navbar_id{
+    width: 100%;
+}
+#idGraphics{
+    height: auto;
+}
 #idResult {
-    margin: 10px;
+    height:200px; 
+    width:auto; 
+}
+
+#tree_dataset{
+    height:100%;
+    width:20%;
+}
+
+#container_results{
+    margin: 0%;
+    width: 80%;
+}
+
+#result{
+      width: 98%; margin-bottom: 10px;
 }

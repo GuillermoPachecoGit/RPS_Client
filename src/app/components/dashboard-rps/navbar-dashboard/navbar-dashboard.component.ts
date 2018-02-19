@@ -31,7 +31,9 @@ export class NavbarDashboardComponent implements OnInit {
   dataset = new Dataset('', '');
   idUser = '';
   dataset_list = [];
+  distance_list = [];
   datasetEnable = true;
+  distanceEnable = false;
 
   //Analysis
   analyze = new Analyze('','','',false,false);
@@ -70,7 +72,6 @@ export class NavbarDashboardComponent implements OnInit {
   }
 
 confirmProject() {
-    // tslint:disable-next-line:max-line-length
     this.uploadService.makeProjectRequest({ name_project:  this.project.name, description: this.project.description, id_user: this.idUser }).subscribe(data => {
         if (data.error == 'ok') {
             this.project_list.push(data.result);
@@ -109,6 +110,17 @@ loadDataset(idProject){
     })
 }
 
+selectedProjectOrdination(e){
+    this.distanceEnable = false;
+    this.loadDistance(this.ordination.project_id);
+}
+
+loadDistance(idProject){
+    this.projectService.getDistaceByProject(idProject).then( (result) =>{
+        this.distance_list = result;
+    })
+}
+
 confirmAnalysis(){
     this.analizeService.runAnalyze(this.analyze).subscribe(result => {
         this.analyze = new Analyze('','','',false,false);
@@ -132,10 +144,11 @@ confirmDistance(){
 
 confirmOrdination(){
     this.analizeService.runAnalyzeOrdination(this.ordination).subscribe(result => {
-        this.distance = new Distance(false,'','','');
-        this.datasetEnable = false;
+        this.ordination = new Ordination(false,'','','');
+        this.distanceEnable = false;
         console.log(result);
         //llamar al shared pra compartir la info con los componentes result-dashboard y dataset-tree
+        this.sharedDatasetService.setOrdination(result);
         document.getElementById('hideAnalysisOrdination').click();
     })
 }

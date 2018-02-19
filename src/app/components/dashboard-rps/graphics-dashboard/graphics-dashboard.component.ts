@@ -36,6 +36,18 @@ export class GraphicsDashboardComponent implements OnInit {
           this.count++;
           this.generateGraphicsPlotly(params, containerGrap);
       });
+
+      this.subscription = this.sharedDatasetService.getOrdination().subscribe(
+        params => {
+          const infoTab = this.generateTabOrdination(params);
+          const containerGrap = infoTab.idGrap;
+          const tab = infoTab.id;
+          this.activaTab(tab);
+          this.count++;
+          this.generateOrdinationGraphicsPlotly(params, containerGrap);
+        }
+      );
+
   }
 
   generateTab(params): any {
@@ -50,12 +62,68 @@ export class GraphicsDashboardComponent implements OnInit {
     return { idGrap: ('dataset'+'_'+params.dataset_id), id: ('tab'+'_'+params.dataset_id)} ;
   }
 
+
+  generateTabOrdination(params): any {
+    // tslint:disable-next-line:max-line-length
+    $('#tab_index_id').append('<li ><a data-toggle="tab" href="#tab_'+params.dataset_id+'_'+params.ordination_id + '"' + '>'+params.ordination_name+ ' </a></li>');
+    $('#tab_content_id').append(
+      '<div id="tab_'+params.dataset_id+'_'+params.ordination_id + '"' + 'class="tab-pane" >'
+       + '<div id="ordination'+'_'+params.ordination_id  + '"  style="height: 300px; width: 100%;"></div>'
+    + '</div>'
+
+    );
+    return { idGrap: ('ordination'+'_'+params.ordination_id), id: ('tab_'+params.dataset_id+'_'+params.ordination_id)} ;
+  }
+
   activaTab(tab) {
     $('.nav-tabs a[href="#' + tab + '"]').tab('show');
   };
 
 
   ngOnInit() { }
+
+  generateOrdinationGraphicsPlotly(params, tab){
+    let colors = params['colors'];
+    let names = params['specimen_name'];
+    var data = params['data'];
+    var dataResult = [];
+
+    for (let index = 0; index < data.length; index++) {
+      const element = data[index];
+      console.log(element);
+      var trace = {
+        x: [element[0]],
+        y: [element[1]],
+        mode: 'markers',
+        type: 'scatter',
+        text: names[index],
+
+        textposition: 'top center',
+        textfont: {
+          family:  'Raleway, sans-serif'
+        },
+        marker: { 
+          size: 6,
+          color: colors[index] 
+        }
+      };
+      dataResult.push(trace);
+
+    }
+
+    var layout = {
+      margin: 2,
+      xaxis: {},
+      yaxis: { },
+      title: 'Escalamiento Multidimensional Universal'
+    };
+
+
+    Plotly.newPlot(tab, dataResult, layout);
+
+  }
+
+
       generateGraphicsPlotly(params, tab){
 
         let data = [];
