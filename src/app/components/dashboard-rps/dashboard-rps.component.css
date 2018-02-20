@@ -16,6 +16,10 @@
     width:20%;
 }
 
+#dashboard{
+    margin-bottom: 15px;
+}
+
 #container_results{
     margin: 0%;
     width: 80%;

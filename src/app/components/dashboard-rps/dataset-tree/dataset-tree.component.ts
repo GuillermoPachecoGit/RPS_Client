@@ -40,7 +40,7 @@ export class DatasetTreeComponent implements OnInit {
 
     this.subscription = this.sharedDatasetService.getMessage().subscribe(
       value => {
-        if(!this.expanded_nodes.includes(value.dataset_id)){
+        if(!this.expanded_nodes_dataset.includes(value.dataset_id)){
           this.expanded_nodes_dataset.push(value.dataset_id);
           this.addDataset(value.project_id, value);
         }

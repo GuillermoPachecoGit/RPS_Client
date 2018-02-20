@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home-rps-main.component.css']
 })
 export class HomeRpsMainComponent implements OnInit {
+  private picos = require('./picos.png');
+  private craneos = require('./craneos.png');
+  private caracoles = require('./caracoles.png');
 
   constructor() { }
 
