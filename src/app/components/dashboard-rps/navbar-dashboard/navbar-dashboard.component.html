@@ -17,18 +17,6 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">  
-                  <li   class="dropdown"><a   class="dropdown-toggle" data-toggle="dropdown"><span
-                    class="glyphicon glyphicon-envelope"></span>Inbox <span class="label label-info">32</span>
-                  </a>
-                  <ul   class="dropdown-menu">
-                        <li><a  ><span class="label label-warning">4:00 AM</span>Favourites Snippet</a></li>
-                        <li><a  ><span class="label label-warning">4:30 AM</span>Email marketing</a></li>
-                        <li><a  ><span class="label label-warning">5:00 AM</span>Subscriber focused email
-                            design</a></li>
-                        <li class="divider"></li>
-                        <li><a   class="text-center">View All</a></li>
-                 </ul>
-                 </li>
                 <li   class="dropdown"><a   class="dropdown-toggle" data-toggle="dropdown"><span
                     class="glyphicon glyphicon-user"></span>Admin <b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -71,13 +59,13 @@
                           </div> 
                       </div>
                       <div class="form-group">
-                          <label>Name dataset: </label>
-                          <input type="text"  class="form-control"  id="name_dataset" required [(ngModel)]="dataset.dataset_name" name="name_dataset" placeholder="Name" #name_dataset="ngModel"> 
-                      </div>
-                      <div class="form-group">
                       <label>File input</label>
                       <input type="file" (change)="fileChangeEvent($event)" placeholder="Upload file..." />
                       </div>  
+                      <div class="form-group">
+                        <label>Name dataset: </label>
+                        <input type="text"  class="form-control"  id="name_dataset" required [(ngModel)]="dataset.dataset_name" name="name_dataset" placeholder="Name" #name_dataset="ngModel"> 
+                    </div>
                       <button type="button" class="btn btn-success btn-s"
                               (click)="upload()">
                           <span class="glyphicon glyphicon-upload"></span> Upload
@@ -138,7 +126,6 @@
     <div class="modal fade" id="runProcrustes" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-    
                 <!--header modal-->
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
@@ -170,23 +157,21 @@
                                 <label><input type="radio" name="algorithm" [(ngModel)]="analyze.algorithm_selected" [value]=2 >Generalizaded Resistant Procrustes Superimposition (GrP)</label>
                               </div>
                         </div>
-
                         <div class="form-group">
                             <div class="radio">
-                                <label><input type="radio" name="analyze.show_consensus_selected">Show consensus</label>
+                                <input type="checkbox"  [(ngModel)]="analyze.show_consensus_selected" name="show_consensus_selected" [value]=true >  Show consensus 
                               </div>
-                        </div>
-                       
+                        </div>                      
                         <div class="form-group">
                             <label for="country"  class="control-label">Tab Name: </label>
-                            <input type="text"  class="form-control"  id="analyze.tab_name_analysis" required [(ngModel)]="tab_name_analysis" name="tab_name_analysis" placeholder="" #name="ngModel">
+                            <input type="text"  class="form-control"  id="tab_name_analysis" required [(ngModel)]="analyze.tab_name_analysis" name="tab_name_analysis" placeholder="" #name="ngModel">
                         </div>
-
                         <button type="button" class="btn btn-success btn-s"
                                 (click)="confirmAnalysis()">
                             <span class="glyphicon glyphicon-upload"></span> Confirm
                         </button>
-                    </form></div>
+                    </form>
+                </div>
             
                 <!-- footer modal -->
                 <div class="modal-footer">

@@ -34,7 +34,14 @@ export class GraphicsDashboardComponent implements OnInit {
           const tab = infoTab.id;
           this.activaTab(tab);
           this.count++;
-          this.generateGraphicsPlotly(params, containerGrap);
+
+          if(params.dimention === 2){
+              this.generateGraphicsPlotly2D(params, containerGrap);
+          }
+          else{
+              this.generateGraphicsPlotly(params, containerGrap);
+          }
+         
       });
 
       this.subscription = this.sharedDatasetService.getOrdination().subscribe(
@@ -90,7 +97,6 @@ export class GraphicsDashboardComponent implements OnInit {
 
     for (let index = 0; index < data.length; index++) {
       const element = data[index];
-      console.log(element);
       var trace = {
         x: [element[0]],
         y: [element[1]],
@@ -112,10 +118,12 @@ export class GraphicsDashboardComponent implements OnInit {
     }
 
     var layout = {
-      margin: 2,
+      margin: 5,
       xaxis: {},
-      yaxis: { },
-      title: 'Escalamiento Multidimensional Universal'
+      yaxis: {},
+      height: 600,
+      width: 600,
+      title: 'Universal Multidimensional Scaling'
     };
 
 
@@ -123,11 +131,42 @@ export class GraphicsDashboardComponent implements OnInit {
 
   }
 
+  generateGraphicsPlotly2D(params, tab){
+    let data = [];
+    let specimens = params['specimens'];
+    let colors = params['colors'];
+    let names = params['specimen_name'];
+
+    for (let index = 0; index < specimens.length; index++) {
+      const element = specimens[index]['specimen' + index];
+
+     let resultArray = this.generateArrayPlot(element, params.dimention);
+      var trace = {
+        x: resultArray[0],
+        y: resultArray[1],
+        mode: 'markers',
+        marker: {
+          size: 4,
+          line: {
+          color: colors[index]}
+        },
+        type: 'scatter',
+        name: names[index]
+      };
+      data.push(trace);
+    }
+
+    var layout = {
+      margin: 2,
+      xaxis: { },
+      yaxis: { },
+      height: 600
+    };
+    Plotly.newPlot(tab, data, layout);
+  }
 
       generateGraphicsPlotly(params, tab){
-
         let data = [];
-
         let specimens = params['specimens'];
         let colors = params['colors'];
         let names = params['specimen_name'];
@@ -172,9 +211,13 @@ export class GraphicsDashboardComponent implements OnInit {
               result[0].push(element[0]);
               result[1].push(element[1]);
 
+
+              console.log('Dimension: '+dim);
               if (dim === 3) {
                 result[2].push(element[2]);
-              } else {
+              } 
+              else 
+              {
                 result[2].push(0);
               }
         }

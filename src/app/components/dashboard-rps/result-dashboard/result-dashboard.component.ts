@@ -151,8 +151,7 @@ export class ResultDashboardComponent implements OnInit {
 
 
       for (let i = 0; i < specimen.length; i++){
-
-        if(params.dim == 3){
+        if(params.dimention === 3){
         $('#specimen'+index+'_'+params.dataset_id).append(
           '<tr>' 
             + '<td><h5> LM'+ i+'<h5></td>'

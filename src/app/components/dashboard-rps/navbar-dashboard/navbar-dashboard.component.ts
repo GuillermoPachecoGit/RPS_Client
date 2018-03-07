@@ -13,8 +13,8 @@ import { Dataset } from './dataset';
 import { UploadFileService } from '../../../services/upload-file.service';
 import { SharedDatasetService } from '../../../services/shared-dataset.service';
 import { GetProjectsService } from '../../../services/get-projects.service';
-import { AnalyzeService  } from "../../../services/analyze.service";
-import {  UserService } from "../../../services/user.service";
+import { AnalyzeService } from "../../../services/analyze.service";
+import { UserService } from "../../../services/user.service";
 import { Analyze } from './analyze';
 import { Distance } from './distance';
 import { Ordination } from './ordination';
@@ -49,13 +49,12 @@ export class NavbarDashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    
     // subscribe to router event
     this.route.params.subscribe((params: Params) => {
         this.idUser = params['id'];
      });
-
      this.initialize();
-
   }
 
   initialize(): void {
@@ -79,11 +78,9 @@ confirmProject() {
             this.filesToUpload = [];
             this.sharedDatasetService.setNameProject(data.result);
             document.getElementById('hideAddProject').click();
-
         }else {
             alert('Please, retry the operation again.');
         }
-
     }, (error) => {
         console.log(error);
     });
