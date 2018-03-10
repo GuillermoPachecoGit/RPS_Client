@@ -34,6 +34,7 @@ export class NavbarDashboardComponent implements OnInit {
   distance_list = [];
   datasetEnable = true;
   distanceEnable = false;
+  processing = false;
 
   //Analysis
   analyze = new Analyze('','','',false,false);
@@ -119,18 +120,22 @@ loadDistance(idProject){
 }
 
 confirmAnalysis(){
+    this.processing = true;
     this.analizeService.runAnalyze(this.analyze).subscribe(result => {
         this.analyze = new Analyze('','','',false,false);
         this.datasetEnable = false;
+        this.processing = false;
         this.sharedDatasetService.sendMessage(result);  
         document.getElementById('hideRunAnalysis').click();
     })
 }
 
 confirmDistance(){
+    this.processing = true;
     this.analizeService.runAnalyzeDistance(this.distance).subscribe(result => {
         this.distance = new Distance(false,'','','');
         this.datasetEnable = false;
+        this.processing = false;
         console.log(result);
         this.sharedDatasetService.setDistance(result);
         //llamar al shared pra compartir la info con los componentes result-dashboard y dataset-tree
@@ -140,9 +145,11 @@ confirmDistance(){
 
 
 confirmOrdination(){
+    this.processing = true;
     this.analizeService.runAnalyzeOrdination(this.ordination).subscribe(result => {
         this.ordination = new Ordination(false,'','','');
         this.distanceEnable = false;
+        this.processing = false;
         console.log(result);
         //llamar al shared pra compartir la info con los componentes result-dashboard y dataset-tree
         this.sharedDatasetService.setOrdination(result);

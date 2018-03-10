@@ -170,6 +170,7 @@
                                 (click)="confirmAnalysis()">
                             <span class="glyphicon glyphicon-upload"></span> Confirm
                         </button>
+                        <span *ngIf="processing"><h4>Processing analysis, please wait a few minutes...</h4></span>
                     </form>
                 </div>
             
@@ -232,6 +233,7 @@
                                 (click)="confirmDistance()">
                             <span class="glyphicon glyphicon-upload"></span> Confirm
                         </button>
+                        <span *ngIf="processing"><h4>Processing analysis, please wait a few minutes...</h4></span>
                     </form></div>
             
                 <!-- footer modal -->
@@ -295,6 +297,7 @@
                                     (click)="confirmOrdination()">
                                 <span class="glyphicon glyphicon-upload"></span> Confirm
                             </button>
+                            <span *ngIf="processing"><h4>Processing analysis, please wait a few minutes...</h4></span>
                         </form></div>
                 
                     <!-- footer modal -->

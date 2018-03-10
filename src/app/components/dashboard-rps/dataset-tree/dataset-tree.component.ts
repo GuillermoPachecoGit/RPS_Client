@@ -26,6 +26,8 @@ export class DatasetTreeComponent implements OnInit {
   subscription: Subscription;
   constructor(private sharedDatasetService: SharedDatasetService, private datasetService : GetProjectsService) {
 
+
+    //Subscriptions
     this.subscription = this.sharedDatasetService.getNewProject().subscribe(
       value => {
         this.addProjectNew(value.project_id,value.project_name);
@@ -47,8 +49,6 @@ export class DatasetTreeComponent implements OnInit {
       
     });
 
-
-   
     this.subscription = this.sharedDatasetService.getDistance().subscribe( params => {
        
       if(!this.expanded_nodes_distance.includes(params.distance_id)){
@@ -60,17 +60,18 @@ export class DatasetTreeComponent implements OnInit {
 
     });
    }
+   //subscription end.
 
     expanded_nodes_distance = [];
-
+    expanded_nodes = [];
+    expanded_nodes_dataset = [];
 
   ngOnInit() { }
 
   
   onOpen(e) { }
 
-  expanded_nodes = [];
-  expanded_nodes_dataset = [];
+
 
   loadDatasetsByProject(currentNode){
     this.expanded_nodes.push(currentNode.project_id);
@@ -87,33 +88,7 @@ export class DatasetTreeComponent implements OnInit {
     });
     
   }
-
-  onClick(e) {
-    var currentNode = e.node.data;
-    if(currentNode.isProject && !this.expanded_nodes.includes(currentNode.project_id)){
-        this.loadDatasetsByProject(currentNode);
-    }
-
-    if(currentNode.isDataset && !this.expanded_nodes_dataset.includes(currentNode.dataset_id)){
-      this.expanded_nodes_dataset.push(currentNode.dataset_id);
-      this.datasetService.getDatasetsById(currentNode.dataset_id).then((result) =>{
-          this.expanded_nodes_dataset.push(currentNode.dataset_id);
-          this.sharedDatasetService.sendMessage(result);
-          this.addDatasetData(currentNode.id,JSON.parse(result));
-      });
-    }
-
-    if(currentNode.isDistance && !this.expanded_nodes_distance.includes(currentNode.distance_id)){
-      this.expanded_nodes_distance.push(currentNode.distance_id);
-      this.datasetService.getDistanceById(currentNode.distance_id).then((result) =>{
-          this.expanded_nodes_dataset.push(result.distance_id);
-          console.log(result);
-          this.sharedDatasetService.setDistance(result);
-      });
-    }
-
-  }
-
+  
   addDistance(project_id,params){
     let i = this.getIndexByProjectId(project_id);
     console.log
@@ -180,13 +155,40 @@ export class DatasetTreeComponent implements OnInit {
       else{
         name = 'trace'+index;
       }
-      resultArray.push({id: this.getID(), name: name, children: this.generateLandmarkArray(element['specimen' + index], dim), isSpecimen: true});
+      resultArray.push({id: this.getID(), name: name, children: [], isSpecimen: true});
       valueIds += n_land;
     }
     return resultArray;
   }
 
-  generateLandmarkArray(landmarks, dim) {
+
+  //onclik events. The output depends of clicked item.
+  onClick(e) {
+    var currentNode = e.node.data;
+    if(currentNode.isProject && !this.expanded_nodes.includes(currentNode.project_id)){
+        this.loadDatasetsByProject(currentNode);
+    }
+
+    if(currentNode.isDataset && !this.expanded_nodes_dataset.includes(currentNode.dataset_id)){
+      this.expanded_nodes_dataset.push(currentNode.dataset_id);
+      this.datasetService.getDatasetsById(currentNode.dataset_id).then((result) =>{
+          this.expanded_nodes_dataset.push(currentNode.dataset_id);
+          this.sharedDatasetService.sendMessage(result);
+          this.addDatasetData(currentNode.id,JSON.parse(result));
+      });
+    }
+
+    if(currentNode.isDistance && !this.expanded_nodes_distance.includes(currentNode.distance_id)){
+      this.expanded_nodes_distance.push(currentNode.distance_id);
+      this.datasetService.getDistanceById(currentNode.distance_id).then((result) =>{
+          this.expanded_nodes_dataset.push(result.distance_id);
+          console.log(result);
+          this.sharedDatasetService.setDistance(result);
+      });
+    }
+  }
+
+  /*generateLandmarkArray(landmarks, dim) {
       let resultArray = [];
       for (let index = 0; index < landmarks.length; index++) {
         const element = landmarks[index];
@@ -194,6 +196,6 @@ export class DatasetTreeComponent implements OnInit {
         resultArray.push({ id: this.getID(), name: nameLand, children: [] , isLandmark: true});
       }
       return resultArray;
-  }
+  }*/
 
 }
