@@ -14,7 +14,7 @@ const routes_child: Routes = [
     children : [
       { path: 'signin', component: SignInMainComponent},
       { path: 'home', component: HomeRpsMainComponent},
-      { path: 'signup', component: SignUpMainComponent}
+      { path: 'signup', component: SignUpMainComponent},
     ]
   }];
 

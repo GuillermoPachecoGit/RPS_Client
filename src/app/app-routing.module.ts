@@ -16,7 +16,7 @@ const routes: Routes = [
     loadChildren: 'app/components/dashboard-rps/dashboard-rps.module#DashboardRPSModule',
     canActivate: [AuthGuardService]
   },
-  { path: '', redirectTo: '/main', pathMatch: 'full' }
+  { path: '', redirectTo: '/main/home', pathMatch: 'full' }
 ];
 
 @NgModule({
