@@ -145,6 +145,9 @@ export class DatasetTreeComponent implements OnInit {
 
   generateSpecimenArray(specimens, specimen_names, dim, n_spec, n_land) {
     let resultArray = [];
+    resultArray = this.addListLandmarks(resultArray,n_land);
+
+
     let valueIds = n_spec * n_land;
     for (let index = 0; index < specimens.length; index++) {
       const element = specimens[index];
@@ -158,10 +161,22 @@ export class DatasetTreeComponent implements OnInit {
       resultArray.push({id: this.getID(), name: name, children: [], isSpecimen: true});
       valueIds += n_land;
     }
+    
     return resultArray;
   }
 
+  addListLandmarks(resultArray,n_land){
+    resultArray.push({id: this.getID(), name: 'Landmarks', children: this.generateArrayLandmark(n_land), isFolderLandmark: true});
+    return resultArray;
+  }
 
+  generateArrayLandmark(n_land){
+    var resultArray = [];
+    for (let index = 1; index <= n_land; index++) {
+        resultArray.push({ id: this.getID(), name: 'LM_'+index, children:[], isLandmark: true});
+    }
+    return resultArray;
+  }
   //onclik events. The output depends of clicked item.
   onClick(e) {
     var currentNode = e.node.data;

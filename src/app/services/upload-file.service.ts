@@ -16,6 +16,7 @@ export class UploadFileService {
             const formData: any = new FormData();
             formData.append('dataset_name', data.dataset_name);
             formData.append('project_id', data.project_for_data);
+            formData.append('type_file', data.type_file);
             const xhr = new XMLHttpRequest();
             for (let i = 0; i < files.length; i++) {
                 formData.append('uploads[]', files[i], files[i].name);

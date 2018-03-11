@@ -28,7 +28,7 @@ export class NavbarDashboardComponent implements OnInit {
   filesToUpload: Array<File>;
   project_list = [];
   project = new Project('', '', '');
-  dataset = new Dataset('', '');
+  dataset = new Dataset('', '',1);
   idUser = '';
   dataset_list = [];
   distance_list = [];
@@ -158,9 +158,11 @@ confirmOrdination(){
 }
 
 upload() {
+    this.processing = true;
     this.uploadService.makeFileRequest([], this.dataset, this.filesToUpload).then((result) => {
-        this.dataset = new Dataset('','');
+        this.dataset = new Dataset('','',1);
         this.sharedDatasetService.sendMessage(result);
+        this.processing = false;
         document.getElementById('hideAddDataset').click();
     }, (error) => {
         console.log(error);

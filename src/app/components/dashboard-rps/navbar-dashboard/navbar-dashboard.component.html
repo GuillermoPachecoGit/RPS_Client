@@ -6,7 +6,6 @@
                 <li><a class="navbar-brand"  >RPS Online</a></li>
                 <li><a data-toggle="modal" data-target="#addProject"  ><span class="glyphicon glyphicon-plus"></span>Add Project</a></li>
                 <li><a data-toggle="modal" data-target="#uploadFile"  ><span class="glyphicon glyphicon-open"></span>Upload Dataset</a></li>
-                <li><a data-toggle="modal" data-target="#myModal"  ><span class="glyphicon glyphicon-download-alt"></span>Download Dataset</a></li>
                 <li class="dropdown"><a   class="dropdown-toggle" data-toggle="dropdown"><span
                     class="glyphicon glyphicon-list-alt"></span>Analysis<b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -59,17 +58,30 @@
                           </div> 
                       </div>
                       <div class="form-group">
+                          <label>Select the type of file:     </label>
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="algorithm" [(ngModel)]="dataset.type_file" [value]=1 >.tps</label>
+                                  </div>
+                                  <div class="radio-inline">
+                                    <label><input type="radio" name="algorithm" [(ngModel)]="dataset.type_file" [value]=2 >.nts</label>
+                                  </div>
+                                  <div class="radio-inline">
+                                    <label><input type="radio" name="algorithm" [(ngModel)]="dataset.type_file" [value]=3 >.txt (morphologika)</label>
+                                </div>
+                      </div>
+                      <div class="form-group">
                       <label>File input</label>
                       <input type="file" (change)="fileChangeEvent($event)" placeholder="Upload file..." />
                       </div>  
                       <div class="form-group">
                         <label>Name dataset: </label>
                         <input type="text"  class="form-control"  id="name_dataset" required [(ngModel)]="dataset.dataset_name" name="name_dataset" placeholder="Name" #name_dataset="ngModel"> 
-                    </div>
+                      </div>
                       <button type="button" class="btn btn-success btn-s"
                               (click)="upload()">
                           <span class="glyphicon glyphicon-upload"></span> Upload
                       </button>
+                      <span *ngIf="processing"><h4>Processing dataset, please wait a few minutes...</h4></span>
                   </form></div>
           
               <!-- footer modal -->
