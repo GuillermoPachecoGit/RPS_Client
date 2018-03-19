@@ -158,9 +158,8 @@ export class GraphicsDashboardComponent implements OnInit {
 
     var layout = {
       margin: 2,
-      xaxis: { },
-      yaxis: { },
-      height: 600
+      height: 500,
+      width: 500
     };
     Plotly.newPlot(tab, data, layout);
   }

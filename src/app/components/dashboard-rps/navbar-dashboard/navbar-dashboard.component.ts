@@ -25,7 +25,7 @@ import { Ordination } from './ordination';
   styleUrls: ['./navbar-dashboard.component.css']
 })
 export class NavbarDashboardComponent implements OnInit {
-  filesToUpload: Array<File>;
+  filesToUpload: File[];
   project_list = [];
   project = new Project('', '', '');
   dataset = new Dataset('', '',1);
@@ -72,19 +72,24 @@ export class NavbarDashboardComponent implements OnInit {
   }
 
 confirmProject() {
-    this.uploadService.makeProjectRequest({ name_project:  this.project.name, description: this.project.description, id_user: this.idUser }).subscribe(data => {
-        if (data.error == 'ok') {
-            this.project_list.push(data.result);
-            this.project = new Project('','','');
-            this.filesToUpload = [];
-            this.sharedDatasetService.setNameProject(data.result);
-            document.getElementById('hideAddProject').click();
-        }else {
-            alert('Please, retry the operation again.');
-        }
-    }, (error) => {
-        console.log(error);
-    });
+    this.invalid = this.invalidProject();
+
+    if(!this.invalid){
+        this.uploadService.makeProjectRequest({ name_project:  this.project.name, description: this.project.description, id_user: this.idUser }).subscribe(data => {
+            if (data.error == 'ok') {
+                this.project_list.push(data.result);
+                this.project = new Project('','','');
+                this.filesToUpload = [];
+                this.invalid = false;
+                this.sharedDatasetService.setNameProject(data.result);
+                document.getElementById('hideAddProject').click();
+            }else {
+                alert('Please, retry the operation again.');
+            }
+        }, (error) => {
+            console.log(error);
+        });
+    }
 }
 
 fileChangeEvent(fileInput: any) {
@@ -158,15 +163,62 @@ confirmOrdination(){
 }
 
 upload() {
-    this.processing = true;
-    this.uploadService.makeFileRequest([], this.dataset, this.filesToUpload).then((result) => {
-        this.dataset = new Dataset('','',1);
-        this.sharedDatasetService.sendMessage(result);
-        this.processing = false;
-        document.getElementById('hideAddDataset').click();
-    }, (error) => {
-        console.log(error);
-    });
+    
+    this.invalid = this.invalidDataset();
+    if(!this.invalid){
+        this.processing = true;
+        this.invalid = false;
+        this.uploadService.makeFileRequest([], this.dataset, this.filesToUpload).then((result) => {
+            
+            if(result['error'] == undefined){
+                this.dataset = new Dataset('','',1);
+                this.sharedDatasetService.sendMessage(result);
+                this.processing = false;
+                this.invalid = false;
+                document.getElementById('hideAddDataset').click();
+            }
+            else{
+                this.error_msg = 'Please, add a new dataset file.';
+                this.invalid = true;
+                this.processing = false;
+            }
+        }, (error) => {
+            this.processing = false;
+            this.error_msg = 'Please, add a new dataset file.';;
+            this.invalid = true;
+        });
+    }
+}
+
+error_msg = '';
+invalid = false;
+invalidProject(){
+    
+    if(this.project.name.length == 0){
+        this.error_msg = 'Project name is empty.'
+        return true;
+    }
+    if(this.project.description.length == 0){
+        this.error_msg = 'Project description is empty.'
+        return true;
+    }
+    return false;
+}
+
+invalidDataset(){
+    if(this.dataset.project_for_data === ''){
+        this.error_msg = 'Please, select a project.'
+        return true;
+    }
+
+    if(this.dataset.dataset_name.length == 0){
+        this.error_msg = 'Dataset name is empty.'
+        return true;
+    }
+    
+    
+
+    return false;
 }
 
 }

@@ -31,7 +31,7 @@
       <label for="area">Area</label>
       <input type="text" [(ngModel)]="userRPS.area" name="area" class="form-control" id="rg_area" placeholder="Enter the work area">
     </div>
-    <div id="rg_error"> <label id="rg_error_message"></label></div>
+    <div id="rg_error"> <label *ngIf="invalid" id="error_signup"> {{error_msg}}</label></div>
     <button id="btn_registerSubmit" type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>

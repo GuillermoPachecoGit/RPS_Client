@@ -29,18 +29,17 @@ export class SignInMainComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('ENTRE A VALIDAR');
+    this.invalid = true;
     this.invalid = this.invalidateEntry();
     if (!this.invalid) {
-      // tslint:disable-next-line:prefer-const
       let resultMessage = new MessageError('');
-      console.log(this.email + this.pass);
-
       this.loginService.login(this.email, this.pass, resultMessage);
-
-      if (resultMessage.msg.length > 0) {
-        this.lg_error_message = resultMessage.msg;
+      if(!this.loginService.isLoggedIn){
+        this.invalid = true;
+        this.lg_error_message = 'Email or password not valid.';
       }
+      
+      
     }
   }
 
