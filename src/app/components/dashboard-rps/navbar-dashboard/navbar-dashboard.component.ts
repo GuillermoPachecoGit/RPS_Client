@@ -39,7 +39,7 @@ export class NavbarDashboardComponent implements OnInit {
   //Analysis
   analyze = new Analyze('','','',false,false);
   distance = new Distance(false,'','','');
-  ordination = new Ordination(false,'','','');
+  ordination = new Ordination(false,'','','','');
 
   constructor(
     private uploadService: UploadFileService,
@@ -152,7 +152,7 @@ confirmDistance(){
 confirmOrdination(){
     this.processing = true;
     this.analizeService.runAnalyzeOrdination(this.ordination).subscribe(result => {
-        this.ordination = new Ordination(false,'','','');
+        this.ordination = new Ordination(false,'','','','');
         this.distanceEnable = false;
         this.processing = false;
         console.log(result);

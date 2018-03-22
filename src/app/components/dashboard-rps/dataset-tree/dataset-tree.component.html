@@ -1,7 +1,7 @@
 
 <div id="container_tree">
   <h3>Projects: </h3>
-  <tree-root #tree [nodes]="nodes" (toggleExpanded)="onOpen($event)" (activate)="onClick($event,node)" >
+  <tree-root #tree [nodes]="nodes" (toggleExpanded)="onOpen($event)" >
       <ng-template #treeNodeTemplate let-node let-index="index" style="width:60px">
         <span *ngIf="node.isCollapsed && node.data.isProject" class="glyphicon glyphicon-folder-close"></span>
         <span *ngIf="node.isExpanded && node.data.isProject" class="glyphicon glyphicon-folder-open"></span>
