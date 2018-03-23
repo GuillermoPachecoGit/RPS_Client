@@ -18,10 +18,10 @@ export class GetProjectsService {
       .toPromise();
   }
 
-  private url_request_dataset = 'http://localhost:3000/db_request_dataset/get_datasets';
-  private url_request_distances = 'http://localhost:3000/db_request_dataset/get_distances';
-  private url_request_datasetById = 'http://localhost:3000/db_request_dataset/get_datasetById';
-  private url_request_distanceById = 'http://localhost:3000/db_request_dataset/get_distanceById';
+  private url_request_dataset = 'http://10.1.6.31:3000/db_request_dataset/get_datasets';
+  private url_request_distances = 'http://10.1.6.31:3000/db_request_dataset/get_distances';
+  private url_request_datasetById = 'http://10.1.6.31:3000/db_request_dataset/get_datasetById';
+  private url_request_distanceById = 'http://10.1.6.31:3000/db_request_dataset/get_distanceById';
 
   
   getDatasetsByProject(project_id: string) {
