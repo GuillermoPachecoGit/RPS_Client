@@ -18,12 +18,16 @@ export class GetProjectsService {
       .toPromise();
   }
 
-  private url_request_dataset = 'http://10.1.6.31:3000/db_request_dataset/get_datasets';
-  private url_request_distances = 'http://10.1.6.31:3000/db_request_dataset/get_distances';
-  private url_request_datasetById = 'http://10.1.6.31:3000/db_request_dataset/get_datasetById';
-  private url_request_distanceById = 'http://10.1.6.31:3000/db_request_dataset/get_distanceById';
-
+  private url_request_dataset = 'http://localhost:3000/db_request_dataset/get_datasets';
+  private url_request_distances = 'http://localhost:3000/db_request_dataset/get_distances';
+  private url_request_datasetById = 'http://localhost:3000/db_request_dataset/get_datasetById';
+  private url_request_distanceById = 'http://localhost:3000/db_request_dataset/get_distanceById';
+  private url_request_analisysById = 'http://localhost:3000/db_request_dataset/get_analisys';
+  private url_request_OnlyDatasetById = 'http://localhost:3000/db_request_dataset/get_only_datasets';
+  private url_request_OrdinationById = 'http://localhost:3000/db_request_dataset/get_ordinationById';
   
+
+
   getDatasetsByProject(project_id: string) {
     return this.http
     .get(this.generateRequest(this.url_request_dataset,project_id))
@@ -31,9 +35,16 @@ export class GetProjectsService {
     .toPromise();
   }
 
-  getDistaceByProject(project_id: string) {
+  getOnlyDatasetsByProject(project_id: string) {
     return this.http
-    .get(this.generateRequest(this.url_request_distances,project_id))
+    .get(this.generateRequest(this.url_request_OnlyDatasetById,project_id))
+    .map((response) => response.json())
+    .toPromise();
+  }
+
+  getDistaceByProject(dataset_id: string ,project_id: string) {
+    return this.http
+    .get(this.generateRequestAnalisys(this.url_request_distances,dataset_id,project_id))
     .map((response) => response.json())
     .toPromise();
   }
@@ -42,6 +53,27 @@ export class GetProjectsService {
   getDatasetsById(dataset_id: string) {
     return this.http
     .get(this.generateRequest(this.url_request_datasetById,dataset_id))
+    .map((response) => response.json())
+    .toPromise();
+  }
+
+  getAnalisysById(dataset_id: string,project_id: string) {
+    return this.http
+    .get(this.generateRequestAnalisys(this.url_request_analisysById,dataset_id,project_id))
+    .map((response) => response.json())
+    .toPromise();
+  }
+
+  getOrdinationsById(dataset_id: string,project_id: string) {
+    return this.http
+    .get(this.generateRequestAnalisys(this.url_request_analisysById,dataset_id,project_id))
+    .map((response) => response.json())
+    .toPromise();
+  }
+
+  getOrdinationById(ordination_id: string) {
+    return this.http
+    .get(this.generateRequest(this.url_request_OrdinationById,ordination_id))
     .map((response) => response.json())
     .toPromise();
   }
@@ -60,5 +92,14 @@ export class GetProjectsService {
      return url_request;
   }
 
+  private generateRequestAnalisys(url_request, dataset_id: string,project_id: string) : string {
+    url_request += '?';
+    // filter by id_user
+    url_request += 'dataset_id=' + dataset_id;
+    url_request += '&';
+    url_request += 'project_id=' + project_id;
+    console.log(url_request);
+    return url_request;
+ }
 
 }

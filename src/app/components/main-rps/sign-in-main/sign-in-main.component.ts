@@ -34,10 +34,10 @@ export class SignInMainComponent implements OnInit {
     if (!this.invalid) {
       let resultMessage = new MessageError('');
       this.loginService.login(this.email, this.pass, resultMessage);
-      if(!this.loginService.isLoggedIn){
+      /*if(!this.loginService.isLoggedIn){
         this.invalid = true;
         this.lg_error_message = 'Email or password not valid.';
-      }
+      }*/
       
       
     }

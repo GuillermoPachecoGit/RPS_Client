@@ -5,12 +5,16 @@ import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class SharedDatasetService {
+  
     private subject = new Subject<any>();
     private subjectProject = new Subject<any>();
     private userProjects = new Subject<any>();
     private distanceResult = new Subject<any>();
     private ordinationResult = new Subject<any>();
 
+    private deleteDatasetView = new Subject<any>();
+    private deleteDistanceView = new Subject<any>();
+    private deleteOrdinationView = new Subject<any>();
 
     setDistance(distance: any){
         this.distanceResult.next(JSON.parse(distance));
@@ -57,4 +61,30 @@ export class SharedDatasetService {
     getUserProjects(): Observable<any> {
         return this.userProjects.asObservable();
     }
+
+    //New to delete 
+    setDatasetViewDelete(value: any) {
+        this.deleteDatasetView.next(value);
+    }
+
+    getDatasetViewDelete(): Observable<any> {
+        return this.deleteDatasetView.asObservable();
+    }
+
+    setDistanceViewDelete(value: any) {
+        this.deleteDistanceView.next(value);
+    }
+
+    getDistanceViewDelete(): Observable<any> {
+        return this.deleteDistanceView.asObservable();
+    }
+
+    setOrdinationViewDelete(value: any) {
+        this.deleteOrdinationView.next(value);
+    }
+
+    getOrdinationViewDelete(): Observable<any> {
+        return this.deleteOrdinationView.asObservable();
+    }
+
 }

@@ -119,9 +119,9 @@ selectedProjectOrdination(e){
 }
 
 loadDistance(idProject){
-    this.projectService.getDistaceByProject(idProject).then( (result) =>{
-        this.distance_list = result;
-    })
+    //this.projectService.getDistaceByProject(idProject).then( (result) =>{
+    //    this.distance_list = result;
+    //})
 }
 
 confirmAnalysis(){

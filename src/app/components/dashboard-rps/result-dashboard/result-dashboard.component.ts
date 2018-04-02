@@ -19,32 +19,135 @@ declare var $: any;
 export class ResultDashboardComponent implements OnInit {
   subscription: Subscription;
   private count;
+  datasets_showed = [];
+  ordinations_showed = [];
+  distance_showed = [];
+
 
   constructor(private sharedDatasetService: SharedDatasetService) { 
     this.count = 0;
+
+    $(document).ready(function() {
+
+      $('#tab_index_id_result').on('click', '.close', function() {
+          var tabID = $(this).parents('a').attr('href');
+          var isDataset = $(this).parents('a').attr('is_dataset');
+          $(this).parents('li').remove();
+          $(tabID).remove();
+          
+
+          console.log(isDataset);
+          if(isDataset){
+            sharedDatasetService.setDatasetViewDelete({ id: isDataset });
+          }
+          else{
+            var isOrdination = $(this).parents('a').attr('is_ordination');
+            if(isOrdination){
+              sharedDatasetService.setOrdinationViewDelete({id: isOrdination});
+            }
+            else{
+              sharedDatasetService.setDistanceViewDelete( {id: $(this).parents('a').attr('is_distance')});
+            }
+            
+          }
+        //display first tab
+        var tabFirst = $('#tab_index_id_result a:first');
+        tabFirst.tab('show');
+      });
+    });
+    var list = document.getElementById("tab_index_id_result");
+
+
     // subscribe to home component messages
     this.subscription = this.sharedDatasetService.getMessage().subscribe(
       params => {
-        const infoTab = this.generateTab(params.dataset_id,params.dataset_name);
-        const containerGrap = infoTab.idGrap;
-        const tab = infoTab.id;
-        this.activaTab(tab);
-        this.generateTable(params, containerGrap);
+
+        var found = this.datasets_showed.find(item => item === params.dataset_id);
+        if(found === undefined){
+
+          this.datasets_showed.push(params.dataset_id);
+          const infoTab = this.generateTab(params.dataset_id,params.dataset_name,1);
+          const containerGrap = infoTab.idGrap;
+          const tab = infoTab.id;
+          this.activaTab(tab);
+          this.generateTable(params, containerGrap);
+        }
     });
 
     this.subscription = this.sharedDatasetService.getDistance().subscribe( params => {
-      const infoTab = this.generateTab(params.distance_id,params.distance_name);
-      const containerGrap = infoTab.idGrap;
-      const tab = infoTab.id;
-      this.activaTab(tab);
-      this.generateDistanceMatrix(params,containerGrap);
+      var found = this.distance_showed.find(item => item === params.distance_id);
+        if(found === undefined){
+          this.distance_showed.push(params.distance_id);
+          const infoTab = this.generateTab(params.distance_id,params.distance_name,2);
+          const containerGrap = infoTab.idGrap;
+          const tab = infoTab.id;
+          this.activaTab(tab);
+          this.generateDistanceMatrix(params,containerGrap);
+        }
     });
 
+    //FALTA LAS PROYECCTIONES
+
+    this.subscription = this.sharedDatasetService.getOrdinationViewDelete().subscribe(
+      params => {
+        console.log(params);
+        if(params.source === undefined){
+          var index  = this.ordinations_showed.indexOf(parseInt(params.id));
+          console.log(index);
+          if (index > -1) {
+            this.ordinations_showed.splice(index, 1);
+          }
+        } 
+      } 
+    );
+
+    this.subscription = this.sharedDatasetService.getDatasetViewDelete().subscribe(
+      params => {
+        console.log(params);
+        if(params.source === undefined){
+          var index  = this.datasets_showed.indexOf(parseInt(params.id));
+          console.log(index);
+          if (index > -1) {
+            this.datasets_showed.splice(index, 1);
+          }
+        } 
+      } 
+    );
+
+    this.subscription = this.sharedDatasetService.getDistanceViewDelete().subscribe(
+      params => {
+        console.log(params);
+        if(params.source === undefined){
+          var index  = this.distance_showed.indexOf(parseInt(params.id));
+          console.log(index);
+          if (index > -1) {
+            this.distance_showed.splice(index, 1);
+          }
+        } 
+      } 
+    );
   }
 
-  generateTab(dataset_id,dataset_name): any {
+  generateTab(dataset_id,dataset_name,type): any {
     // tslint:disable-next-line:max-line-length
-    $('#tab_index_id_result').append('<li ><a data-toggle="tab" href="#tab_result_'+dataset_id + '"' + '>'+dataset_name+ ' </a></li>');
+   
+    switch (type) {
+      case 1:
+      $('#tab_index_id_result').append('<li ><a data-toggle="tab" is_dataset="'+dataset_id+'" href="#tab_result_'+dataset_id + '"' + '>'+dataset_name+ '  <button class="close" type="button" title="Remove this page">×</button> </a></li>');
+        break;
+      case 2:
+      $('#tab_index_id_result').append('<li ><a data-toggle="tab" is_distance="'+dataset_id+'" href="#tab_result_'+dataset_id + '"' + '>'+dataset_name+ '  <button class="close" type="button" title="Remove this page">×</button> </a></li>');
+        break;
+      case 3:
+      $('#tab_index_id_result').append('<li ><a data-toggle="tab" is_ordination="'+dataset_id+'" href="#tab_result_'+dataset_id + '"' + '>'+dataset_name+ '  <button class="close" type="button" title="Remove this page">×</button> </a></li>');
+        break;
+    
+      default:
+        break;
+    }
+   
+    
+    
     $('#tab_content_id_result').append(
         '<div id="tab_result_'+dataset_id+ '"' + 'class="tab-pane" >'
           +'<div class="table-responsive" style="width: auto;" >'
@@ -179,5 +282,7 @@ export class ResultDashboardComponent implements OnInit {
        );
     }
   }
-  ngOnInit() {}
+  ngOnInit() {
+    
+  }
 }

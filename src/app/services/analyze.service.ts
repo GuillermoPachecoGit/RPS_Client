@@ -12,9 +12,9 @@ export class AnalyzeService {
 
   constructor(private http: Http) { }
 
-    url_save = 'http://localhost:3000/db_request_user_w/runAnalize';
-    url_save_distance = 'http://localhost:3000/db_request_user_w/runDistance';
-    url_save_ordination = 'http://localhost:3000/db_request_user_w/runOrdination';
+    url_save = 'http://localhost:3000/db_request_analisys_w/runAnalize';
+    url_save_distance = 'http://localhost:3000/db_request_distance_w/runDistance';
+    url_save_ordination = 'http://localhost:3000/db_request_ordination_w/runOrdination';
 
     runAnalyze(data: Analyze) {
        let headers = new Headers();

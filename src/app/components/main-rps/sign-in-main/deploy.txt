@@ -1,0 +1,30 @@
+Comandos ubuntu 16.04
+
+HELPERS
+IP node: 10.1.6.31
+-apt-get remove packagename
+
+RPS_Client: url -> http://10.1.6.31:8080
+
+instalar en server:
+correr todos los comandos como administrador
+
+apt-get update
+apt-get upgrade
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+git clone https://github.com/guillermitus12/RPS_Client.git
+npm install -g forever
+forever start server.js
+
+
+web service:
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+sudo apt-get update
+sudo -i R --> accedo a la consola de R
+instalar igraph , geomorph, matlab
+q() --> para salir de la consola de R
+git clone https://github.com/guillermitus12/Tesis.git
+sudo adduser sammy
+sudo -1 -u 
+sudo -i -u postgres --> acceso a la consola de postgres
