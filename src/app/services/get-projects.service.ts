@@ -7,6 +7,7 @@ import { Http } from '@angular/http';
 @Injectable()
 export class GetProjectsService {
 
+  
   constructor(private http: Http) { }
 
   private url_request = 'http://localhost:3000/db_request_project/get_projects';
@@ -25,7 +26,15 @@ export class GetProjectsService {
   private url_request_analisysById = 'http://localhost:3000/db_request_dataset/get_analisys';
   private url_request_OnlyDatasetById = 'http://localhost:3000/db_request_dataset/get_only_datasets';
   private url_request_OrdinationById = 'http://localhost:3000/db_request_dataset/get_ordinationById';
-  
+  private url_request_DistanceByProject = 'http://localhost:3000/db_request_dataset/get_distances_by_project';
+  private url_request_ordinations = 'http://localhost:3000/db_request_dataset/get_ordinations';
+
+  getDistaceByProjectId(project_id){
+    return this.http
+    .get(this.generateRequest(this.url_request_DistanceByProject,project_id))
+    .map((response) => response.json())
+    .toPromise();
+  }
 
 
   getDatasetsByProject(project_id: string) {
@@ -42,7 +51,7 @@ export class GetProjectsService {
     .toPromise();
   }
 
-  getDistaceByProject(dataset_id: string ,project_id: string) {
+  getDistaceByDatasets(dataset_id: string ,project_id: string) {
     return this.http
     .get(this.generateRequestAnalisys(this.url_request_distances,dataset_id,project_id))
     .map((response) => response.json())
@@ -64,9 +73,9 @@ export class GetProjectsService {
     .toPromise();
   }
 
-  getOrdinationsById(dataset_id: string,project_id: string) {
+  getOrdinationsById(dataset_id: string,project_id: string, distance_id: string) {
     return this.http
-    .get(this.generateRequestAnalisys(this.url_request_analisysById,dataset_id,project_id))
+    .get(this.generateRequestOrdination(this.url_request_ordinations,dataset_id,project_id,distance_id))
     .map((response) => response.json())
     .toPromise();
   }
@@ -100,6 +109,18 @@ export class GetProjectsService {
     url_request += 'project_id=' + project_id;
     console.log(url_request);
     return url_request;
+ }
+
+ private generateRequestOrdination(url_request,dataset_id,project_id,distance_id){
+  url_request += '?';
+  // filter by id_user
+  url_request += 'dataset_id=' + dataset_id;
+  url_request += '&';
+  url_request += 'project_id=' + project_id;
+  url_request += '&';
+  url_request += 'distance_id=' + distance_id;
+  console.log(url_request);
+  return url_request;
  }
 
 }

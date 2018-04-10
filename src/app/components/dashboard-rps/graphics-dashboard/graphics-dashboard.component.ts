@@ -81,7 +81,7 @@ export class GraphicsDashboardComponent implements OnInit {
 
       this.subscription = this.sharedDatasetService.getOrdination().subscribe(
         params => {
-          var found = this.ordinations_showed.find( item => item === params.ordination_idparams.ordination_id);
+          var found = this.ordinations_showed.find( item => item === params.ordination_id);
           if(found === undefined){
             this.ordinations_showed.push(params.ordination_id);
             const infoTab = this.generateTabOrdination(params);

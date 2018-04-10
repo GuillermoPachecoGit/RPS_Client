@@ -21,6 +21,8 @@ import { AnalyzeService  } from "../../services/analyze.service";
  * Tree view
  */
 import { TreeModule } from 'angular-tree-component';
+import { AnalisysDashboardComponent } from './analisys-dashboard/analisys-dashboard.component';
+import { RemoveService } from '../../services/remove.service';
 
 
 @NgModule({
@@ -31,12 +33,14 @@ import { TreeModule } from 'angular-tree-component';
     DashboardRoutingModule
   ],
   declarations: [
+
     DashboardRpsComponent,
     DatasetTreeComponent,
     GraphicsDashboardComponent,
     NavbarDashboardComponent,
-    ResultDashboardComponent
+    ResultDashboardComponent,
+    AnalisysDashboardComponent
   ],
-  providers: [UploadFileService, GetProjectsService, AnalyzeService]
+  providers: [UploadFileService, GetProjectsService, AnalyzeService, RemoveService]
 })
 export class DashboardRPSModule { }

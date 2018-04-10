@@ -11,10 +11,12 @@ export class SharedDatasetService {
     private userProjects = new Subject<any>();
     private distanceResult = new Subject<any>();
     private ordinationResult = new Subject<any>();
-
     private deleteDatasetView = new Subject<any>();
     private deleteDistanceView = new Subject<any>();
     private deleteOrdinationView = new Subject<any>();
+    private selected_dataset = new Subject<any>();
+    private isFinished = new Subject<any>();
+    private selected_distance = new Subject<any>();
 
     setDistance(distance: any){
         this.distanceResult.next(JSON.parse(distance));
@@ -34,7 +36,6 @@ export class SharedDatasetService {
     
 
     sendMessage(message: any) {
-        console.log(message);
         this.subject.next(JSON.parse(message));
     }
 
@@ -85,6 +86,30 @@ export class SharedDatasetService {
 
     getOrdinationViewDelete(): Observable<any> {
         return this.deleteOrdinationView.asObservable();
+    }
+
+    setSelectedDataset(value: any) {
+        this.selected_dataset.next(value);
+    }
+
+    getSelectedDataset(): Observable<any> {
+        return this.selected_dataset.asObservable();
+    }
+
+    setSelectedDistance(value: any) {
+        this.selected_distance.next(value);
+    }
+
+    getSelectedDistance(): Observable<any> {
+        return this.selected_distance.asObservable();
+    }
+
+    finishedAnalisys(value: any) {
+        this.isFinished.next(value);
+    }
+
+    isFinishedAnalisys(): Observable<any> {
+        return this.isFinished.asObservable();
     }
 
 }

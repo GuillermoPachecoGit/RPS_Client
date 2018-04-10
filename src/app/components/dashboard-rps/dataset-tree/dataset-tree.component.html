@@ -1,10 +1,12 @@
 
 <div id="container_tree">
   <h3>Projects: </h3>
-  <tree-root #tree [nodes]="nodes" (activate)="onClick($event,node)"
+  <tree-root #tree [nodes]="nodes" (activate)="onClick($event,node)" (focus)="onRightClick($event,node)"
   [options]="options"
   [focused]="true">
-      <ng-template #treeNodeTemplate let-node let-index="index" style="width:60px">
+      <ng-template #treeNodeTemplate let-node let-index="index" style="width:60px" let-node
+      let-index="index"
+      let-templates="templates" >
         <span *ngIf="node.isCollapsed && node.data.isProject" class="glyphicon glyphicon-folder-close"></span>
         <span *ngIf="node.isExpanded && node.data.isProject" class="glyphicon glyphicon-folder-open"></span>
         <span *ngIf="node.isCollapsed && node.data.isFolderLandmark" class="glyphicon glyphicon-folder-close"></span>
@@ -19,3 +21,30 @@
   </tree-root>
 
 </div>
+
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Analisys</h4>
+        </div>
+        <div class="modal-body"> 
+        <button type="button" [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runProcrustes">Run Procrustes</button>
+        <button type="button"  [disabled]="!isDataset" class="btn btn-success" data-toggle="modal" data-target="#runDistances">Run Distance</button>
+        <button type="button" [disabled]="!isDistance" class="btn btn-info" data-toggle="modal" data-target="#runOrdinations">Run Ordinations</button>
+        <button type="button" (click)="deleteData($event)" class="btn btn-info" data-toggle="modal" data-target="#xxx">Delete</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="buttonClose" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+</div>
+
+
+ <app-analisys-dashboard></app-analisys-dashboard>

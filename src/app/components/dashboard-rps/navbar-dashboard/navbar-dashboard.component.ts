@@ -49,19 +49,26 @@ export class NavbarDashboardComponent implements OnInit {
     private analizeService: AnalyzeService
   ) { }
 
-  ngOnInit() {
+  /*ngOnInit() {
     
     // subscribe to router event
     this.route.params.subscribe((params: Params) => {
         this.idUser = params['id'];
      });
-     this.initialize();
+  }*/
+  
+
+
+  ngOnInit() {
+    this.route.params.subscribe((params: Params) => {
+      this.idUser = params['id'];
+   }); 
+    this.initialize();
   }
 
   initialize(): void {
     this.getProject();
   }
-
 
   getProject(): void {
     this.projectService.getProjectsByData(this.idUser).then
@@ -92,20 +99,12 @@ confirmProject() {
     }
 }
 
-fileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>> fileInput.target.files;
-}
-
 
 selectedProject(e){
     this.datasetEnable = false;
     this.loadDataset(this.analyze.project_selected);
 }
 
-selectedProjectDistance(e){
-    this.datasetEnable = false;
-    this.loadDataset(this.distance.project_id);
-}
 
 loadDataset(idProject){
     this.projectService.getDatasetsByProject(idProject).then( (result) =>{
@@ -113,54 +112,13 @@ loadDataset(idProject){
     })
 }
 
-selectedProjectOrdination(e){
-    this.distanceEnable = false;
-    this.loadDistance(this.ordination.project_id);
-}
+  
 
-loadDistance(idProject){
-    //this.projectService.getDistaceByProject(idProject).then( (result) =>{
-    //    this.distance_list = result;
-    //})
-}
-
-confirmAnalysis(){
-    this.processing = true;
-    this.analizeService.runAnalyze(this.analyze).subscribe(result => {
-        this.analyze = new Analyze('','','',false,false);
-        this.datasetEnable = false;
-        this.processing = false;
-        this.sharedDatasetService.sendMessage(result);  
-        document.getElementById('hideRunAnalysis').click();
-    })
-}
-
-confirmDistance(){
-    this.processing = true;
-    this.analizeService.runAnalyzeDistance(this.distance).subscribe(result => {
-        this.distance = new Distance(false,'','','');
-        this.datasetEnable = false;
-        this.processing = false;
-        console.log(result);
-        this.sharedDatasetService.setDistance(result);
-        //llamar al shared pra compartir la info con los componentes result-dashboard y dataset-tree
-        document.getElementById('hideRunAnalysisDistance').click();
-    })
+fileChangeEvent(fileInput: any) {
+    this.filesToUpload = <Array<File>> fileInput.target.files;
 }
 
 
-confirmOrdination(){
-    this.processing = true;
-    this.analizeService.runAnalyzeOrdination(this.ordination).subscribe(result => {
-        this.ordination = new Ordination(false,'','','','');
-        this.distanceEnable = false;
-        this.processing = false;
-        console.log(result);
-        //llamar al shared pra compartir la info con los componentes result-dashboard y dataset-tree
-        this.sharedDatasetService.setOrdination(result);
-        document.getElementById('hideAnalysisOrdination').click();
-    })
-}
 
 upload() {
     
@@ -172,6 +130,7 @@ upload() {
             
             if(result['error'] == undefined){
                 this.dataset = new Dataset('','',1);
+                console.log(result);
                 this.sharedDatasetService.sendMessage(result);
                 this.processing = false;
                 this.invalid = false;
