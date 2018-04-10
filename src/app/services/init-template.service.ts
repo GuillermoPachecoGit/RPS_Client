@@ -7,8 +7,8 @@ import { CountryRps } from '../components/main-rps/sign-up-main/country-rps';
 
 @Injectable()
 export class InitTemplateService {
-
-   url = 'http://localhost:3000/db_request_country/get_countries';
+  server = '10.1.6.31';
+   url = 'http://'+this.server+':3000/db_request_country/get_countries';
 
    constructor(private http: Http){ }
 

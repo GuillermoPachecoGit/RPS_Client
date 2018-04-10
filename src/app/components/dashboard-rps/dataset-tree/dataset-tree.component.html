@@ -1,7 +1,7 @@
 
 <div id="container_tree">
   <h3>Projects: </h3>
-  <tree-root #tree [nodes]="nodes" (activate)="onClick($event,node)" (focus)="onRightClick($event,node)"
+  <tree-root #tree [nodes]="nodes" (activate)="onClick($event)" (focus)="onRightClick($event)"
   [options]="options"
   [focused]="true">
       <ng-template #treeNodeTemplate let-node let-index="index" style="width:60px" let-node

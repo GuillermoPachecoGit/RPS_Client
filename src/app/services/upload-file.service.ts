@@ -8,8 +8,9 @@ export class UploadFileService {
 
     constructor(private http: Http) { }
 
-    url = 'http://localhost:3000/uploadFile';
-    url_project = 'http://localhost:3000/db_request_project_w/addProject';
+    server = '10.1.6.31';
+    url = 'http://'+this.server+':3000/uploadFile';
+    url_project = 'http://'+this.server+':3000/db_request_project_w/addProject';
 
     makeFileRequest(params: Array<string>, data: Dataset, files: Array<File>) {
         return new Promise((resolve, reject) => {

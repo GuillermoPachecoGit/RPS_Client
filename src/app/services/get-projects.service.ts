@@ -9,8 +9,9 @@ export class GetProjectsService {
 
   
   constructor(private http: Http) { }
+  server = '10.1.6.31';
 
-  private url_request = 'http://localhost:3000/db_request_project/get_projects';
+  private url_request = 'http://'+this.server+':3000/db_request_project/get_projects';
 
   getProjectsByData(id_user: string) {
       return this.http
@@ -19,15 +20,15 @@ export class GetProjectsService {
       .toPromise();
   }
 
-  private url_request_dataset = 'http://localhost:3000/db_request_dataset/get_datasets';
-  private url_request_distances = 'http://localhost:3000/db_request_dataset/get_distances';
-  private url_request_datasetById = 'http://localhost:3000/db_request_dataset/get_datasetById';
-  private url_request_distanceById = 'http://localhost:3000/db_request_dataset/get_distanceById';
-  private url_request_analisysById = 'http://localhost:3000/db_request_dataset/get_analisys';
-  private url_request_OnlyDatasetById = 'http://localhost:3000/db_request_dataset/get_only_datasets';
-  private url_request_OrdinationById = 'http://localhost:3000/db_request_dataset/get_ordinationById';
-  private url_request_DistanceByProject = 'http://localhost:3000/db_request_dataset/get_distances_by_project';
-  private url_request_ordinations = 'http://localhost:3000/db_request_dataset/get_ordinations';
+  private url_request_dataset = 'http://'+this.server+':3000/db_request_dataset/get_datasets';
+  private url_request_distances = 'http://'+this.server+':3000/db_request_dataset/get_distances';
+  private url_request_datasetById = 'http://'+this.server+':3000/db_request_dataset/get_datasetById';
+  private url_request_distanceById = 'http://'+this.server+':3000/db_request_dataset/get_distanceById';
+  private url_request_analisysById = 'http://'+this.server+':3000/db_request_dataset/get_analisys';
+  private url_request_OnlyDatasetById = 'http://'+this.server+':3000/db_request_dataset/get_only_datasets';
+  private url_request_OrdinationById = 'http://'+this.server+':3000/db_request_dataset/get_ordinationById';
+  private url_request_DistanceByProject = 'http://'+this.server+':3000/db_request_dataset/get_distances_by_project';
+  private url_request_ordinations = 'http://'+this.server+':3000/db_request_dataset/get_ordinations';
 
   getDistaceByProjectId(project_id){
     return this.http

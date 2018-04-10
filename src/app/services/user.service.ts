@@ -10,8 +10,9 @@ import { UserRps } from '../components/main-rps/sign-up-main/user-rps';
 export class UserService {
 
     constructor(private http: Http) { }
+    server = '10.1.6.31';
 
-    url_save = 'http://localhost:3000/db_request_user_w/register_user';
+    url_save = 'http://'+this.server+':3000/db_request_user_w/register_user';
 
     registerUser(user: UserRps) {
        // console.log(user);
@@ -24,7 +25,7 @@ export class UserService {
     }
 
     // tslint:disable-next-line:member-ordering
-    url_validate = 'http://localhost:3000/db_request_user/validate_user';
+    url_validate = 'http://'+this.server+':3000/db_request_user/validate_user';
 
     validateUser(email: string, pass: string) {
         // console.log(user);

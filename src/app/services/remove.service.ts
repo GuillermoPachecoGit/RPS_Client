@@ -6,11 +6,12 @@ import 'rxjs/add/operator/map';
 export class RemoveService {
 
   constructor(private http: Http) { }
+  server = '10.1.6.31';
 
-  url_remove_dataset = 'http://localhost:3000/db_request_remove_w/removeDataset';
-  url_remove_distance = 'http://localhost:3000/db_request_remove_w/removeDistance';
-  url_remove_ordination = 'http://localhost:3000/db_request_remove_w/removeOrdination';
-  url_remove_project = 'http://localhost:3000/db_request_remove_w/removeProject';
+  url_remove_dataset = 'http://'+this.server+':3000/db_request_remove_w/removeDataset';
+  url_remove_distance = 'http://'+this.server+':3000/db_request_remove_w/removeDistance';
+  url_remove_ordination = 'http://'+this.server+':3000/db_request_remove_w/removeOrdination';
+  url_remove_project = 'http://'+this.server+':3000/db_request_remove_w/removeProject';
 
 
   removeDataset(dataset_id: string) {
