@@ -3,16 +3,17 @@ import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 import { UserRps } from '../components/main-rps/sign-up-main/user-rps';
+import { SharedDatasetService } from './shared-dataset.service';
 
 
 
 @Injectable()
 export class UserService {
 
-    constructor(private http: Http) { }
-    server = '10.1.6.31';
+    constructor(private http: Http, private shared: SharedDatasetService) { }
 
-    url_save = 'http://'+this.server+':3000/db_request_user_w/register_user';
+
+    url_save = 'http://'+this.shared.getServerIP()+':3000/db_request_user_w/register_user';
 
     registerUser(user: UserRps) {
        // console.log(user);
@@ -25,7 +26,8 @@ export class UserService {
     }
 
     // tslint:disable-next-line:member-ordering
-    url_validate = 'http://'+this.server+':3000/db_request_user/validate_user';
+    url_validate = 'http://'+this.shared.getServerIP()+':3000/db_request_user/validate_user';
+    url_update = 'http://'+this.shared.getServerIP()+':3000/db_request_user/update_user';
 
     validateUser(email: string, pass: string) {
         // console.log(user);
@@ -33,6 +35,15 @@ export class UserService {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this.http.post(this.url_validate, JSON.stringify({'email': email, 'pass': pass}), { headers : headers })
+                            .map( response => response.json());
+    }
+
+    updateUser(data) {
+        // console.log(user);
+        // tslint:disable-next-line:prefer-const
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(this.url_update, JSON.stringify(data), { headers : headers })
                             .map( response => response.json());
     }
 

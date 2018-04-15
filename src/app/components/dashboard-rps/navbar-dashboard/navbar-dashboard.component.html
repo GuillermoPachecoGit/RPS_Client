@@ -6,21 +6,20 @@
                 <li><a class="navbar-brand"  >RPS Online</a></li>
                 <li><a data-toggle="modal" data-target="#addProject"  ><span class="glyphicon glyphicon-plus"></span>Add Project</a></li>
                 <li><a data-toggle="modal" data-target="#uploadFile"  ><span class="glyphicon glyphicon-open"></span>Upload Dataset</a></li>
-            <!--    <li class="dropdown"><a   class="dropdown-toggle" data-toggle="dropdown"><span
-                    class="glyphicon glyphicon-list-alt"></span>Analysis<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a  data-toggle="modal" data-target="#runProcrustes">Procrustes Analysis</a></li>
-                        <li><a  data-toggle="modal" data-target="#runDistances">Distances</a></li>
-                        <li><a data-toggle="modal" data-target="#runOrdinations" >Ordinations</a></li>
-                    </ul>
-                </li> -->
             </ul>
             <ul class="nav navbar-nav navbar-right">  
+                
+                    <li id="info_notification" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
+                        class="glyphicon glyphicon-envelope"></span>Inbox <span class="label label-info">{{new_notification}}</span>
+                     </a>
+                     <ul id="notifications"  class="dropdown-menu">
+                           
+                    </ul>
+                  </li>
                 <li   class="dropdown"><a   class="dropdown-toggle" data-toggle="dropdown"><span
                     class="glyphicon glyphicon-user"></span>Admin <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a  ><span class="glyphicon glyphicon-user"></span>Profile</a></li>
-                        <li><a  ><span class="glyphicon glyphicon-cog"></span>Settings</a></li>
+                        <li><a  data-toggle="modal" data-target="#profile" ><span  class="glyphicon glyphicon-user"></span>Profile</a></li>
                         <li class="divider"></li>
                         <li><a href="/"><span class="glyphicon glyphicon-off"></span>Logout</a></li>
                     </ul>
@@ -70,11 +69,11 @@
                                 </div>
                       </div>
                       <div class="form-group">
-                      <label>File input</label>
+                      <label>Input file</label>
                       <input type="file" (change)="fileChangeEvent($event)" placeholder="Upload file..." />
                       </div>  
                       <div class="form-group">
-                        <label>Name dataset: </label>
+                        <label>Dataset name: </label>
                         <input type="text"  class="form-control"  id="name_dataset" required [(ngModel)]="dataset.dataset_name" name="name_dataset" placeholder="Name" #name_dataset="ngModel"> 
                       </div>
                       <button type="button" class="btn btn-success btn-s"
@@ -106,7 +105,7 @@
               <!--header modal-->
               <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                  <h3 class="modal-title" id="lineModalLabel">Add new Project</h3> </div>
+                  <h3 class="modal-title" id="lineModalLabel">Add New Project</h3> </div>
               <!--body modal-->    
               <div class="modal-body">    
                   <form method="post"  enctype="multipart/form-data"> 
@@ -136,5 +135,51 @@
     </div>
   </div>
   
-
   
+  
+    <div class="modal fade" id="profile" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+    
+                <!--header modal-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title" id="lineModalLabel">Edit Profile</h3> </div>
+                <!--body modal-->    
+                <div class="modal-body">    
+                    <form method="post"  enctype="multipart/form-data"> 
+                    <div class="form-group">
+                        <label for="country"  class="control-label">User Name: </label>
+                        <input type="text"  class="form-control"  id="name_project" required [(ngModel)]="user.name" name="name"  #name="ngModel">
+                        <label for="country"  class="control-label">Old Password: </label>
+                        <input type="text"  class="form-control"  id="old_pass" required [(ngModel)]="user.old_pass" name="old_pass"  #name="ngModel"> 
+                        <label for="country"  class="control-label">New Password: </label>
+                        <input type="text"  class="form-control"  id="new_pass" required [(ngModel)]="user.new_pass" name="new_pass"  #name="ngModel">
+                        <label for="country"  class="control-label">Confirm Password: </label>
+                        <input type="text"  class="form-control"  id="confirm_pass" required [(ngModel)]="user.confirm_pass" name="confirm_pass"  #name="ngModel"> 
+                        <label for="country"  class="control-label">Email: </label>
+                        <input type="text"  class="form-control"  id="email" required [(ngModel)]="user.email" name="email"  #name="ngModel">
+                        <label for="country"  class="control-label">Institution: </label>
+                        <input type="text"  class="form-control"  id="institution" required [(ngModel)]="user.institution" name="institution" #name="ngModel">
+                        <label for="country"  class="control-label">Area: </label>
+                        <input type="text"  class="form-control"  id="area" required [(ngModel)]="user.area" name="area"  #name="ngModel">
+                    </div>
+                    <button type="button" class="btn btn-success btn-s"
+                                (click)="confirmUserUpdate()">
+                            <span class="glyphicon glyphicon-upload"></span> Confirm
+                        </button>
+                    <div id="rg_error"> <label *ngIf="invalid" id="error_message"> {{error_msg}}</label></div>
+                    </form></div>
+            
+                <!-- footer modal -->
+                <div class="modal-footer">
+                    <div class="btn-group btn-group-justified" role="group" aria-label="group button">
+                        <div class="btn-group" role="group">
+                            <button type="button" id="hideUpdateProfile" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
+                        </div>
+                        <div class="btn-group btn-delete hidden" role="group">
+                            <button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Close</button>
+                        </div>
+                    </div></div></div>
+      </div>
+    </div>

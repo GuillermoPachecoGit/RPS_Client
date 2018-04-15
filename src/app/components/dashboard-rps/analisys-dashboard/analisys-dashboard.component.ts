@@ -126,10 +126,12 @@ confirmAnalysis(){
         this.analyze = new Analyze('','','',false,false);
         this.datasetEnable = false;
         this.processing = false;
-        this.sharedDatasetService.sendMessage(result); 
-        document.getElementById('hideRunAnalysis').click();
+        //this.sharedDatasetService.sendMessage(result); 
+        //document.getElementById('hideRunAnalysis').click();
         this.sharedDatasetService.finishedAnalisys(result);
     })
+    document.getElementById('hideRunAnalysis').click();
+    document.getElementById('buttonClose').click();
 }
 
 confirmDistance(){
@@ -139,11 +141,13 @@ confirmDistance(){
         this.distance = new Distance(false,'','','');
         this.datasetEnable = false;
         this.processing = false;
-        this.sharedDatasetService.setDistance(result);
+        //this.sharedDatasetService.setDistance(result);
         //llamar al shared pra compartir la info con los componentes result-dashboard y dataset-tree
-        document.getElementById('hideRunAnalysisDistance').click();
+        //document.getElementById('hideRunAnalysisDistance').click();
         this.sharedDatasetService.finishedAnalisys(result);
     })
+    document.getElementById('hideRunAnalysisDistance').click();
+    document.getElementById('buttonClose').click();
 }
 
 
@@ -155,10 +159,12 @@ confirmOrdination(){
         this.processing = false;
         console.log(result);
         //llamar al shared pra compartir la info con los componentes result-dashboard y dataset-tree
-        this.sharedDatasetService.setOrdination(result);
-        document.getElementById('hideAnalysisOrdination').click();
+        //this.sharedDatasetService.setOrdination(result);
+        //document.getElementById('hideAnalysisOrdination').click();
         this.sharedDatasetService.finishedAnalisys(result)
     })
+    document.getElementById('hideAnalysisOrdination').click();
+    document.getElementById('buttonClose').click();
 }
 
 }

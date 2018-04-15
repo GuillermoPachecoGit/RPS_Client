@@ -2,15 +2,15 @@ import { Injectable  } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Dataset } from '../components/dashboard-rps/navbar-dashboard/dataset';
+import { SharedDatasetService } from './shared-dataset.service';
 
 @Injectable()
 export class UploadFileService {
 
-    constructor(private http: Http) { }
+    constructor(private http: Http, private shared: SharedDatasetService) { }
 
-    server = '10.1.6.31';
-    url = 'http://'+this.server+':3000/uploadFile';
-    url_project = 'http://'+this.server+':3000/db_request_project_w/addProject';
+    url = 'http://'+this.shared.getServerIP()+':3000/uploadFile';
+    url_project = 'http://'+this.shared.getServerIP()+':3000/db_request_project_w/addProject';
 
     makeFileRequest(params: Array<string>, data: Dataset, files: Array<File>) {
         return new Promise((resolve, reject) => {

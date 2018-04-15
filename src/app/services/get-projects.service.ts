@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Http } from '@angular/http';
+import { SharedDatasetService } from './shared-dataset.service';
 
 
 @Injectable()
 export class GetProjectsService {
 
   
-  constructor(private http: Http) { }
-  server = '10.1.6.31';
+  constructor(private http: Http, private shared: SharedDatasetService) { }
 
-  private url_request = 'http://'+this.server+':3000/db_request_project/get_projects';
+  private url_request = 'http://'+this.shared.getServerIP()+':3000/db_request_project/get_projects';
 
   getProjectsByData(id_user: string) {
       return this.http
@@ -20,15 +20,16 @@ export class GetProjectsService {
       .toPromise();
   }
 
-  private url_request_dataset = 'http://'+this.server+':3000/db_request_dataset/get_datasets';
-  private url_request_distances = 'http://'+this.server+':3000/db_request_dataset/get_distances';
-  private url_request_datasetById = 'http://'+this.server+':3000/db_request_dataset/get_datasetById';
-  private url_request_distanceById = 'http://'+this.server+':3000/db_request_dataset/get_distanceById';
-  private url_request_analisysById = 'http://'+this.server+':3000/db_request_dataset/get_analisys';
-  private url_request_OnlyDatasetById = 'http://'+this.server+':3000/db_request_dataset/get_only_datasets';
-  private url_request_OrdinationById = 'http://'+this.server+':3000/db_request_dataset/get_ordinationById';
-  private url_request_DistanceByProject = 'http://'+this.server+':3000/db_request_dataset/get_distances_by_project';
-  private url_request_ordinations = 'http://'+this.server+':3000/db_request_dataset/get_ordinations';
+  private url_request_dataset = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_datasets';
+  private url_request_distances = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_distances';
+  private url_request_datasetById = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_datasetById';
+  private url_request_distanceById = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_distanceById';
+  private url_request_analisysById = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_analisys';
+  private url_request_OnlyDatasetById = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_only_datasets';
+  private url_request_OrdinationById = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_ordinationById';
+  private url_request_DistanceByProject = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_distances_by_project';
+  private url_request_ordinations = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_ordinations';
+  private url_request_userById = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_user_by_id';
 
   getDistaceByProjectId(project_id){
     return this.http
@@ -91,6 +92,13 @@ export class GetProjectsService {
   getDistanceById(distance_id: string) {
     return this.http
     .get(this.generateRequest(this.url_request_distanceById,distance_id))
+    .map((response) => response.json())
+    .toPromise();
+  }
+
+  getUserById(user_id: string) {
+    return this.http
+    .get(this.generateRequest(this.url_request_userById,user_id))
     .map((response) => response.json())
     .toPromise();
   }

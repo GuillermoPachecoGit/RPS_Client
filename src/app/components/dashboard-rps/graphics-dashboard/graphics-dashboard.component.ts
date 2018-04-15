@@ -53,6 +53,7 @@ export class GraphicsDashboardComponent implements OnInit {
             tabFirst.tab('show');
         });
       });
+      
       var list = document.getElementById("tab_index_id");
 
       // subscribe to home component messages

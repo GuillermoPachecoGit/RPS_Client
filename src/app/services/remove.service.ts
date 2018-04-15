@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { SharedDatasetService } from './shared-dataset.service';
 
 @Injectable()
 export class RemoveService {
 
-  constructor(private http: Http) { }
-  server = '10.1.6.31';
+  constructor(private http: Http, private shared: SharedDatasetService) { }
 
-  url_remove_dataset = 'http://'+this.server+':3000/db_request_remove_w/removeDataset';
-  url_remove_distance = 'http://'+this.server+':3000/db_request_remove_w/removeDistance';
-  url_remove_ordination = 'http://'+this.server+':3000/db_request_remove_w/removeOrdination';
-  url_remove_project = 'http://'+this.server+':3000/db_request_remove_w/removeProject';
+  url_remove_dataset = 'http://'+this.shared.getServerIP()+':3000/db_request_remove_w/removeDataset';
+  url_remove_distance = 'http://'+this.shared.getServerIP()+':3000/db_request_remove_w/removeDistance';
+  url_remove_ordination = 'http://'+this.shared.getServerIP()+':3000/db_request_remove_w/removeOrdination';
+  url_remove_project = 'http://'+this.shared.getServerIP()+':3000/db_request_remove_w/removeProject';
 
 
   removeDataset(dataset_id: string) {

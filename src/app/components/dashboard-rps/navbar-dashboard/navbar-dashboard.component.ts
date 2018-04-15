@@ -18,6 +18,11 @@ import { UserService } from "../../../services/user.service";
 import { Analyze } from './analyze';
 import { Distance } from './distance';
 import { Ordination } from './ordination';
+import {User} from './user';
+
+// Declaramos las variables para jQuery
+declare var jQuery: any;
+declare var $: any;
 
 @Component({
   selector: 'app-navbar-dashboard',
@@ -25,16 +30,21 @@ import { Ordination } from './ordination';
   styleUrls: ['./navbar-dashboard.component.css']
 })
 export class NavbarDashboardComponent implements OnInit {
+
+
+  subscription: Subscription;
   filesToUpload: File[];
   project_list = [];
   project = new Project('', '', '');
   dataset = new Dataset('', '',1);
+  user = new User('','','','','','','','');
   idUser = '';
   dataset_list = [];
   distance_list = [];
   datasetEnable = true;
   distanceEnable = false;
   processing = false;
+  new_notification = 0;
 
   //Analysis
   analyze = new Analyze('','','',false,false);
@@ -46,28 +56,89 @@ export class NavbarDashboardComponent implements OnInit {
     private sharedDatasetService: SharedDatasetService,
     private route: ActivatedRoute,
     private projectService: GetProjectsService,
-    private analizeService: AnalyzeService
-  ) { }
+    private analizeService: AnalyzeService,
+    private userService: UserService,
+    private datasetService: GetProjectsService
+  ) { 
 
-  /*ngOnInit() {
-    
-    // subscribe to router event
-    this.route.params.subscribe((params: Params) => {
-        this.idUser = params['id'];
-     });
-  }*/
+    $(document).ready(function() {
+        $('#notifications').on('click', '.view', function() { 
+            var tabID = $(this).parents('li').attr('id');
+            var IsDataset = $(this).parents('li').attr('isDataset');
+            var IsDistance = $(this).parents('li').attr('isDistance');
+            var IsOrdination = $(this).parents('li').attr('isOrdination');
+            console.log(tabID+'  '+IsDataset);
+            if(IsDataset){
+                datasetService.getDatasetsById(tabID).then((result) =>{
+                    sharedDatasetService.sendMessage(result);
+                    //this.addDatasetData(currentNode.id,JSON.parse(result));
+                  });
+            }
+            if(IsDistance){
+                datasetService.getDistanceById(tabID).then((result) =>{
+                    sharedDatasetService.setDistance(result);
+                  });
+            }
+
+            if(IsOrdination){
+                console.log('entre por aca por la proyeccion  '+ tabID);
+                datasetService.getOrdinationById(tabID).then((result) =>{
+                    console.log(result);
+                    sharedDatasetService.setOrdination(result);
+                  });
+            }
+
+            $('#'+tabID).remove();
+            sharedDatasetService.setNotificationCount(1);
+        });
+    });
+
+    this.subscription = this.sharedDatasetService.getNotificationCount().subscribe(
+        params => {
+            this.new_notification--;
+        }
+    )
+
+    this.subscription = this.sharedDatasetService.isFinishedAnalisys().subscribe(
+         params => {
+        if(params.dataset_name){
+            this.addNotificationDataset(params);
+        }
+        if(params.distance_name){
+            this.addNotificationDistance(params);
+        }
+        if(params.ordination_name){
+            this.addNotificationOrdination(params);
+        }
+      });
+
+  }
+
+  addNotificationDataset(params) {
+    this.new_notification++;
+    $('#notifications').append('<li id="'+params.dataset_id +'"  isDataset="true"  ><a> New Analisis: '+params.dataset_name+'   <span > <button class="btn btn-info btn-xs view "   (click)="viewDataset()"> View </button> </span>  </a> </li>'); 
+  }
+  addNotificationOrdination(params) {
+    this.new_notification++;
+    $('#notifications').append('<li id="'+params.ordination_id +'" isOrdination="true" ><a> New Ordination: '+params.ordination_name+'  <span><button class="btn btn-info btn-xs view" (click)="viewDataset()"> View </button> </span>  </a> </li>'); 
+  }
+  addNotificationDistance(params) {
+    this.new_notification++;
+    $('#notifications').append('<li id="'+params.distance_id +'" isDistance="true" ><a> New Distance: '+params.distance_name+'  <span> <button class="btn btn-info btn-xs view" (click)="viewDataset()"> View </button>  </a> </span> </li>'); 
+  }
   
-
-
   ngOnInit() {
+
     this.route.params.subscribe((params: Params) => {
       this.idUser = params['id'];
+      this.user.id = this.idUser;
    }); 
     this.initialize();
   }
 
   initialize(): void {
     this.getProject();
+    this.getUser();
   }
 
   getProject(): void {
@@ -76,6 +147,19 @@ export class NavbarDashboardComponent implements OnInit {
           this.project_list = result;
           this.sharedDatasetService.setProjects(result);
        });
+  }
+
+  getUser(){
+      this.projectService.getUserById(this.idUser).then(
+          params => {
+              console.log(params);
+              this.user.name = params.first_name;
+              this.user.old_pass = params.password;
+              this.user.institution = params.institution;
+              this.user.area = params.area;
+              this.user.email = params.email_address;
+          }
+      )
   }
 
 confirmProject() {
@@ -99,6 +183,28 @@ confirmProject() {
     }
 }
 
+error_update_msg = '';
+
+confirmUserUpdate(){
+
+    console.log("llegue a actualizar el user");
+    if(this.user.new_pass != '' && this.user.confirm_pass != ''){
+        if(this.user.new_pass != this.user.confirm_pass){
+            alert("Invalid password");
+        }
+    }else{
+        this.user.new_pass = this.user.old_pass;
+    }
+    console.log("llegue a actualizar el user");
+    this.userService.updateUser(this.user).subscribe(params => {
+        if(params.result != 'error'){
+            document.getElementById('hideUpdateProfile').click();
+        }
+        else{
+            this.error_update_msg = params.result;
+        }
+    })
+}
 
 selectedProject(e){
     this.datasetEnable = false;

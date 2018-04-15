@@ -17,9 +17,14 @@ export class SharedDatasetService {
     private selected_dataset = new Subject<any>();
     private isFinished = new Subject<any>();
     private selected_distance = new Subject<any>();
+    private notification_count = new Subject<any>();
 
     setDistance(distance: any){
         this.distanceResult.next(JSON.parse(distance));
+    }
+
+    getServerIP(){
+        return "localhost"
     }
 
     getDistance() : Observable<any> {
@@ -105,11 +110,18 @@ export class SharedDatasetService {
     }
 
     finishedAnalisys(value: any) {
-        this.isFinished.next(value);
+        this.isFinished.next(JSON.parse(value));
     }
 
     isFinishedAnalisys(): Observable<any> {
         return this.isFinished.asObservable();
     }
 
+    setNotificationCount(value: any) {
+        this.notification_count.next(value);
+    }
+
+    getNotificationCount(): Observable<any> {
+        return this.notification_count.asObservable();
+    }
 }
