@@ -164,6 +164,7 @@ export class DatasetTreeComponent implements OnInit {
     expanded_nodes_distance = [];
     expanded_nodes_dataset = [];
     expanded_nodes = [];
+    loaded_dataset = [];
 
     cache : CacheStatementRPS;
 
@@ -243,30 +244,36 @@ export class DatasetTreeComponent implements OnInit {
   }
 
   addDatasetData(id, values) {
-    const node = this.tree.treeModel.getNodeById(id);
-    //node.data.children.push({id: this.getID(), name: 'Landmarks', children: this.generateArrayLandmark(element.numbers_of_landmark), isFolderLandmark: true});
-    node.data.children.push({id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(values.specimens, values.specimen_name, values.dimention, values.numbers_of_specimen,values.numbers_of_landmark), isFolderSpecimen: true});
-    //node.data.children.push({id: this.getID(), project_id: element.project_id, dataset_id: element.dataset_id, name: 'Analisys', children: [], isFolderAnalisys: true});    
-    
-    //ajustes
-    this.datasetService.getAnalisysById(values.dataset_id,values.project_id).then((result) =>{
-      result.forEach(element => {
-        if(!this.expanded_nodes_dataset.includes(element.dataset_id)){
-          this.addAnalisysOnly(id,element);
-        }
-        
-      });
-    });
-    //distances
-      this.datasetService.getDistaceByDatasets(values.dataset_id,values.project_id).then((result) =>{
-        result.forEach(element => {
-          if(!this.expanded_nodes_distance.includes(element.distance_id)){
-            this.addDistance(id,element);
-          }
-        });
-      });
 
-    this.tree.treeModel.update();
+    if(!this.loaded_dataset.includes(values.dataset_id)){
+         //MIRAR ACA, IMPLEMENTAR MECANISMO DE CARGA UNA SOLA VEZ EN EL TREE
+          this.loaded_dataset.push(values.dataset_id);
+          const node = this.tree.treeModel.getNodeById(id);
+          //node.data.children.push({id: this.getID(), name: 'Landmarks', children: this.generateArrayLandmark(element.numbers_of_landmark), isFolderLandmark: true});
+          //node.data.children.push({id: this.getID(), project_id: element.project_id, dataset_id: element.dataset_id, name: 'Analisys', children: [], isFolderAnalisys: true});    
+          node.data.children.push({id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(values.specimens, values.specimen_name, values.dimention, values.numbers_of_specimen,values.numbers_of_landmark), isFolderSpecimen: true});
+          
+          //ajustes
+          this.datasetService.getAnalisysById(values.dataset_id,values.project_id).then((result) =>{
+            result.forEach(element => {
+              if(!this.expanded_nodes_dataset.includes(element.dataset_id)){    
+                this.addAnalisysOnly(id,element);
+              }
+              
+            });
+          });
+          //distances
+            this.datasetService.getDistaceByDatasets(values.dataset_id,values.project_id).then((result) =>{
+              result.forEach(element => {
+                if(!this.expanded_nodes_distance.includes(element.distance_id)){
+                  this.addDistance(id,element);
+                }
+              });
+            });
+
+          this.tree.treeModel.update();
+    }
+ 
   }
 
   generateSpecimenArray(specimens, specimen_names, dim, n_spec, n_land) {

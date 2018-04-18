@@ -27,9 +27,9 @@
                     </div>                      
                     <div class="form-group">
                         <label for="country"  class="control-label">Tab Name: </label>
-                        <input type="text"  class="form-control"  id="tab_name_analysis" required [(ngModel)]="analyze.tab_name_analysis" name="tab_name_analysis" placeholder="" #name="ngModel">
+                        <input type="text"  class="form-control"  id="tab_name_analysis" required [(ngModel)]="analyze.dataset_name" name="tab_name_analysis" placeholder="" #name="ngModel">
                     </div>
-                    <button type="button" class="btn btn-success btn-s"
+                    <button type="button" class="btn btn-success btn-sm"
                             (click)="confirmAnalysis()">
                         <span class="glyphicon glyphicon-upload"></span> Confirm
                     </button>
@@ -76,7 +76,7 @@
 
                     <div class="form-group">
                         <label for="country"  class="control-label">Tab Name: </label>
-                        <input type="text"  class="form-control"  id="distance.tab_name_analysis" required [(ngModel)]="distance.tab_name_analysis" name="tab_name_analysis" placeholder="" #name="ngModel">
+                        <input type="text"  class="form-control"  id="distance.tab_name_analysis" required [(ngModel)]="distance.distance_name" name="tab_name_analysis" placeholder="" #name="ngModel">
                     </div>
 
                     <button type="button" class="btn btn-success btn-s"
@@ -126,7 +126,7 @@
 
                         <div class="form-group">
                             <label for="country"  class="control-label">Tab Name: </label>
-                            <input type="text"  class="form-control"  id="tab_name_analysis" required [(ngModel)]="ordination.tab_name_analysis" name="tab_name_analysis" placeholder="" #name="ngModel">
+                            <input type="text"  class="form-control"  id="tab_name_analysis" required [(ngModel)]="ordination.ordination_name" name="tab_name_analysis" placeholder="" #name="ngModel">
                         </div>
 
                         <button type="button" class="btn btn-success btn-s"

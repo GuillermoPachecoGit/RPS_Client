@@ -3,6 +3,8 @@ export class Distance {
         public algorithm_selected : boolean,
         public dataset_id: string,
         public project_id: string,
-        public tab_name_analysis: string
+        public distance_name: string,
+        public isDistance: boolean,
+        public user_id: string
     ){ }
 }

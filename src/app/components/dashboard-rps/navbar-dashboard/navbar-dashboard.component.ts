@@ -45,11 +45,12 @@ export class NavbarDashboardComponent implements OnInit {
   distanceEnable = false;
   processing = false;
   new_notification = 0;
+  new_in_progress = 0;
 
   //Analysis
-  analyze = new Analyze('','','',false,false);
-  distance = new Distance(false,'','','');
-  ordination = new Ordination(false,'','','','');
+  analyze = new Analyze('','','',false,false,'',true);
+  distance = new Distance(false,'','','', true,'');
+  ordination = new Ordination(false,'','','','', true,'');
 
   constructor(
     private uploadService: UploadFileService,
@@ -70,6 +71,7 @@ export class NavbarDashboardComponent implements OnInit {
             console.log(tabID+'  '+IsDataset);
             if(IsDataset){
                 datasetService.getDatasetsById(tabID).then((result) =>{
+                    console.log("obtuve la respuesta:" + result );
                     sharedDatasetService.sendMessage(result);
                     //this.addDatasetData(currentNode.id,JSON.parse(result));
                   });
@@ -110,23 +112,53 @@ export class NavbarDashboardComponent implements OnInit {
         if(params.ordination_name){
             this.addNotificationOrdination(params);
         }
-      });
+    });
+
+    this.subscription = this.sharedDatasetService.isNewAnalisys().subscribe(
+        params => {
+       if(params.isAnalyze){
+           this.addInProcessDataset(params);
+       }
+       if(params.isDistance){
+           this.addInProcessDistance(params);
+       }
+       if(params.isOrdination){
+           this.addInProcessOrdination(params);
+       }
+   });
 
   }
 
   addNotificationDataset(params) {
     this.new_notification++;
-    $('#notifications').append('<li id="'+params.dataset_id +'"  isDataset="true"  ><a> New Analisis: '+params.dataset_name+'   <span > <button class="btn btn-info btn-xs view "   (click)="viewDataset()"> View </button> </span>  </a> </li>'); 
+    this.new_in_progress--;
+    $('#notifications').append('<li id="'+params.dataset_id +'"  isDataset="true"  ><a> New Analisys: '+params.dataset_name+'   <span > <button class="btn btn-info btn-xs view "   (click)="viewDataset()"> View </button> </span>  </a> </li>'); 
   }
   addNotificationOrdination(params) {
     this.new_notification++;
+    this.new_in_progress--;
     $('#notifications').append('<li id="'+params.ordination_id +'" isOrdination="true" ><a> New Ordination: '+params.ordination_name+'  <span><button class="btn btn-info btn-xs view" (click)="viewDataset()"> View </button> </span>  </a> </li>'); 
   }
   addNotificationDistance(params) {
+    this.new_in_progress--;
     this.new_notification++;
     $('#notifications').append('<li id="'+params.distance_id +'" isDistance="true" ><a> New Distance: '+params.distance_name+'  <span> <button class="btn btn-info btn-xs view" (click)="viewDataset()"> View </button>  </a> </span> </li>'); 
   }
   
+
+  addInProcessDataset(params) {
+    this.new_in_progress++;
+    $('#in_progress').append('<li id="'+params.dataset_name +'"  isDataset="true"  ><a>Analisys in progress : '+params.dataset_name+'    </a> </li>'); 
+  }
+  addInProcessDistance(params) {
+    this.new_in_progress++;
+    $('#in_progress').append('<li id="'+params.ordination_name +'" isOrdination="true" ><a>Ordination in progress : '+params.ordination_name+'  </a> </li>'); 
+  }
+  addInProcessOrdination(params) {
+    this.new_in_progress++;
+    $('#in_progress').append('<li id="'+params.distance_name +'" isDistance="true" ><a>Distance in progress : '+params.distance_name+'  > </li>'); 
+  }
+
   ngOnInit() {
 
     this.route.params.subscribe((params: Params) => {

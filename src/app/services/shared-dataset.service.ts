@@ -16,6 +16,7 @@ export class SharedDatasetService {
     private deleteOrdinationView = new Subject<any>();
     private selected_dataset = new Subject<any>();
     private isFinished = new Subject<any>();
+    private isNew = new Subject<any>();
     private selected_distance = new Subject<any>();
     private notification_count = new Subject<any>();
 
@@ -115,6 +116,14 @@ export class SharedDatasetService {
 
     isFinishedAnalisys(): Observable<any> {
         return this.isFinished.asObservable();
+    }
+
+    newAnalisys(value: any) {
+        this.isNew.next(value);
+    }
+
+    isNewAnalisys(): Observable<any> {
+        return this.isNew.asObservable();
     }
 
     setNotificationCount(value: any) {

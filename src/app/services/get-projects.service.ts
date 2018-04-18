@@ -38,7 +38,6 @@ export class GetProjectsService {
     .toPromise();
   }
 
-
   getDatasetsByProject(project_id: string) {
     return this.http
     .get(this.generateRequest(this.url_request_dataset,project_id))

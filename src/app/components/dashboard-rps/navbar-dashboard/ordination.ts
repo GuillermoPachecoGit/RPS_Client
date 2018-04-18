@@ -4,6 +4,8 @@ export class Ordination {
         public dataset_id: string,
         public project_id: string,
         public distance_id: string,
-        public tab_name_analysis: string
+        public ordination_name: string,
+        public isOrdination: boolean,
+        public user_id: string
     ){ }
 }

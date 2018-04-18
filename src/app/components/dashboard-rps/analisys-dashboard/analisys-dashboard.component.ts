@@ -29,9 +29,9 @@ export class AnalisysDashboardComponent implements OnInit {
   processing = false;
 
   //Analysis
-  analyze = new Analyze('','','',false,false);
-  distance = new Distance(false,'','','');
-  ordination = new Ordination(false,'','','','');
+  analyze = new Analyze('','','',false,false,'', true);
+  distance = new Distance(false,'','','',true,'');
+  ordination = new Ordination(false,'','','','',true,'');
 
 
   selected_dataset = "";
@@ -122,8 +122,10 @@ loadDistance(idProject){
 
 confirmAnalysis(){
     this.processing = true;
+    this.analyze.user_id = this.idUser;
+    this.sharedDatasetService.newAnalisys(this.analyze);
     this.analizeService.runAnalyze(this.analyze).subscribe(result => {
-        this.analyze = new Analyze('','','',false,false);
+        this.analyze = new Analyze('','','',false,false,'',true);
         this.datasetEnable = false;
         this.processing = false;
         //this.sharedDatasetService.sendMessage(result); 
@@ -137,8 +139,10 @@ confirmAnalysis(){
 confirmDistance(){
     this.processing = true;
     console.log(this.distance);
+    this.distance.user_id = this.idUser;
+    this.sharedDatasetService.newAnalisys(this.distance);
     this.analizeService.runAnalyzeDistance(this.distance).subscribe(result => {
-        this.distance = new Distance(false,'','','');
+        this.distance = new Distance(false,'','','',true,this.idUser);
         this.datasetEnable = false;
         this.processing = false;
         //this.sharedDatasetService.setDistance(result);
@@ -153,8 +157,10 @@ confirmDistance(){
 
 confirmOrdination(){
     this.processing = true;
+    this.sharedDatasetService.newAnalisys(this.ordination);
+    this.ordination.user_id = this.idUser;
     this.analizeService.runAnalyzeOrdination(this.ordination).subscribe(result => {
-        this.ordination = new Ordination(false,'','','','');
+        this.ordination = new Ordination(false,'','','','',true,'');
         this.distanceEnable = false;
         this.processing = false;
         console.log(result);
