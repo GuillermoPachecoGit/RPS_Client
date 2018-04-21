@@ -71,9 +71,7 @@ export class NavbarDashboardComponent implements OnInit {
             console.log(tabID+'  '+IsDataset);
             if(IsDataset){
                 datasetService.getDatasetsById(tabID).then((result) =>{
-                    console.log("obtuve la respuesta:" + result );
                     sharedDatasetService.sendMessage(result);
-                    //this.addDatasetData(currentNode.id,JSON.parse(result));
                   });
             }
             if(IsDistance){
@@ -116,6 +114,8 @@ export class NavbarDashboardComponent implements OnInit {
 
     this.subscription = this.sharedDatasetService.isNewAnalisys().subscribe(
         params => {
+
+       console.log(params);
        if(params.isAnalyze){
            this.addInProcessDataset(params);
        }
@@ -132,15 +132,18 @@ export class NavbarDashboardComponent implements OnInit {
   addNotificationDataset(params) {
     this.new_notification++;
     this.new_in_progress--;
+    $('#'+params.name).remove();
     $('#notifications').append('<li id="'+params.dataset_id +'"  isDataset="true"  ><a> New Analisys: '+params.dataset_name+'   <span > <button class="btn btn-info btn-xs view "   (click)="viewDataset()"> View </button> </span>  </a> </li>'); 
   }
   addNotificationOrdination(params) {
     this.new_notification++;
+    $('#'+params.name).remove();
     this.new_in_progress--;
     $('#notifications').append('<li id="'+params.ordination_id +'" isOrdination="true" ><a> New Ordination: '+params.ordination_name+'  <span><button class="btn btn-info btn-xs view" (click)="viewDataset()"> View </button> </span>  </a> </li>'); 
   }
   addNotificationDistance(params) {
     this.new_in_progress--;
+    $('#'+params.name).remove();
     this.new_notification++;
     $('#notifications').append('<li id="'+params.distance_id +'" isDistance="true" ><a> New Distance: '+params.distance_name+'  <span> <button class="btn btn-info btn-xs view" (click)="viewDataset()"> View </button>  </a> </span> </li>'); 
   }
@@ -152,15 +155,14 @@ export class NavbarDashboardComponent implements OnInit {
   }
   addInProcessDistance(params) {
     this.new_in_progress++;
-    $('#in_progress').append('<li id="'+params.ordination_name +'" isOrdination="true" ><a>Ordination in progress : '+params.ordination_name+'  </a> </li>'); 
+    $('#in_progress').append('<li id="'+params.distance_name +'" isOrdination="true" ><a>Ordination in progress : '+params.distance_name+'  </a> </li>'); 
   }
   addInProcessOrdination(params) {
     this.new_in_progress++;
-    $('#in_progress').append('<li id="'+params.distance_name +'" isDistance="true" ><a>Distance in progress : '+params.distance_name+'  > </li>'); 
+    $('#in_progress').append('<li id="'+params.ordination_name +'" isDistance="true" ><a>Distance in progress : '+params.ordination_name+'  </a> </li>'); 
   }
 
   ngOnInit() {
-
     this.route.params.subscribe((params: Params) => {
       this.idUser = params['id'];
       this.user.id = this.idUser;
@@ -193,6 +195,8 @@ export class NavbarDashboardComponent implements OnInit {
           }
       )
   }
+
+
 
 confirmProject() {
     this.invalid = this.invalidProject();
@@ -268,14 +272,13 @@ upload() {
             
             if(result['error'] == undefined){
                 this.dataset = new Dataset('','',1);
-                console.log(result);
                 this.sharedDatasetService.sendMessage(result);
                 this.processing = false;
                 this.invalid = false;
                 document.getElementById('hideAddDataset').click();
             }
             else{
-                this.error_msg = 'Please, add a new dataset file.';
+                this.error_msg = result['error'];
                 this.invalid = true;
                 this.processing = false;
             }

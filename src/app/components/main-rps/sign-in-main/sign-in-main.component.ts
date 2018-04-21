@@ -11,6 +11,8 @@ import { AuthService } from '../../../services/auth.service';
  * Classes
  */
 import { MessageError } from '../../../services/message-error';
+import { SharedDatasetService } from '../../../services/shared-dataset.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sign-in-main',
@@ -18,12 +20,22 @@ import { MessageError } from '../../../services/message-error';
   styleUrls: ['./sign-in-main.component.css']
 })
 export class SignInMainComponent implements OnInit {
+  
+  subscription: Subscription;
   email = '';
   pass = '';
   invalid = false;
   lg_error_message = '';
 
-  constructor(private loginService: AuthService, private route: Router) { }
+  constructor(private loginService: AuthService, private route: Router, private shared: SharedDatasetService) { 
+    
+    this.subscription = this.shared.getErrorLogin().subscribe( params => {
+        console.log('pase por aca putos, esta todo para el culo');
+        this.invalid = true;
+        console.log(params);
+        this.lg_error_message = params;
+    });
+  }
 
   ngOnInit() {
   }

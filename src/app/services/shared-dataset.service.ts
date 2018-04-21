@@ -19,6 +19,7 @@ export class SharedDatasetService {
     private isNew = new Subject<any>();
     private selected_distance = new Subject<any>();
     private notification_count = new Subject<any>();
+    private error_login = new Subject<any>();
 
     setDistance(distance: any){
         this.distanceResult.next(JSON.parse(distance));
@@ -132,5 +133,13 @@ export class SharedDatasetService {
 
     getNotificationCount(): Observable<any> {
         return this.notification_count.asObservable();
+    }
+
+    setErrorLogin(value: any) {
+        this.error_login.next(value);
+    }
+
+    getErrorLogin(): Observable<any> {
+        return this.error_login.asObservable();
     }
 }

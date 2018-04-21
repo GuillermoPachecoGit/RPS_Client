@@ -30,7 +30,7 @@ export class AuthService {
          // this.sharedDatasetService.setIdUser();
           this.route.navigate( ['/dashboard', data['id_user']]);
         }else {
-          message.msg = resp;
+          this.sharedDatasetService.setErrorLogin(resp);
           return resp;
         }
     });

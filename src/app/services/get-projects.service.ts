@@ -31,6 +31,37 @@ export class GetProjectsService {
   private url_request_ordinations = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_ordinations';
   private url_request_userById = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_user_by_id';
 
+
+
+//load pending
+
+private url_request_dataset_pending = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_dataset_pending';
+private url_request_distance_pending = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_distance_pending';
+private url_request_ordination_pending = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_ordination_pending';
+
+
+
+getPendingDatasets(project_id: string) {
+  return this.http
+  .get(this.generateRequest(this.url_request_dataset_pending,project_id))
+  .map((response) => response.json())
+  .toPromise();
+}
+
+getPendingDistances(project_id: string) {
+  return this.http
+  .get(this.generateRequest(this.url_request_distance_pending,project_id))
+  .map((response) => response.json())
+  .toPromise();
+}
+
+getPendingOrdinations(project_id: string) {
+  return this.http
+  .get(this.generateRequest(this.url_request_ordination_pending,project_id))
+  .map((response) => response.json())
+  .toPromise();
+}
+
   getDistaceByProjectId(project_id){
     return this.http
     .get(this.generateRequest(this.url_request_DistanceByProject,project_id))

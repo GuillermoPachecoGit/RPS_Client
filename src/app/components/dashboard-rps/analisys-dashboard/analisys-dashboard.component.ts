@@ -64,10 +64,6 @@ export class AnalisysDashboardComponent implements OnInit {
         this.ordination.distance_id = params.distance_id;
         this.ordination.project_id = params.project_id;
     });
-
-
-
-
     }
 
 

@@ -31,25 +31,8 @@ export class SignUpMainComponent implements OnInit {
       .subscribe( result => this.countries = result);
   }
 
- /* onSubmit() {
-// tslint:disable-next-line:indent
-		this.userService.registerUser(this.userRPS)
-                .subscribe(data => {
-                    if (data.result !== 'ok') {
-                        
-
-                    }else {
-                        console.log('Se registro el usuario');
-                        this.router.navigateByUrl('main/signin');
-                    }
-
-                }
-
-        );
-  }*/
-
     invalid = false;
-    error_signup = '';
+    error_msg = '';
     onSubmit() {
         this.invalid = this.invalidUserEntry();
     
@@ -61,7 +44,8 @@ export class SignUpMainComponent implements OnInit {
                 }
                 else{
                   this.invalid = true;
-                  this.error_signup = data.result;
+                  console.log(data.result);
+                  this.error_msg = data.result;
                 }
             });
         }
@@ -70,31 +54,31 @@ export class SignUpMainComponent implements OnInit {
     invalidUserEntry() : boolean {
         console.log(this.userRPS.name.length);
         if(this.userRPS.name.length == 0){
-          this.error_signup = 'Username is empty.';
+          this.error_msg = 'Username is empty.';
           return true; 
         }
         if(this.userRPS.email.length == 0){
-          this.error_signup = 'Email is empty.'; 
+          this.error_msg = 'Email is empty.'; 
           return true;
         }
         if(this.userRPS.pass.length == 0){
-          this.error_signup = 'Password is empty.';
+          this.error_msg = 'Password is empty.';
           return true;
         }
         if(this.userRPS.pass !== this.userRPS.pass_conf){
-            this.error_signup = 'The passwords  dont match.';
+            this.error_msg = 'The passwords  dont match.';
             return true;
         }
         if(this.userRPS.country.length == 0){
-          this.error_signup = 'Country is empty.';
+          this.error_msg = 'Country is empty.';
           return true;
         }
         if(this.userRPS.institution.length == 0){
-          this.error_signup = 'Institution is empty.';
+          this.error_msg = 'Institution is empty.';
           return true;
         }
         if(this.userRPS.area.length == 0){
-          this.error_signup = 'Area is empty.';
+          this.error_msg = 'Area is empty.';
           return true;
         }
         return false;
