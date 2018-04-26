@@ -42,6 +42,7 @@ private url_request_ordination_pending = 'http://'+this.shared.getServerIP()+':3
 
 
 getPendingDatasets(project_id: string) {
+  console.log(this.generateRequest(this.url_request_dataset_pending,project_id));
   return this.http
   .get(this.generateRequest(this.url_request_dataset_pending,project_id))
   .map((response) => response.json())

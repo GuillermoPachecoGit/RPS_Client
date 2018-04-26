@@ -28,6 +28,7 @@ export class UserService {
     // tslint:disable-next-line:member-ordering
     url_validate = 'http://'+this.shared.getServerIP()+':3000/db_request_user/validate_user';
     url_update = 'http://'+this.shared.getServerIP()+':3000/db_request_user/update_user';
+    url_recovery = 'http://'+this.shared.getServerIP()+':3000/db_request_user/pass_recovery';
 
     validateUser(email: string, pass: string) {
         // console.log(user);
@@ -46,5 +47,16 @@ export class UserService {
         return this.http.post(this.url_update, JSON.stringify(data), { headers : headers })
                             .map( response => response.json());
     }
+
+    passRecovery(data) {
+        // console.log(user);
+        // tslint:disable-next-line:prefer-const
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(this.url_recovery, JSON.stringify(data), { headers : headers })
+                            .map( response => response.json());
+    }
+
+
 
 }

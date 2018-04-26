@@ -131,19 +131,25 @@ export class NavbarDashboardComponent implements OnInit {
 
   addNotificationDataset(params) {
     this.new_notification++;
-    this.new_in_progress--;
-    $('#'+params.name).remove();
+    if(this.new_in_progress > 0){
+        this.new_in_progress--;
+        $('#'+params.name).remove();
+    }
     $('#notifications').append('<li id="'+params.dataset_id +'"  isDataset="true"  ><a> New Analisys: '+params.dataset_name+'   <span > <button class="btn btn-info btn-xs view "   (click)="viewDataset()"> View </button> </span>  </a> </li>'); 
   }
   addNotificationOrdination(params) {
+    if(this.new_in_progress > 0){
+        this.new_in_progress--;
+        $('#'+params.name).remove();
+    }
     this.new_notification++;
-    $('#'+params.name).remove();
-    this.new_in_progress--;
     $('#notifications').append('<li id="'+params.ordination_id +'" isOrdination="true" ><a> New Ordination: '+params.ordination_name+'  <span><button class="btn btn-info btn-xs view" (click)="viewDataset()"> View </button> </span>  </a> </li>'); 
   }
   addNotificationDistance(params) {
-    this.new_in_progress--;
-    $('#'+params.name).remove();
+    if(this.new_in_progress > 0){
+        this.new_in_progress--;
+        $('#'+params.name).remove();
+    }
     this.new_notification++;
     $('#notifications').append('<li id="'+params.distance_id +'" isDistance="true" ><a> New Distance: '+params.distance_name+'  <span> <button class="btn btn-info btn-xs view" (click)="viewDataset()"> View </button>  </a> </span> </li>'); 
   }
@@ -162,6 +168,50 @@ export class NavbarDashboardComponent implements OnInit {
     $('#in_progress').append('<li id="'+params.ordination_name +'" isDistance="true" ><a>Distance in progress : '+params.ordination_name+'  </a> </li>'); 
   }
 
+  loadPendingAnalisys(){
+      console.log('llamo a los pendientes');
+      this.loadPendingDatasets();
+      this.loadPendingDistances();
+      this.loadPendingOrdinations();
+  }
+
+  loadPendingDatasets(){
+      console.log('voy a cargar los dataset: '+ this.project_list.length);
+      this.project_list.forEach(element => {
+        this.datasetService.getPendingDatasets(element.project_id).then( params => {
+            params = JSON.parse(params);
+            params.forEach(dataset => {
+                this.addNotificationDataset(dataset);
+            });           
+        });
+      });
+      
+  }
+
+  loadPendingDistances(){
+    this.project_list.forEach(element => {
+        this.datasetService.getPendingDistances(element.project_id).then( params => {
+            params = JSON.parse(params);
+            params.forEach(distance => {
+                this.addInProcessDistance(distance);
+            });
+        });
+      });
+
+  }
+
+  loadPendingOrdinations(){
+    this.project_list.forEach(element => {
+        this.datasetService.getPendingOrdinations(element.project_id).then( params => {
+            params = JSON.parse(params);
+            params.forEach(ordination => {
+                this.addNotificationOrdination(ordination);
+            });
+        });
+      });
+  }
+
+
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.idUser = params['id'];
@@ -173,12 +223,14 @@ export class NavbarDashboardComponent implements OnInit {
   initialize(): void {
     this.getProject();
     this.getUser();
+    
   }
 
   getProject(): void {
     this.projectService.getProjectsByData(this.idUser).then
       ( result => {
           this.project_list = result;
+          this.loadPendingAnalisys();
           this.sharedDatasetService.setProjects(result);
        });
   }

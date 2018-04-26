@@ -21,12 +21,14 @@ export class SharedDatasetService {
     private notification_count = new Subject<any>();
     private error_login = new Subject<any>();
 
+    
+
     setDistance(distance: any){
         this.distanceResult.next(JSON.parse(distance));
     }
 
     getServerIP(){
-        return "10.1.6.31"
+        return "localhost"
     }
 
     getDistance() : Observable<any> {

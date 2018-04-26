@@ -13,6 +13,11 @@ import { AuthService } from '../../../services/auth.service';
 import { MessageError } from '../../../services/message-error';
 import { SharedDatasetService } from '../../../services/shared-dataset.service';
 import { Subscription } from 'rxjs';
+import { UserService } from '../../../services/user.service';
+
+// Declaramos las variables para jQuery
+declare var jQuery: any;
+declare var $: any;
 
 @Component({
   selector: 'app-sign-in-main',
@@ -26,11 +31,13 @@ export class SignInMainComponent implements OnInit {
   pass = '';
   invalid = false;
   lg_error_message = '';
+  email_recovery = '';
+  invalid_recovery = false;
+  error_msg_recovery = '';
 
-  constructor(private loginService: AuthService, private route: Router, private shared: SharedDatasetService) { 
+  constructor(private loginService: AuthService, private route: Router, private shared: SharedDatasetService, private userService: UserService) { 
     
     this.subscription = this.shared.getErrorLogin().subscribe( params => {
-        console.log('pase por aca putos, esta todo para el culo');
         this.invalid = true;
         console.log(params);
         this.lg_error_message = params;
@@ -45,14 +52,26 @@ export class SignInMainComponent implements OnInit {
     this.invalid = this.invalidateEntry();
     if (!this.invalid) {
       let resultMessage = new MessageError('');
-      this.loginService.login(this.email, this.pass, resultMessage);
-      /*if(!this.loginService.isLoggedIn){
-        this.invalid = true;
-        this.lg_error_message = 'Email or password not valid.';
-      }*/
-      
-      
+      this.loginService.login(this.email, this.pass, resultMessage); 
     }
+  }
+
+  passRecovery(){
+    this.userService.passRecovery({ email: this.email_recovery}).subscribe( params => {
+
+        console.log(params);
+        console.log(params.result );
+        if(params.result == 'ok'){
+          var result = confirm('Your new password was sent to your account email. Please sign in again.');
+          $('#hideRecovery').click();
+        }else{
+          console.log("seteo el error");
+          this.invalid_recovery = true;
+          this.error_msg_recovery = params.result;
+        }
+    });
+
+
   }
 
   invalidateEntry(): boolean {

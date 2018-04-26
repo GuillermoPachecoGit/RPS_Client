@@ -72,12 +72,8 @@ export class AnalisysDashboardComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.idUser = params['id'];
    }); 
-    //this.initialize();
   }
 
-  initialize(): void {
-    this.getProject();
-  }
 
 
   getProject(): void {
