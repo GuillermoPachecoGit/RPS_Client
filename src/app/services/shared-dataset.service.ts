@@ -20,8 +20,7 @@ export class SharedDatasetService {
     private selected_distance = new Subject<any>();
     private notification_count = new Subject<any>();
     private error_login = new Subject<any>();
-
-    
+    private description_msg = new Subject<any>();
 
     setDistance(distance: any){
         this.distanceResult.next(JSON.parse(distance));
@@ -143,5 +142,13 @@ export class SharedDatasetService {
 
     getErrorLogin(): Observable<any> {
         return this.error_login.asObservable();
+    }
+
+    setDescription(value: any) {
+        this.description_msg.next(value);
+    }
+
+    getDescription(): Observable<any> {
+        return this.description_msg.asObservable();
     }
 }

@@ -47,14 +47,15 @@ export class DatasetTreeComponent implements OnInit {
  
   selected_node = 0;
   nodes = [];
-  //options = {};
   index = 0;
   @ViewChild(TreeComponent)
   private tree: TreeComponent;
 
   
   isDataset = false;
-  isDistance = false;
+  isDistance = false;   
+   description_msg = '';
+
 
   options: ITreeOptions = {
     actionMapping
@@ -67,13 +68,13 @@ export class DatasetTreeComponent implements OnInit {
     //Subscriptions
     this.subscription = this.sharedDatasetService.getNewProject().subscribe(
       value => {
-        this.addProjectNew(value.project_id,value.project_name);
+        this.addProjectNew(value.project_id,value.project_name,value.user_id);
     });
 
     this.subscription = this.sharedDatasetService.getUserProjects().subscribe(
       value => {
         value.forEach(element => {
-          this.addProject(element.project_id, element.project_name);
+          this.addProject(element.project_id, element.project_name,element.user_id);
         });
     });
 
@@ -157,6 +158,10 @@ export class DatasetTreeComponent implements OnInit {
     });
 
 
+    this.subscription = this.sharedDatasetService.getDescription().subscribe( params => {
+        console.log(params);
+        this.description_msg = params;
+    });
    }
    //subscription end.
 
@@ -225,13 +230,13 @@ export class DatasetTreeComponent implements OnInit {
     return this.index;
   }
 
-  addProject(id, nameProject) {
-    this.nodes.push( { id: this.getID(), name: nameProject, children: [],project_id: id, isProject: true});
+  addProject(id, nameProject,id_user) {
+    this.nodes.push( { id: this.getID(),user_id: id_user , name: nameProject, children: [],project_id: id, isProject: true});
     this.tree.treeModel.update();
   }
 
-  addProjectNew(id,nameProject) {
-    this.nodes.push( { id: this.getID(), name: nameProject, children: [],project_id: id, isProject: true});
+  addProjectNew(id,nameProject,id_user) {
+    this.nodes.push( { id: this.getID(),user_id: id_user, name: nameProject, children: [],project_id: id, isProject: true});
     this.tree.treeModel.update();
   }
 
@@ -317,6 +322,33 @@ export class DatasetTreeComponent implements OnInit {
   }
 
 
+  editDescription = false;
+
+  changeDescription(e){
+    this.editDescription = true;
+  }
+
+  isProject = false;
+  name_msg = '';
+  error_msg = '';
+  invalid = false;
+  user_id_project = '';
+  confirmDescription(e){
+    //servicio de update de description
+  this.datasetService.updateProject({description: this.description_msg, project_name: this.name_msg, project_id: this.project_id, user_id: this.user_id_project}).subscribe( params => {
+      if(params.result == "ok"){
+        const node = this.tree.treeModel.getNodeById(this.selected_node);
+        node.data.name = this.name_msg;
+        this.tree.treeModel.update();
+        this.editDescription = false;
+        document.getElementById('buttonClose').click();
+      }else{
+        this.invalid = true;
+        this.error_msg = params.result;
+      }
+    });
+  }
+
 
   onRightClick(e){
     console.log(e.node.data);
@@ -326,6 +358,7 @@ export class DatasetTreeComponent implements OnInit {
       //this.selected_node = currentNode.id;
       this.sharedDatasetService.setSelectedDataset({ node: currentNode.id, name: currentNode.name, dataset_id: currentNode.dataset_id, project_id: currentNode.project_id});
       this.isDataset = true;
+      this.isProject = false;
     }
 
     if(currentNode.isDistance){
@@ -333,9 +366,27 @@ export class DatasetTreeComponent implements OnInit {
       //this.selected_node = currentNode.id;
       this.sharedDatasetService.setSelectedDistance({ name: currentNode.name, dataset_id: currentNode.dataset_id, project_id: currentNode.project_id, distance_id: currentNode.distance_id});
       this.isDistance = true;
+      this.isProject = false;
     }    
+
+    if(currentNode.isProject){
+      console.log("PASE POR ACA "+currentNode);
+      this.editDescription = false;
+      this.invalid = false;
+      this.error_msg = '';
+      this.datasetService.getProjectDescription(currentNode.project_id).then( params => {
+        //this.sharedDatasetService.setDescription(params.description);
+        this.name_msg = params.project_name;
+        this.description_msg = params.description;
+        this.project_id = currentNode.project_id;
+        this.user_id_project = currentNode.user_id;
+      });
+
+      this.isProject = true;
+    } 
   }
 
+  project_id = -1;
 
   deleteData(e){
     var result = confirm("Want to delete?");
@@ -392,6 +443,7 @@ export class DatasetTreeComponent implements OnInit {
     var currentNode = e.node.data;
 
     if(currentNode.isProject && !this.expanded_nodes.includes(currentNode.id)){
+        console.log(e.index);        
         this.loadDatasetsByProject(currentNode);
     }
 

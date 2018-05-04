@@ -16,12 +16,11 @@
         <span *ngIf="node.isCollapsed && node.data.isFolderAnalisys" class="glyphicon glyphicon-folder-close"></span>
         <span *ngIf="node.isExpanded && node.data.isFolderAnalisys" class="glyphicon glyphicon-folder-open"></span>
         <span *ngIf="node.data.isDatasetContainer" class="glyphicon glyphicon-file"></span>
-        <span> <a title="Header" data-toggle="popover"  data-placement="right" data-content="Content">{{ node.data.name }}</a></span>
+        <span> <a>{{ node.data.name }}</a></span>
       </ng-template>
   </tree-root>
 
 </div>
-
 
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -30,13 +29,29 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Analisys</h4>
+          <h4 *ngIf="!isProject" class="modal-title">Analisys</h4>
+          <h4 *ngIf="isProject" class="modal-title">Project</h4>
         </div>
         <div class="modal-body"> 
-        <button type="button" [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runProcrustes">Run Procrustes</button>
-        <button type="button"  [disabled]="!isDataset" class="btn btn-success" data-toggle="modal" data-target="#runDistances">Run Distance</button>
-        <button type="button" [disabled]="!isDistance" class="btn btn-info" data-toggle="modal" data-target="#runOrdinations">Run Ordinations</button>
-        <button type="button" (click)="deleteData($event)" class="btn btn-info" data-toggle="modal" data-target="#xxx">Delete</button>
+            <div *ngIf="isProject" >
+                <div>
+                    <label for="Description"  class="control-label">Project name: </label>
+                    <input type="text" (ngModelChange)="changeDescription($event)"  id="name_msg_id" required [(ngModel)]="name_msg" name="name_msg"  #name="ngModel">
+                </div>
+                <div>
+                    <label for="Description"  class="control-label">Project description: </label>
+                    <input type="text" (ngModelChange)="changeDescription($event)"  id="description_msg_id" required [(ngModel)]="description_msg" name="description_msg"  #name="ngModel">
+                </div>
+                <button type="button" *ngIf="editDescription" class="btn btn-success btn-sm"
+                            (click)="confirmDescription()">
+                        <span class="glyphicon glyphicon-upload"></span> Confirm
+                    </button>
+                    <div id="rg_error"> <label *ngIf="invalid" id="error_message"> {{error_msg}}</label></div>
+            </div>
+        <button *ngIf="!isProject" type="button" [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runProcrustes">Run Procrustes</button>
+        <button *ngIf="!isProject"  type="button"  [disabled]="!isDataset" class="btn btn-success" data-toggle="modal" data-target="#runDistances">Run Distance</button>
+        <button *ngIf="!isProject" type="button" [disabled]="!isDistance" class="btn btn-info" data-toggle="modal" data-target="#runOrdinations">Run Ordinations</button>
+        <button *ngIf="!isProject" type="button" (click)="deleteData($event)" class="btn btn-info" data-toggle="modal" data-target="#xxx">Delete</button>
         </div>
         <div class="modal-footer">
           <button type="button" id="buttonClose" class="btn btn-default" data-dismiss="modal">Close</button>

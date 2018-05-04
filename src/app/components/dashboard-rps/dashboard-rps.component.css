@@ -4,7 +4,7 @@
     width: 100%;
 }
 #idGraphics{
-    height: auto;
+    height: 60%;
 }
 #idResult {
     height:200px; 
@@ -23,6 +23,7 @@
 #container_results{
     margin: 0%;
     width: 80%;
+    height: 100%;
 }
 
 #result{

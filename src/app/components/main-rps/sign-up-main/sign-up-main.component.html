@@ -24,12 +24,12 @@
       </select>
     </div> 
     <div class="form-group">
-      <label for="institution">Enter your Institution (university, company, research lab, etc</label>
-      <input type="text" [(ngModel)]="userRPS.institution" name="institution" class="form-control"  id="rg_institution" placeholder="Enter institution">
+      <label for="institution">Enter the Institution (university, company, research lab, etc.)</label>
+      <input type="text" [(ngModel)]="userRPS.institution" name="institution" class="form-control"  id="rg_institution" placeholder="Institution">
     </div>
     <div class="form-group">
-      <label for="area">Enter your Working Area</label>
-      <input type="text" [(ngModel)]="userRPS.area" name="area" class="form-control" id="rg_area" placeholder="Enter the work area">
+      <label for="area">Enter the Working Area</label>
+      <input type="text" [(ngModel)]="userRPS.area" name="area" class="form-control" id="rg_area" placeholder="Working area">
     </div>
     <div id="rg_error"> <label *ngIf="invalid" id="error_signup"> {{error_msg}}</label></div>
     <button id="btn_registerSubmit" type="submit" class="btn btn-primary">Submit</button>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { SharedDatasetService } from './shared-dataset.service';
 
 
@@ -30,7 +30,8 @@ export class GetProjectsService {
   private url_request_DistanceByProject = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_distances_by_project';
   private url_request_ordinations = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_ordinations';
   private url_request_userById = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_user_by_id';
-
+  
+  private url_update_project = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/update_project';
 
 
 //load pending
@@ -39,6 +40,8 @@ private url_request_dataset_pending = 'http://'+this.shared.getServerIP()+':3000
 private url_request_distance_pending = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_distance_pending';
 private url_request_ordination_pending = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_ordination_pending';
 
+
+private url_request_description_project = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/getDescription';
 
 
 getPendingDatasets(project_id: string) {
@@ -134,12 +137,29 @@ getPendingOrdinations(project_id: string) {
     .toPromise();
   }
 
+  getProjectDescription(project_id: string) {
+    return this.http
+    .get(this.generateRequest(this.url_request_description_project,project_id))
+    .map((response) => response.json())
+    .toPromise();
+  }
+
   private generateRequest(url_request,id_user: string) : string {
      url_request += '?';
      // filter by id_user
      url_request += 'id=' + id_user;
      return url_request;
   }
+
+
+  updateProject(data) {
+    // console.log(user);
+    // tslint:disable-next-line:prefer-const
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(this.url_update_project, JSON.stringify(data), { headers : headers })
+                        .map( response => response.json());
+}
 
   private generateRequestAnalisys(url_request, dataset_id: string,project_id: string) : string {
     url_request += '?';

@@ -263,7 +263,9 @@ confirmProject() {
                 this.sharedDatasetService.setNameProject(data.result);
                 document.getElementById('hideAddProject').click();
             }else {
-                alert('Please, retry the operation again.');
+                console.log(data);
+                this.invalid = true;
+                this.error_msg = data.error;
             }
         }, (error) => {
             console.log(error);
