@@ -129,10 +129,11 @@ export class GraphicsDashboardComponent implements OnInit {
     $('#tab_index_id').append('<li ><a data-toggle="tab" is_dataset="'+params.dataset_id+'" href="#tab'+'_'+params.dataset_id + '"' + '>'+params.dataset_name+ ' <button class="close" (click)="closeTab($event)" type="button" title="Remove this page">×</button> </a></li>');
     $('#tab_content_id').append(
       '<div id="tab'+'_'+params.dataset_id + '"' + 'class="tab-pane"  >'
-       + '<div id="dataset'+'_'+params.dataset_id  + '"  style="height: 300px; width: 100%;"></div>'
+       + '<div id="dataset'+'_'+params.dataset_id  + '"  "></div>'
     + '</div>'
 
     );
+    //style="height: 300px; width: 100%;
     return { idGrap: ('dataset'+'_'+params.dataset_id), id: ('tab'+'_'+params.dataset_id)} ;
   }
 
@@ -142,7 +143,7 @@ export class GraphicsDashboardComponent implements OnInit {
     $('#tab_index_id').append('<li ><a data-toggle="tab" is_ordination="'+params.ordination_id+'" href="#tab_'+params.dataset_id+'_'+params.ordination_id + '"' + '>'+params.ordination_name+ ' <button class="close" (click)="closeTab($event)" type="button" title="Remove this page">×</button> </a> </li>');
     $('#tab_content_id').append(
       '<div id="tab_'+params.dataset_id+'_'+params.ordination_id + '"' + 'class="tab-pane" >'
-       + '<div id="ordination'+'_'+params.ordination_id  + '"  style="height: 300px; width: 100%;"></div>'
+       + '<div id="ordination'+'_'+params.ordination_id  + '"  ></div>'
     + '</div>'
 
     );
@@ -196,8 +197,6 @@ export class GraphicsDashboardComponent implements OnInit {
       gridwidth: 0,
       xaxis: { nticks: 10} ,
       yaxis: { scaleanchor: "x"},
-      height: 500,
-      width: 500,
       title: 'Universal Multidimensional Scaling'
     };
 
@@ -235,8 +234,6 @@ export class GraphicsDashboardComponent implements OnInit {
       margin: 2,
       xaxis: { nticks: 10 , showline: false} ,
       yaxis: { scaleanchor: "x" , showline: false},
-      height: 500,
-      width: 500
     };
     Plotly.newPlot(tab, data, layout);
   }

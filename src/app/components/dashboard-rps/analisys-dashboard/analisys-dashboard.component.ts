@@ -11,6 +11,10 @@ import { GetProjectsService } from '../../../services/get-projects.service';
 import { AnalyzeService } from '../../../services/analyze.service';
 import { Subscription } from 'rxjs';
 
+// Declaramos las variables para jQuery
+declare var jQuery: any;
+declare var $: any;
+
 @Component({
   selector: 'app-analisys-dashboard',
   templateUrl: './analisys-dashboard.component.html',
@@ -27,6 +31,8 @@ export class AnalisysDashboardComponent implements OnInit {
   datasetEnable = true;
   distanceEnable = false;
   processing = false;
+  landmarks_excluded = [];
+  specimens_excluded = [];
 
   //Analysis
   analyze = new Analyze('','','',false,false,'', true);
@@ -55,6 +61,9 @@ export class AnalisysDashboardComponent implements OnInit {
         this.distance.dataset_id = params.dataset_id;
         this.distance.project_id = params.project_id;
         this.node_id = params.node;
+
+        this.generateSpecimensSelector(params.data);
+        this.generateLandmarksSelector(params.data);
     });
 
 
@@ -65,7 +74,6 @@ export class AnalisysDashboardComponent implements OnInit {
         this.ordination.project_id = params.project_id;
     });
     }
-
 
 
   ngOnInit() {
@@ -124,6 +132,10 @@ confirmAnalysis(){
         //document.getElementById('hideRunAnalysis').click();
         this.sharedDatasetService.finishedAnalisys(result);
     })
+    this.landmarks_excluded = [];
+    this.specimens_excluded = [];
+    $('#specimens').empty();
+    $('#landmarks').empty();
     document.getElementById('hideRunAnalysis').click();
     document.getElementById('buttonClose').click();
 }
@@ -163,6 +175,27 @@ confirmOrdination(){
     })
     document.getElementById('hideAnalysisOrdination').click();
     document.getElementById('buttonClose').click();
+}
+
+/**
+ * Generate the speciments selector to analize
+ */
+generateSpecimensSelector(params){
+    var key = 0;
+    params.specimen_name.forEach(element => {
+        $('#specimens').append('<li><a  class="small" data-value="'+key+'" tabIndex="-1"><input type="checkbox" checked />'+element+'</a></li>');    
+        key++;
+    });
+}
+
+/**
+ * Generate the landmarks selector to analize
+ */
+generateLandmarksSelector(params){
+    var key = 0;
+    for (let index = 0; index < params.numbers_of_landmark; index++) {
+        $('#landmarks').append('<li><a  class="small" data-value="'+index+'" tabIndex="-1"><input type="checkbox" checked />LM_'+index+'</a></li>');     
+    }     
 }
 
 }

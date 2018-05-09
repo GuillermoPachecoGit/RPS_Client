@@ -4,7 +4,8 @@
     width: 100%;
 }
 #idGraphics{
-    height: 60%;
+    height: auto;
+    width:auto; 
 }
 #idResult {
     height:200px; 

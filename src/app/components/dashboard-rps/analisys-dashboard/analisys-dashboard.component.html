@@ -13,6 +13,48 @@
                         <label for="datasets"  class="control-label">Selected Dataset: <a> {{selected_dataset}} </a></label>
                     </div>
                     <div class="form-group">
+                        <label>Select the specimens to analize: </label>
+                        <div class="container">
+                            <div class="row">
+                                 <div class="col-lg-6">
+                                    <div class="button-group">
+                                        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span ></span>Specimens <span class="caret"></span></button>
+                                        <ul class="dropdown-menu" id="specimens">
+                                        <li><a  class="small" data-value="option1" tabIndex="-1"><input type="checkbox"/>Option 1</a></li>
+                                        <li><a  class="small" data-value="option2" tabIndex="-1"><input type="checkbox"/>Option 2</a></li>
+                                        <li><a  class="small" data-value="option3" tabIndex="-1"><input type="checkbox"/>Option 3</a></li>
+                                        <li><a  class="small" data-value="option4" tabIndex="-1"><input type="checkbox"/>Option 4</a></li>
+                                        <li><a  class="small" data-value="option5" tabIndex="-1"><input type="checkbox"/>Option 5</a></li>
+                                        <li><a  class="small" data-value="option6" tabIndex="-1"><input type="checkbox"/>Option 6</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                    </div>
+
+                    <div class="form-group">
+                            <label>Select the landmarks to analize: </label>
+                            <div class="container">
+                                <div class="row">
+                                     <div class="col-lg-6">
+                                        <div class="button-group">
+                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span ></span>Landmarks<span class="caret"></span></button>
+                                            <ul class="dropdown-menu" id="landmarks" >
+                                            <li><a  class="small" data-value="option1" tabIndex="-1"><input type="checkbox" checked />Option 1</a></li>
+                                            <li><a  class="small" data-value="option2" tabIndex="-1"><input type="checkbox"  />Option 2</a></li>
+                                            <li><a  class="small" data-value="option3" tabIndex="-1"><input type="checkbox"  />Option 3</a></li>
+                                            <li><a  class="small" data-value="option4" tabIndex="-1"><input type="checkbox"  />Option 4</a></li>
+                                            <li><a  class="small" data-value="option5" tabIndex="-1"><input type="checkbox"  />Option 5</a></li>
+                                            <li><a  class="small" data-value="option6" tabIndex="-1"><input type="checkbox"  />Option 6</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+
+                    <div class="form-group">
                         <div class="radio">
                             <label><input type="radio" name="algorithm" [(ngModel)]="analyze.algorithm_selected" [value]=1 >Generalizaded Least-Squares Procrustes Superimposition (GlsP)</label>
                           </div>
@@ -33,7 +75,6 @@
                             (click)="confirmAnalysis()">
                         <span class="glyphicon glyphicon-upload"></span> Confirm
                     </button>
-                    <!--<div id="rg_error"> <label *ngIf="invalid" id="error_message"> {{error_msg}}</label></div>-->
                     <span *ngIf="processing"><h4>Analisys in process, please wait a few minutes...</h4></span>
                 </form>
             </div>
@@ -85,7 +126,8 @@
                     </button>
                     <!--<div id="rg_error"> <label *ngIf="invalid" id="error_message"> {{error_msg}}</label></div>-->
                     <span *ngIf="processing"><h4>Analisys in process, please wait a few minutes...</h4></span>
-                </form></div>
+                </form>
+            </div>
         
             <!-- footer modal -->
             <div class="modal-footer">
@@ -96,7 +138,10 @@
                     <div class="btn-group btn-delete hidden" role="group">
                         <button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Close</button>
                     </div>
-                </div></div></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Modal Ordination -->
@@ -146,5 +191,8 @@
                         <div class="btn-group btn-delete hidden" role="group">
                             <button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Close</button>
                         </div>
-                    </div></div></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
