@@ -356,21 +356,7 @@ export class DatasetTreeComponent implements OnInit {
     this.selected_node = currentNode.id;
 
     if(currentNode.isDataset){
-      var data = this.cache.GetDataset(currentNode.dataset_id)
-      if(data != null){
-        this.sharedDatasetService.sendMessage(data);
-        this.addDatasetData(currentNode.id,JSON.parse(data));
-      }
-      else{
-        this.datasetService.getDatasetsById(currentNode.dataset_id).then((result) =>{
-          data = JSON.parse(result);
-          this.sharedDatasetService.sendMessage(result);
-          this.addDatasetData(currentNode.id,JSON.parse(result));
-        });
-      }
-
-
-      this.sharedDatasetService.setSelectedDataset({ node: currentNode.id, name: currentNode.name, dataset_id: currentNode.dataset_id, project_id: currentNode.project_id, "data":data});
+      this.sharedDatasetService.setSelectedDataset({ node: currentNode.id, name: currentNode.name, dataset_id: currentNode.dataset_id, project_id: currentNode.project_id});
       this.isDataset = true;
       this.isProject = false;
     }
@@ -463,18 +449,16 @@ export class DatasetTreeComponent implements OnInit {
 
     
     if(currentNode.isDataset && !this.expanded_nodes_dataset.includes(currentNode.dataset_id)){
-      
+      this.expanded_nodes_dataset.push(currentNode.dataset_id);
       var data = this.cache.GetDataset(currentNode.dataset_id)
       if(data != null){
         this.sharedDatasetService.sendMessage(data);
         this.addDatasetData(currentNode.id,JSON.parse(data));
-        this.expanded_nodes_dataset.push(currentNode.dataset_id);
       }
       else{
         this.datasetService.getDatasetsById(currentNode.dataset_id).then((result) =>{
           this.sharedDatasetService.sendMessage(result);
           this.addDatasetData(currentNode.id,JSON.parse(result));
-          this.expanded_nodes_dataset.push(currentNode.dataset_id);
         });
       }
       
