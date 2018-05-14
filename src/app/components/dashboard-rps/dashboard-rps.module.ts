@@ -24,7 +24,6 @@ import { TreeModule } from 'angular-tree-component';
 import { AnalisysDashboardComponent } from './analisys-dashboard/analisys-dashboard.component';
 import { RemoveService } from '../../services/remove.service';
 
-
 @NgModule({
   imports: [
     CommonModule,

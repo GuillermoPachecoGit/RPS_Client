@@ -6,6 +6,8 @@ export class Analyze {
         public algorithm_selected: boolean,
         public show_consensus_selected: boolean,
         public user_id: string,
-        public isAnalyze: boolean
+        public isAnalyze: boolean,
+        public excluided_specimen: string[],
+        public excluided_landmark: string[],
       ) {  }
 }

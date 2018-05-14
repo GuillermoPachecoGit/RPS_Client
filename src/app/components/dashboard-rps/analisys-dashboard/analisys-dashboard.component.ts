@@ -35,7 +35,7 @@ export class AnalisysDashboardComponent implements OnInit {
   specimens_excluded = [];
 
   //Analysis
-  analyze = new Analyze('','','',false,false,'', true);
+  analyze = new Analyze('','','',false,false,'', true,[],[]);
   distance = new Distance(false,'','','',true,'');
   ordination = new Ordination(false,'','','','',true,'');
 
@@ -62,8 +62,12 @@ export class AnalisysDashboardComponent implements OnInit {
         this.distance.project_id = params.project_id;
         this.node_id = params.node;
 
+
+        console.log(params.data);
+        this.landmarks_excluded = [];
+        this.specimens_excluded = [];
         this.generateSpecimensSelector(params.data);
-        this.generateLandmarksSelector(params.data);
+        this.generateLandmarksSelector(params.data);  
     });
 
 
@@ -73,13 +77,63 @@ export class AnalisysDashboardComponent implements OnInit {
         this.ordination.distance_id = params.distance_id;
         this.ordination.project_id = params.project_id;
     });
+
+    $(document).on('click', ':checkbox', function() {
+        sharedDatasetService.setExclutionObject(this);
+    });
+
+    this.subscription = this.sharedDatasetService.getExclutionObject().subscribe(
+        params => {
+            
+            if(params.checked){
+                console.log('Tildo: '+ JSON.stringify(elem));
+                var elem = $( params );
+                if ( elem.attr( "isLandmark" )) {
+
+                    var index  = this.landmarks_excluded.indexOf(elem.attr("value"));
+                    
+                    if (index > -1) {
+                        console.log('Elimine el specimen: '+index);
+                        this.landmarks_excluded.splice(index, 1);
+                        console.log(this.landmarks_excluded);
+                    }
+                }
+                if ( elem.attr( "isSpecimen" )) {
+                    var index  = this.specimens_excluded.indexOf(elem.attr("value"));
+                    console.log(index);
+                    if (index > -1) {
+                        console.log('Elimine el landmark: '+index);
+                        this.specimens_excluded.splice(index, 1);
+                        console.log(this.specimens_excluded);
+                    }
+                }
+            }
+            else{
+                var elem = $( params );
+                
+                if ( elem.attr( "isLandmark" )) {
+                    console.log('Agrego el elmento landmark: '+elem.attr("value"));
+                    this.landmarks_excluded.push(elem.attr("value"));
+                }
+                if ( elem.attr( "isSpecimen" )) {
+                    console.log('Agrego el elmento specimen: '+elem.attr("value"));
+                    this.specimens_excluded.push(elem.attr("value"));
+    
+                }
+            }
+        }
+    )
+   
     }
 
+    options = [];
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.idUser = params['id'];
    }); 
+
+   
   }
 
 
@@ -124,18 +178,16 @@ confirmAnalysis(){
     this.processing = true;
     this.analyze.user_id = this.idUser;
     this.sharedDatasetService.newAnalisys(this.analyze);
+    this.analyze.excluided_landmark =  this.landmarks_excluded;
+    this.analyze.excluided_specimen = this.specimens_excluded;
     this.analizeService.runAnalyze(this.analyze).subscribe(result => {
-        this.analyze = new Analyze('','','',false,false,'',true);
+        this.analyze = new Analyze('','','',false,false,'',true,[],[]);
         this.datasetEnable = false;
         this.processing = false;
-        //this.sharedDatasetService.sendMessage(result); 
-        //document.getElementById('hideRunAnalysis').click();
+        this.landmarks_excluded = [];
+        this.specimens_excluded = [];
         this.sharedDatasetService.finishedAnalisys(result);
     })
-    this.landmarks_excluded = [];
-    this.specimens_excluded = [];
-    $('#specimens').empty();
-    $('#landmarks').empty();
     document.getElementById('hideRunAnalysis').click();
     document.getElementById('buttonClose').click();
 }
@@ -182,8 +234,10 @@ confirmOrdination(){
  */
 generateSpecimensSelector(params){
     var key = 0;
+    $('#specimens li').remove();
+    this.specimens_excluded = [];
     params.specimen_name.forEach(element => {
-        $('#specimens').append('<li><a  class="small" data-value="'+key+'" tabIndex="-1"><input type="checkbox" checked />'+element+'</a></li>');    
+        $('#specimens').append('<li><a  class="small" data-value="'+key+'" tabIndex="-1"><input type="checkbox" value="'+key +'" isSpecimen="true"  checked />'+element+'</a></li>');    
         key++;
     });
 }
@@ -193,8 +247,10 @@ generateSpecimensSelector(params){
  */
 generateLandmarksSelector(params){
     var key = 0;
+    $('#landmarks li').remove();
+    this.landmarks_excluded = [];
     for (let index = 0; index < params.numbers_of_landmark; index++) {
-        $('#landmarks').append('<li><a  class="small" data-value="'+index+'" tabIndex="-1"><input type="checkbox" checked />LM_'+index+'</a></li>');     
+        $('#landmarks').append('<li><a  class="small" data-value="'+index+'" tabIndex="-1"><input type="checkbox" value="'+index +'" isLandmark="true" checked />LM_'+index+'</a></li>');     
     }     
 }
 

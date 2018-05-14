@@ -22,12 +22,13 @@ export class SharedDatasetService {
     private error_login = new Subject<any>();
     private description_msg = new Subject<any>();
 
+    private exclutions  = new Subject<any>();
     setDistance(distance: any){
         this.distanceResult.next(JSON.parse(distance));
     }
 
     getServerIP(){
-        return "10.1.6.31"
+        return "localhost"
     }
 
     getDistance() : Observable<any> {
@@ -150,5 +151,13 @@ export class SharedDatasetService {
 
     getDescription(): Observable<any> {
         return this.description_msg.asObservable();
+    }
+
+    setExclutionObject(value: any) {
+        this.exclutions.next(value);
+    }
+
+    getExclutionObject(): Observable<any> {
+        return this.exclutions.asObservable();
     }
 }

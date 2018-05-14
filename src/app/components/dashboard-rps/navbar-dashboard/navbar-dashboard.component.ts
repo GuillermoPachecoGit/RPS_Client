@@ -48,7 +48,7 @@ export class NavbarDashboardComponent implements OnInit {
   new_in_progress = 0;
 
   //Analysis
-  analyze = new Analyze('','','',false,false,'',true);
+  analyze = new Analyze('','','',false,false,'',true,[],[]);
   distance = new Distance(false,'','','', true,'');
   ordination = new Ordination(false,'','','','', true,'');
 

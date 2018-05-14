@@ -83,16 +83,15 @@ export class DatasetTreeComponent implements OnInit {
 
         if(!this.expanded_nodes_dataset.includes(value.dataset_id)){
           //lo expando
+          this.expanded_nodes_dataset.push(value.dataset_id); 
           if(this.selected_node != 0){
             var node = this.tree.treeModel.getNodeById(this.selected_node);
-            this.expanded_nodes_dataset.push(value.dataset_id);
             this.cache.AddDataset(value.dataset_id,value);
             this.selected_node = 0;
             node.data.children.push({ id: this.getID(), name: value.dataset_name, project_id: value.project_id ,dataset_id: value.dataset_id, children: [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(value.specimens, value.specimen_name, value.dimention, value.numbers_of_specimen,value.numbers_of_landmark), isFolderSpecimen: true}], isDataset : true });
             this.tree.treeModel.update();
           }
-          else{
-            this.expanded_nodes_dataset.push(value.dataset_id);           
+          else{       
             this.cache.AddDataset(value.dataset_id,value);
             this.selected_node = 0;
             //node.data.children.push({ id: this.getID(), name: value.dataset_name, project_id: value.project_id ,dataset_id: value.dataset_id, children: [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(value.specimens, value.specimen_name, value.dimention, value.numbers_of_specimen,value.numbers_of_landmark), isFolderSpecimen: true}], isDataset : true });
@@ -162,6 +161,13 @@ export class DatasetTreeComponent implements OnInit {
         console.log(params);
         this.description_msg = params;
     });
+
+
+
+
+    var options = [];
+
+
    }
    //subscription end.
 
@@ -356,7 +362,18 @@ export class DatasetTreeComponent implements OnInit {
     this.selected_node = currentNode.id;
 
     if(currentNode.isDataset){
-      this.sharedDatasetService.setSelectedDataset({ node: currentNode.id, name: currentNode.name, dataset_id: currentNode.dataset_id, project_id: currentNode.project_id});
+
+      var data = this.cache.GetDataset(currentNode.dataset_id)
+      if(data == null){
+        this.datasetService.getDatasetsById(currentNode.dataset_id).then((result) =>{
+          data = JSON.parse(result);
+          this.sharedDatasetService.setSelectedDataset({ node: currentNode.id, name: currentNode.name, dataset_id: currentNode.dataset_id, project_id: currentNode.project_id, "data": data});
+          this.cache.AddDataset(result.dataset_id,result);
+        });
+      }else{
+        this.sharedDatasetService.setSelectedDataset({ node: currentNode.id, name: currentNode.name, dataset_id: currentNode.dataset_id, project_id: currentNode.project_id, "data": data});
+      }
+    
       this.isDataset = true;
       this.isProject = false;
     }

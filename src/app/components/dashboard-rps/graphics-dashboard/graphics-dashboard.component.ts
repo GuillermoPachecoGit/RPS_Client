@@ -211,8 +211,8 @@ export class GraphicsDashboardComponent implements OnInit {
     let colors = params['colors'];
     let names = params['specimen_name'];
 
-    for (let index = 0; index < specimens.length; index++) {
-      const element = specimens[index]['specimen' + index];
+    for (let index = 0; index < specimens.data.length; index++) {
+      const element = specimens.data[index]['specimen' + index];
 
      let resultArray = this.generateArrayPlot(element, params.dimention);
       var trace = {
@@ -225,7 +225,8 @@ export class GraphicsDashboardComponent implements OnInit {
           color: colors[index]}
         },
         type: 'scatter',
-        name: names[index]
+        name: names[index],
+        text: this.namesLandmaks(params)
       };
       data.push(trace);
     }
@@ -233,9 +234,20 @@ export class GraphicsDashboardComponent implements OnInit {
     var layout = {
       margin: 2,
       xaxis: { nticks: 10 , showline: false} ,
-      yaxis: { scaleanchor: "x" , showline: false},
+      yaxis: { scaleanchor: "x" , showline: false}
     };
     Plotly.newPlot(tab, data, layout);
+  }
+
+  namesLandmaks(params){
+    var result = [];
+    for (let index = 0; index < params.specimens.numbers_of_landmarks; index++) {
+      if(!params.specimens.excluded_land.includes(index.toString())){
+          result.push('LM_'+index.toString());
+      }
+    }
+    console.log(result);
+    return result;
   }
 
   generateGraphicsPlotly(params, tab){
@@ -244,8 +256,8 @@ export class GraphicsDashboardComponent implements OnInit {
         let colors = params['colors'];
         let names = params['specimen_name'];
 
-        for (let index = 0; index < specimens.length; index++) {
-          const element = specimens[index]['specimen' + index];
+        for (let index = 0; index < specimens.data.length; index++) {
+          const element = specimens.data[index]['specimen' + index];
 
          let resultArray = this.generateArrayPlot(element, params.dimention);
 
@@ -261,7 +273,8 @@ export class GraphicsDashboardComponent implements OnInit {
               width: 0.5},
               opacity: 0.8},
             type: 'scatter3d',
-            name: names[index]
+            name: names[index],
+            text: this.namesLandmaks(params)
           };
           data.push(trace);
         }
