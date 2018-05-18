@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, AfterViewInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import {ParamMap, ActivatedRoute, Params } from '@angular/router';
 
@@ -127,6 +127,18 @@ export class NavbarDashboardComponent implements OnInit {
        }
    });
 
+  }
+
+  @ViewChild('form') form;
+
+
+  openPopUp(e){
+    //this.form.nativeElement.reset();
+    this.invalid = false;
+    this.processing = false;
+    this.project = new Project('','','');
+    this.dataset = new Dataset('','',1);
+    this.filesToUpload = [];
   }
 
   addNotificationDataset(params) {
@@ -328,6 +340,7 @@ upload() {
                 this.dataset = new Dataset('','',1);
                 this.sharedDatasetService.sendMessage(result);
                 this.processing = false;
+                this.filesToUpload = [];
                 this.invalid = false;
                 document.getElementById('hideAddDataset').click();
             }

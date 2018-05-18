@@ -241,9 +241,9 @@ export class GraphicsDashboardComponent implements OnInit {
 
   namesLandmaks(params){
     var result = [];
-    for (let index = 0; index < params.specimens.numbers_of_landmarks; index++) {
+    for (let index = 0; index < params.specimens.root_number_landmarks; index++) {
       if(!params.specimens.excluded_land.includes(index.toString())){
-          result.push('LM_'+index.toString());
+          result.push('LM_'+(index+1).toString());
       }
     }
     console.log(result);

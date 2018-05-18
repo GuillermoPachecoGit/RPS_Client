@@ -242,6 +242,19 @@ generateSpecimensSelector(params){
     });
 }
 
+visibleParamsResistent = false;
+
+handleChange(evt) {
+    var target = evt.target;
+    if (target.checked) {
+        this.visibleParamsResistent = true;
+    } else {
+        this.visibleParamsResistent = false;
+    }
+  }
+
+
+
 /**
  * Generate the landmarks selector to analize
  */
@@ -249,9 +262,11 @@ generateLandmarksSelector(params){
     var key = 0;
     $('#landmarks li').remove();
     this.landmarks_excluded = [];
-    for (let index = 0; index < params.numbers_of_landmark; index++) {
-        $('#landmarks').append('<li><a  class="small" data-value="'+index+'" tabIndex="-1"><input type="checkbox" value="'+index +'" isLandmark="true" checked />LM_'+index+'</a></li>');     
-    }     
+    for (let index = 0; index < params.specimens.root_number_landmarks; index++) {  
+        if(!params.specimens.excluded_land.includes(index.toString())){
+            $('#landmarks').append('<li><a  class="small" data-value="'+index+'" tabIndex="-1"><input type="checkbox" value="'+index +'" isLandmark="true" checked />LM_'+(index+1)+'</a></li>');     
+        }
+    }
 }
 
 }

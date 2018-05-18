@@ -4,8 +4,8 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a class="navbar-brand"  >RPS Online</a></li>
-                <li><a data-toggle="modal" data-target="#addProject"  ><span class="glyphicon glyphicon-plus"></span>Add Project</a></li>
-                <li><a data-toggle="modal" data-target="#uploadFile"  ><span class="glyphicon glyphicon-open"></span>Upload Dataset</a></li>
+                <li><a (click)="openPopUp($event)" data-toggle="modal" data-target="#addProject"  ><span class="glyphicon glyphicon-plus"></span>Add Project</a></li>
+                <li><a (click)="openPopUp($event)" data-toggle="modal" data-target="#uploadFile"  ><span class="glyphicon glyphicon-open"></span>Upload Dataset</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">  
                 
@@ -55,7 +55,7 @@
   
               <!--body modal-->    
           <div class="modal-body">    
-              <form method="post"  enctype="multipart/form-data"> 
+              <form  #form method="post"  enctype="multipart/form-data"> 
                       <div class="form-group">
                       <label for="project_for_data"  class="control-label">Select Project to dataset</label>
                           <div>
@@ -74,7 +74,10 @@
                                   </div>
                                   <div class="radio-inline">
                                     <label><input type="radio" name="algorithm" [(ngModel)]="dataset.type_file" [value]=3 >.txt (morphologika)</label>
-                                </div>
+                                  </div>
+                                  <div class="radio-inline">
+                                    <label><input type="radio" name="algorithm" [(ngModel)]="dataset.type_file" [value]=4 >.txt (MorphoJ)</label>
+                                  </div>
                       </div>
                       <div class="form-group">
                       <label>Input file</label>
