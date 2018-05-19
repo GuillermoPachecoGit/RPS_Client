@@ -35,7 +35,7 @@ export class AnalisysDashboardComponent implements OnInit {
   specimens_excluded = [];
 
   //Analysis
-  analyze = new Analyze('','','',false,false,'', true,[],[]);
+  analyze = new Analyze('','','',false,false,'', true,[],[],'','');
   distance = new Distance(false,'','','',true,'');
   ordination = new Ordination(false,'','','','',true,'');
 
@@ -181,7 +181,7 @@ confirmAnalysis(){
     this.analyze.excluided_landmark =  this.landmarks_excluded;
     this.analyze.excluided_specimen = this.specimens_excluded;
     this.analizeService.runAnalyze(this.analyze).subscribe(result => {
-        this.analyze = new Analyze('','','',false,false,'',true,[],[]);
+        this.analyze = new Analyze('','','',false,false,'',true,[],[],'','');
         this.datasetEnable = false;
         this.processing = false;
         this.landmarks_excluded = [];
@@ -244,14 +244,13 @@ generateSpecimensSelector(params){
 
 visibleParamsResistent = false;
 
-handleChange(evt) {
-    var target = evt.target;
-    if (target.checked) {
-        this.visibleParamsResistent = true;
-    } else {
+handleChangeCM(evt) {
         this.visibleParamsResistent = false;
-    }
-  }
+}
+
+handleChange(evt) {
+        this.visibleParamsResistent = true;
+}
 
 
 

@@ -44,10 +44,15 @@
 
                     <div class="form-group">
                             <div class="radio">
-                            <label><input type="radio" name="algorithm"  [(ngModel)]="analyze.algorithm_selected" [value]=1 >Generalizaded Least-Squares Procrustes Superimposition (GlsP)</label>
+                            <label><input type="radio" (change)="handleChangeCM($event)"  name="algorithm"  [(ngModel)]="analyze.algorithm_selected" [value]=1 >Generalizaded Least-Squares Procrustes Superimposition (GlsP)</label>
                           </div>
                           <div class="radio">
                             <label><input type="radio" (change)="handleChange($event)" name="algorithm" [(ngModel)]="analyze.algorithm_selected" [value]=2 >Generalizaded Resistant Procrustes Superimposition (GrP)</label>
+                            <div *ngIf="visibleParamsResistent">
+                                    <label> <b>Tolerance:</b> <input type="text"  class="input_r"  [(ngModel)]="analyze.iterations" (change)="handleChange($event)" name="tolerance" ></label>
+                                    <label> <b>Iterations:</b>  <input type="text" class="input_r" [(ngModel)]="analyze.tolerance" (change)="handleChange($event)" name="iterations"  ></label>
+                            </div>
+                            
                           </div>
                     </div>
                     <div class="form-group">

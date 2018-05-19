@@ -9,5 +9,7 @@ export class Analyze {
         public isAnalyze: boolean,
         public excluided_specimen: string[],
         public excluided_landmark: string[],
+        public iterations: string,
+        public tolerance: string
       ) {  }
 }
