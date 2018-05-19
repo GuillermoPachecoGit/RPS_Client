@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Project } from '../navbar-dashboard/Project';
+import { Project } from '../navbar-dashboard/project';
 import { Dataset } from '../navbar-dashboard/dataset';
 import { Distance } from '../navbar-dashboard/distance';
 import { Analyze } from '../navbar-dashboard/analyze';

@@ -43,7 +43,7 @@
                         </div>
 
                     <div class="form-group">
-                        <div class="radio">
+                            <div class="radio">
                             <label><input type="radio" name="algorithm"  [(ngModel)]="analyze.algorithm_selected" [value]=1 >Generalizaded Least-Squares Procrustes Superimposition (GlsP)</label>
                           </div>
                           <div class="radio">
@@ -54,9 +54,7 @@
                         <div class="radio">
                             <input type="checkbox"  [(ngModel)]="analyze.show_consensus_selected" name="show_consensus_selected" [value]=true >  Show consensus 
                           </div>
-                          <label for="country"  class="control-label">Tab Name: <input type="text"  class="form-control"  id="tab_name_analysis" required [(ngModel)]="analyze.dataset_name" name="tab_name_analysis" placeholder="" #name="ngModel"> </label>
-                        
-                    </div>                      
+                    </div>                  
                     <div class="form-group">
                         <label for="country"  class="control-label">Tab Name: </label>
                         <input type="text"  class="form-control"  id="tab_name_analysis" required [(ngModel)]="analyze.dataset_name" name="tab_name_analysis" placeholder="" #name="ngModel">

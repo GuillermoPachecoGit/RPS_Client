@@ -224,7 +224,7 @@ export class ResultDashboardComponent implements OnInit {
 
   generateTable(params, tab){
     let data = [];
-    let specimens = params['specimens'];
+    let specimens = params['specimens']['data'];
     let names = params['specimen_name'];
     for (let index = 0; index < specimens.length; index++) {
       const specimen = specimens[index]['specimen' + index];

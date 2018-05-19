@@ -5,7 +5,7 @@ import {ParamMap, ActivatedRoute, Params } from '@angular/router';
 /**
  * Data Components
  */
-import { Project } from './Project';
+import { Project } from './project';
 import { Dataset } from './dataset';
 
 
