@@ -28,7 +28,7 @@ export class SharedDatasetService {
     }
 
     getServerIP(){
-        return "localhost"
+        return "10.1.6.31"
     }
 
     getDistance() : Observable<any> {
