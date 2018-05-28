@@ -345,9 +345,7 @@ var AuthService = (function () {
         this.userService.validateUser(email, pass).subscribe(function (data) {
             var resp = data['error'];
             if (resp === 'success') {
-                console.log('entre a retornar exito');
                 _this.isLoggedIn = true;
-                // this.sharedDatasetService.setIdUser();
                 _this.route.navigate(['/dashboard', data['id_user']]);
             }
             else {
@@ -412,7 +410,7 @@ var SharedDatasetService = (function () {
         this.distanceResult.next(JSON.parse(distance));
     };
     SharedDatasetService.prototype.getServerIP = function () {
-        return "10.1.6.31";
+        return "rps.pladema.net:80";
     };
     SharedDatasetService.prototype.getDistance = function () {
         return this.distanceResult.asObservable();
@@ -547,11 +545,11 @@ var UserService = (function () {
     function UserService(http, shared) {
         this.http = http;
         this.shared = shared;
-        this.url_save = 'http://' + this.shared.getServerIP() + ':3000/db_request_user_w/register_user';
+        this.url_save = 'http://' + this.shared.getServerIP() + '/db_request_user_w/register_user';
         // tslint:disable-next-line:member-ordering
-        this.url_validate = 'http://' + this.shared.getServerIP() + ':3000/db_request_user/validate_user';
-        this.url_update = 'http://' + this.shared.getServerIP() + ':3000/db_request_user/update_user';
-        this.url_recovery = 'http://' + this.shared.getServerIP() + ':3000/db_request_user/pass_recovery';
+        this.url_validate = 'http://' + this.shared.getServerIP() + '/db_request_user/validate_user';
+        this.url_update = 'http://' + this.shared.getServerIP() + '/db_request_user/update_user';
+        this.url_recovery = 'http://' + this.shared.getServerIP() + '/db_request_user/pass_recovery';
     }
     UserService.prototype.registerUser = function (user) {
         // console.log(user);

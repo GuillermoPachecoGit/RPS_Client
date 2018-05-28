@@ -39,7 +39,6 @@ export class SignInMainComponent implements OnInit {
     
     this.subscription = this.shared.getErrorLogin().subscribe( params => {
         this.invalid = true;
-        console.log(params);
         this.lg_error_message = params;
     });
   }

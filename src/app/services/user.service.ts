@@ -13,7 +13,7 @@ export class UserService {
     constructor(private http: Http, private shared: SharedDatasetService) { }
 
 
-    url_save = 'http://'+this.shared.getServerIP()+':3000/db_request_user_w/register_user';
+    url_save = 'http://'+this.shared.getServerIP()+'/db_request_user_w/register_user';
 
     registerUser(user: UserRps) {
        // console.log(user);
@@ -26,9 +26,9 @@ export class UserService {
     }
 
     // tslint:disable-next-line:member-ordering
-    url_validate = 'http://'+this.shared.getServerIP()+':3000/db_request_user/validate_user';
-    url_update = 'http://'+this.shared.getServerIP()+':3000/db_request_user/update_user';
-    url_recovery = 'http://'+this.shared.getServerIP()+':3000/db_request_user/pass_recovery';
+    url_validate = 'http://'+this.shared.getServerIP()+'/db_request_user/validate_user';
+    url_update = 'http://'+this.shared.getServerIP()+'/db_request_user/update_user';
+    url_recovery = 'http://'+this.shared.getServerIP()+'/db_request_user/pass_recovery';
 
     validateUser(email: string, pass: string) {
         // console.log(user);

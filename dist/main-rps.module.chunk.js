@@ -370,7 +370,6 @@ var SignInMainComponent = (function () {
         this.error_msg_recovery = '';
         this.subscription = this.shared.getErrorLogin().subscribe(function (params) {
             _this.invalid = true;
-            console.log(params);
             _this.lg_error_message = params;
         });
     }
@@ -607,7 +606,7 @@ var InitTemplateService = (function () {
     function InitTemplateService(http, shared) {
         this.http = http;
         this.shared = shared;
-        this.url = 'http://' + this.shared.getServerIP() + ':3000/db_request_country/get_countries';
+        this.url = 'http://' + this.shared.getServerIP() + '/db_request_country/get_countries';
     }
     InitTemplateService.prototype.getCountries = function () {
         return this.http.get(this.url)

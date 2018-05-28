@@ -1203,6 +1203,7 @@ var GraphicsDashboardComponent = (function () {
         var specimens = params['specimens'];
         var colors = params['colors'];
         var names = params['specimen_name'];
+        console.log("PASE POR ACA   " + JSON.stringify(specimens));
         for (var index = 0; index < specimens.data.length; index++) {
             var element = specimens.data[index]['specimen' + index];
             var resultArray = this.generateArrayPlot(element, params.dimention);
@@ -2115,9 +2116,9 @@ var AnalyzeService = (function () {
     function AnalyzeService(http, shared) {
         this.http = http;
         this.shared = shared;
-        this.url_save = 'http://' + this.shared.getServerIP() + ':3000/db_request_analisys_w/runAnalize';
-        this.url_save_distance = 'http://' + this.shared.getServerIP() + ':3000/db_request_distance_w/runDistance';
-        this.url_save_ordination = 'http://' + this.shared.getServerIP() + ':3000/db_request_ordination_w/runOrdination';
+        this.url_save = 'http://' + this.shared.getServerIP() + '/db_request_analisys_w/runAnalize';
+        this.url_save_distance = 'http://' + this.shared.getServerIP() + '/db_request_distance_w/runDistance';
+        this.url_save_ordination = 'http://' + this.shared.getServerIP() + '/db_request_ordination_w/runOrdination';
     }
     AnalyzeService.prototype.runAnalyze = function (data) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]();
@@ -2180,23 +2181,23 @@ var GetProjectsService = (function () {
     function GetProjectsService(http, shared) {
         this.http = http;
         this.shared = shared;
-        this.url_request = 'http://' + this.shared.getServerIP() + ':3000/db_request_project/get_projects';
-        this.url_request_dataset = 'http://' + this.shared.getServerIP() + ':3000/db_request_dataset/get_datasets';
-        this.url_request_distances = 'http://' + this.shared.getServerIP() + ':3000/db_request_dataset/get_distances';
-        this.url_request_datasetById = 'http://' + this.shared.getServerIP() + ':3000/db_request_dataset/get_datasetById';
-        this.url_request_distanceById = 'http://' + this.shared.getServerIP() + ':3000/db_request_dataset/get_distanceById';
-        this.url_request_analisysById = 'http://' + this.shared.getServerIP() + ':3000/db_request_dataset/get_analisys';
-        this.url_request_OnlyDatasetById = 'http://' + this.shared.getServerIP() + ':3000/db_request_dataset/get_only_datasets';
-        this.url_request_OrdinationById = 'http://' + this.shared.getServerIP() + ':3000/db_request_dataset/get_ordinationById';
-        this.url_request_DistanceByProject = 'http://' + this.shared.getServerIP() + ':3000/db_request_dataset/get_distances_by_project';
-        this.url_request_ordinations = 'http://' + this.shared.getServerIP() + ':3000/db_request_dataset/get_ordinations';
-        this.url_request_userById = 'http://' + this.shared.getServerIP() + ':3000/db_request_dataset/get_user_by_id';
-        this.url_update_project = 'http://' + this.shared.getServerIP() + ':3000/db_request_dataset/update_project';
+        this.url_request = 'http://' + this.shared.getServerIP() + '/db_request_project/get_projects';
+        this.url_request_dataset = 'http://' + this.shared.getServerIP() + '/db_request_dataset/get_datasets';
+        this.url_request_distances = 'http://' + this.shared.getServerIP() + '/db_request_dataset/get_distances';
+        this.url_request_datasetById = 'http://' + this.shared.getServerIP() + '/db_request_dataset/get_datasetById';
+        this.url_request_distanceById = 'http://' + this.shared.getServerIP() + '/db_request_dataset/get_distanceById';
+        this.url_request_analisysById = 'http://' + this.shared.getServerIP() + '/db_request_dataset/get_analisys';
+        this.url_request_OnlyDatasetById = 'http://' + this.shared.getServerIP() + '/db_request_dataset/get_only_datasets';
+        this.url_request_OrdinationById = 'http://' + this.shared.getServerIP() + '/db_request_dataset/get_ordinationById';
+        this.url_request_DistanceByProject = 'http://' + this.shared.getServerIP() + '/db_request_dataset/get_distances_by_project';
+        this.url_request_ordinations = 'http://' + this.shared.getServerIP() + '/db_request_dataset/get_ordinations';
+        this.url_request_userById = 'http://' + this.shared.getServerIP() + '/db_request_dataset/get_user_by_id';
+        this.url_update_project = 'http://' + this.shared.getServerIP() + '/db_request_dataset/update_project';
         //load pending
-        this.url_request_dataset_pending = 'http://' + this.shared.getServerIP() + ':3000/db_request_dataset/get_dataset_pending';
-        this.url_request_distance_pending = 'http://' + this.shared.getServerIP() + ':3000/db_request_dataset/get_distance_pending';
-        this.url_request_ordination_pending = 'http://' + this.shared.getServerIP() + ':3000/db_request_dataset/get_ordination_pending';
-        this.url_request_description_project = 'http://' + this.shared.getServerIP() + ':3000/db_request_dataset/getDescription';
+        this.url_request_dataset_pending = 'http://' + this.shared.getServerIP() + '/db_request_dataset/get_dataset_pending';
+        this.url_request_distance_pending = 'http://' + this.shared.getServerIP() + '/db_request_dataset/get_distance_pending';
+        this.url_request_ordination_pending = 'http://' + this.shared.getServerIP() + '/db_request_dataset/get_ordination_pending';
+        this.url_request_description_project = 'http://' + this.shared.getServerIP() + '/db_request_dataset/getDescription';
     }
     GetProjectsService.prototype.getProjectsByData = function (id_user) {
         return this.http
@@ -2360,10 +2361,10 @@ var RemoveService = (function () {
     function RemoveService(http, shared) {
         this.http = http;
         this.shared = shared;
-        this.url_remove_dataset = 'http://' + this.shared.getServerIP() + ':3000/db_request_remove_w/removeDataset';
-        this.url_remove_distance = 'http://' + this.shared.getServerIP() + ':3000/db_request_remove_w/removeDistance';
-        this.url_remove_ordination = 'http://' + this.shared.getServerIP() + ':3000/db_request_remove_w/removeOrdination';
-        this.url_remove_project = 'http://' + this.shared.getServerIP() + ':3000/db_request_remove_w/removeProject';
+        this.url_remove_dataset = 'http://' + this.shared.getServerIP() + '/db_request_remove_w/removeDataset';
+        this.url_remove_distance = 'http://' + this.shared.getServerIP() + '/db_request_remove_w/removeDistance';
+        this.url_remove_ordination = 'http://' + this.shared.getServerIP() + '/db_request_remove_w/removeOrdination';
+        this.url_remove_project = 'http://' + this.shared.getServerIP() + '/db_request_remove_w/removeProject';
     }
     RemoveService.prototype.removeDataset = function (dataset_id) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]();
@@ -2430,8 +2431,8 @@ var UploadFileService = (function () {
     function UploadFileService(http, shared) {
         this.http = http;
         this.shared = shared;
-        this.url = 'http://' + this.shared.getServerIP() + ':3000/uploadFile';
-        this.url_project = 'http://' + this.shared.getServerIP() + ':3000/db_request_project_w/addProject';
+        this.url = 'http://' + this.shared.getServerIP() + '/uploadFile';
+        this.url_project = 'http://' + this.shared.getServerIP() + '/db_request_project_w/addProject';
     }
     UploadFileService.prototype.makeFileRequest = function (params, data, files) {
         var _this = this;

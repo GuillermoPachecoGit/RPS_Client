@@ -211,6 +211,8 @@ export class GraphicsDashboardComponent implements OnInit {
     let colors = params['colors'];
     let names = params['specimen_name'];
 
+    console.log("PASE POR ACA   "+ JSON.stringify(specimens));
+
     for (let index = 0; index < specimens.data.length; index++) {
       const element = specimens.data[index]['specimen' + index];
 

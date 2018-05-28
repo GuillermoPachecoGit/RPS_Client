@@ -11,7 +11,7 @@ export class GetProjectsService {
   
   constructor(private http: Http, private shared: SharedDatasetService) { }
 
-  private url_request = 'http://'+this.shared.getServerIP()+':3000/db_request_project/get_projects';
+  private url_request = 'http://'+this.shared.getServerIP()+'/db_request_project/get_projects';
 
   getProjectsByData(id_user: string) {
       return this.http
@@ -20,28 +20,28 @@ export class GetProjectsService {
       .toPromise();
   }
 
-  private url_request_dataset = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_datasets';
-  private url_request_distances = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_distances';
-  private url_request_datasetById = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_datasetById';
-  private url_request_distanceById = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_distanceById';
-  private url_request_analisysById = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_analisys';
-  private url_request_OnlyDatasetById = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_only_datasets';
-  private url_request_OrdinationById = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_ordinationById';
-  private url_request_DistanceByProject = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_distances_by_project';
-  private url_request_ordinations = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_ordinations';
-  private url_request_userById = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_user_by_id';
+  private url_request_dataset = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_datasets';
+  private url_request_distances = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_distances';
+  private url_request_datasetById = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_datasetById';
+  private url_request_distanceById = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_distanceById';
+  private url_request_analisysById = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_analisys';
+  private url_request_OnlyDatasetById = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_only_datasets';
+  private url_request_OrdinationById = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_ordinationById';
+  private url_request_DistanceByProject = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_distances_by_project';
+  private url_request_ordinations = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_ordinations';
+  private url_request_userById = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_user_by_id';
   
-  private url_update_project = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/update_project';
+  private url_update_project = 'http://'+this.shared.getServerIP()+'/db_request_dataset/update_project';
 
 
 //load pending
 
-private url_request_dataset_pending = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_dataset_pending';
-private url_request_distance_pending = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_distance_pending';
-private url_request_ordination_pending = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/get_ordination_pending';
+private url_request_dataset_pending = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_dataset_pending';
+private url_request_distance_pending = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_distance_pending';
+private url_request_ordination_pending = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_ordination_pending';
 
 
-private url_request_description_project = 'http://'+this.shared.getServerIP()+':3000/db_request_dataset/getDescription';
+private url_request_description_project = 'http://'+this.shared.getServerIP()+'/db_request_dataset/getDescription';
 
 
 getPendingDatasets(project_id: string) {

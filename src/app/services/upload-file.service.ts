@@ -9,8 +9,8 @@ export class UploadFileService {
 
     constructor(private http: Http, private shared: SharedDatasetService) { }
 
-    url = 'http://'+this.shared.getServerIP()+':3000/uploadFile';
-    url_project = 'http://'+this.shared.getServerIP()+':3000/db_request_project_w/addProject';
+    url = 'http://'+this.shared.getServerIP()+'/uploadFile';
+    url_project = 'http://'+this.shared.getServerIP()+'/db_request_project_w/addProject';
 
     makeFileRequest(params: Array<string>, data: Dataset, files: Array<File>) {
         return new Promise((resolve, reject) => {

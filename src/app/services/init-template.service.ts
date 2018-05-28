@@ -9,7 +9,7 @@ import { SharedDatasetService } from './shared-dataset.service';
 @Injectable()
 export class InitTemplateService {
 
-   url = 'http://'+this.shared.getServerIP()+':3000/db_request_country/get_countries';
+   url = 'http://'+this.shared.getServerIP()+'/db_request_country/get_countries';
 
    constructor(private http: Http, private shared: SharedDatasetService){ }
 

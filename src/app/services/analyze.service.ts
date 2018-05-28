@@ -15,9 +15,9 @@ export class AnalyzeService {
     
 
 
-    url_save = 'http://'+this.shared.getServerIP()+':3000/db_request_analisys_w/runAnalize';
-    url_save_distance = 'http://'+this.shared.getServerIP()+':3000/db_request_distance_w/runDistance';
-    url_save_ordination = 'http://'+this.shared.getServerIP()+':3000/db_request_ordination_w/runOrdination';
+    url_save = 'http://'+this.shared.getServerIP()+'/db_request_analisys_w/runAnalize';
+    url_save_distance = 'http://'+this.shared.getServerIP()+'/db_request_distance_w/runDistance';
+    url_save_ordination = 'http://'+this.shared.getServerIP()+'/db_request_ordination_w/runOrdination';
 
     runAnalyze(data: Analyze) {
        let headers = new Headers();

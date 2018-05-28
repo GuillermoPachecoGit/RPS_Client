@@ -8,10 +8,10 @@ export class RemoveService {
 
   constructor(private http: Http, private shared: SharedDatasetService) { }
 
-  url_remove_dataset = 'http://'+this.shared.getServerIP()+':3000/db_request_remove_w/removeDataset';
-  url_remove_distance = 'http://'+this.shared.getServerIP()+':3000/db_request_remove_w/removeDistance';
-  url_remove_ordination = 'http://'+this.shared.getServerIP()+':3000/db_request_remove_w/removeOrdination';
-  url_remove_project = 'http://'+this.shared.getServerIP()+':3000/db_request_remove_w/removeProject';
+  url_remove_dataset = 'http://'+this.shared.getServerIP()+'/db_request_remove_w/removeDataset';
+  url_remove_distance = 'http://'+this.shared.getServerIP()+'/db_request_remove_w/removeDistance';
+  url_remove_ordination = 'http://'+this.shared.getServerIP()+'/db_request_remove_w/removeOrdination';
+  url_remove_project = 'http://'+this.shared.getServerIP()+'/db_request_remove_w/removeProject';
 
 
   removeDataset(dataset_id: string) {

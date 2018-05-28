@@ -25,9 +25,7 @@ export class AuthService {
    this.userService.validateUser(email, pass).subscribe( data => {
         const resp = data['error'];
         if (resp === 'success') {
-          console.log('entre a retornar exito');
           this.isLoggedIn = true;
-         // this.sharedDatasetService.setIdUser();
           this.route.navigate( ['/dashboard', data['id_user']]);
         }else {
           this.sharedDatasetService.setErrorLogin(resp);
