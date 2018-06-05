@@ -10,7 +10,7 @@
           <input type="password" [(ngModel)]="pass" name="pass" class="form-control" id="lg_pass" placeholder="Password">
         </div>
         <div id="lg_error"> <label *ngIf="invalid" id="lg_error_message">{{lg_error_message}}</label></div>
-        <span> <button id="btn_loginSubmit" type="submit" class="btn btn-primary  btn-success" (click)="onSubmit()">Submit</button>  <button data-toggle="modal" data-target="#passRecovery"  id="btn_recoverypass" (click)="recoverPass()" class="btn btn-info">Recover password</button> </span>
+        <span> <button id="btn_loginSubmit" type="submit" class="btn btn-primary  btn-success" (click)="onSubmit()">Submit</button>  <button data-toggle="modal" data-target="#passRecovery"  id="btn_recoverypass" (click)="passRecovery()" class="btn btn-info">Recover password</button> </span>
   </form>
 </div>
 
@@ -27,10 +27,10 @@
 
             <!--body modal-->    
         <div class="modal-body">    
-            <form  id="lg_form" enctype="multipart/form-data"> 
+            <form  id="lg_formrecovery" enctype="multipart/form-data"> 
                     <div class="form-group">
                       <label>Do you want to recover your password? Please, enter the email account and confirm the operation. Your password will be sent at your email account.  </label>
-                      <input type="text"  class="form-control"  id="email_recovery" required [(ngModel)]="email_recovery" name="email_recovery" placeholder="Email" #name_dataset="ngModel"> 
+                      <input type="text"  class="form-control"  id="email_recovery" required [(ngModel)]="email_recovery" name="email_recovery" placeholder="Email" #name_email="ngModel"> 
                     </div>
                     <div id="rg_error"> <label *ngIf="invalid_recovery" id="error_message"> {{error_msg_recovery}}</label></div>
                     <button type="button" class="btn btn-success btn-s"

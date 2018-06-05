@@ -15,9 +15,7 @@ export class AuthGuardService implements CanActivate{
   }
 
   checkLogin(url: string): boolean {
-
     if (this.authService.isLoggedIn)
-    // tslint:disable-next-line:one-line
     {
       return true;
     }

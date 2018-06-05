@@ -14,6 +14,10 @@ export class UserService {
 
 
     url_save = 'http://'+this.shared.getServerIP()+'/db_request_user_w/register_user';
+    url_validate = 'http://'+this.shared.getServerIP()+'/db_request_user/validate_user';
+    url_update = 'http://'+this.shared.getServerIP()+'/db_request_user/update_user';
+    url_recovery = 'http://'+this.shared.getServerIP()+'/db_request_user/pass_recovery';
+    private url_request_userById = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_user_by_id';
 
     registerUser(user: UserRps) {
        // console.log(user);
@@ -24,11 +28,6 @@ export class UserService {
         return this.http.post(this.url_save, JSON.stringify(user), { headers : headers })
                             .map( response => response.json());
     }
-
-    // tslint:disable-next-line:member-ordering
-    url_validate = 'http://'+this.shared.getServerIP()+'/db_request_user/validate_user';
-    url_update = 'http://'+this.shared.getServerIP()+'/db_request_user/update_user';
-    url_recovery = 'http://'+this.shared.getServerIP()+'/db_request_user/pass_recovery';
 
     validateUser(email: string, pass: string) {
         // console.log(user);
@@ -57,6 +56,19 @@ export class UserService {
                             .map( response => response.json());
     }
 
+    getUserById(user_id: string) {
+        return this.http
+        .get(this.generateRequest(this.url_request_userById,user_id))
+        .map((response) => response.json())
+        .toPromise();
+      }
+
+      private generateRequest(url_request,id_user: string) : string {
+        url_request += '?';
+        // filter by id_user
+        url_request += 'id=' + id_user;
+        return url_request;
+     }
 
 
 }

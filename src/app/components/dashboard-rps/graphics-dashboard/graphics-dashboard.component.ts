@@ -11,9 +11,6 @@ import { forEach } from '@angular/router/src/utils/collection';
 // Declaramos las variables para jQuery
 declare var jQuery: any;
 declare var $: any;
-
-declare var Highcharts: any;
-
 declare var Plotly: any;
 @Component({
   selector: 'app-graphics-dashboard',

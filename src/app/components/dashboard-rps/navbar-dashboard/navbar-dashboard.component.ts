@@ -12,13 +12,16 @@ import { Dataset } from './dataset';
 // Services
 import { UploadFileService } from '../../../services/upload-file.service';
 import { SharedDatasetService } from '../../../services/shared-dataset.service';
-import { GetProjectsService } from '../../../services/get-projects.service';
+import { ProjectService } from '../../../services/get-projects.service';
 import { AnalyzeService } from "../../../services/analyze.service";
 import { UserService } from "../../../services/user.service";
 import { Analyze } from './analyze';
 import { Distance } from './distance';
 import { Ordination } from './ordination';
 import {User} from './user';
+import { DatasetService } from '../../../services/dataset.service';
+import { OrdinationService } from '../../../services/ordination.service';
+import { DistanceService } from '../../../services/distance.service';
 
 // Declaramos las variables para jQuery
 declare var jQuery: any;
@@ -35,9 +38,7 @@ export class NavbarDashboardComponent implements OnInit {
   subscription: Subscription;
   filesToUpload: File[];
   project_list = [];
-  project = new Project('', '', '');
-  dataset = new Dataset('', '',1);
-  user = new User('','','','','','','','');
+  
   idUser = '';
   dataset_list = [];
   distance_list = [];
@@ -46,20 +47,25 @@ export class NavbarDashboardComponent implements OnInit {
   processing = false;
   new_notification = 0;
   new_in_progress = 0;
+  error_update_msg = '';
 
-  //Analysis
-  analyze = new Analyze('','','',false,false,'',true,[],[],'','');
-  distance = new Distance(false,'','','', true,'');
-  ordination = new Ordination(false,'','','','', true,'');
+  project = new Project('', '', '');
+  dataset = new Dataset('', '',1);
+  user = new User('','','','','','','','');
+
+  error_msg = '';
+  invalid = false;
 
   constructor(
     private uploadService: UploadFileService,
     private sharedDatasetService: SharedDatasetService,
     private route: ActivatedRoute,
-    private projectService: GetProjectsService,
+    private datasetService: DatasetService,
     private analizeService: AnalyzeService,
     private userService: UserService,
-    private datasetService: GetProjectsService
+    private projectService: ProjectService,
+    private ordinationService: OrdinationService,
+    private distanceService: DistanceService
   ) { 
 
     $(document).ready(function() {
@@ -68,26 +74,22 @@ export class NavbarDashboardComponent implements OnInit {
             var IsDataset = $(this).parents('li').attr('isDataset');
             var IsDistance = $(this).parents('li').attr('isDistance');
             var IsOrdination = $(this).parents('li').attr('isOrdination');
-            console.log(tabID+'  '+IsDataset);
             if(IsDataset){
                 datasetService.getDatasetsById(tabID).then((result) =>{
                     sharedDatasetService.sendMessage(result);
                   });
             }
             if(IsDistance){
-                datasetService.getDistanceById(tabID).then((result) =>{
+                distanceService.getDistanceById(tabID).then((result) =>{
                     sharedDatasetService.setDistance(result);
                   });
             }
 
             if(IsOrdination){
-                console.log('entre por aca por la proyeccion  '+ tabID);
-                datasetService.getOrdinationById(tabID).then((result) =>{
-                    console.log(result);
+                ordinationService.getOrdinationById(tabID).then((result) =>{
                     sharedDatasetService.setOrdination(result);
                   });
             }
-
             $('#'+tabID).remove();
             sharedDatasetService.setNotificationCount(1);
         });
@@ -114,8 +116,6 @@ export class NavbarDashboardComponent implements OnInit {
 
     this.subscription = this.sharedDatasetService.isNewAnalisys().subscribe(
         params => {
-
-       console.log(params);
        if(params.isAnalyze){
            this.addInProcessDataset(params);
        }
@@ -126,14 +126,11 @@ export class NavbarDashboardComponent implements OnInit {
            this.addInProcessOrdination(params);
        }
    });
-
   }
 
   @ViewChild('form') form;
 
-
   openPopUp(e){
-    //this.form.nativeElement.reset();
     this.invalid = false;
     this.processing = false;
     this.project = new Project('','','');
@@ -181,14 +178,12 @@ export class NavbarDashboardComponent implements OnInit {
   }
 
   loadPendingAnalisys(){
-      console.log('llamo a los pendientes');
       this.loadPendingDatasets();
       this.loadPendingDistances();
       this.loadPendingOrdinations();
   }
 
   loadPendingDatasets(){
-      console.log('voy a cargar los dataset: '+ this.project_list.length);
       this.project_list.forEach(element => {
         this.datasetService.getPendingDatasets(element.project_id).then( params => {
             params = JSON.parse(params);
@@ -202,7 +197,7 @@ export class NavbarDashboardComponent implements OnInit {
 
   loadPendingDistances(){
     this.project_list.forEach(element => {
-        this.datasetService.getPendingDistances(element.project_id).then( params => {
+        this.distanceService.getPendingDistances(element.project_id).then( params => {
             params = JSON.parse(params);
             params.forEach(distance => {
                 this.addInProcessDistance(distance);
@@ -214,7 +209,7 @@ export class NavbarDashboardComponent implements OnInit {
 
   loadPendingOrdinations(){
     this.project_list.forEach(element => {
-        this.datasetService.getPendingOrdinations(element.project_id).then( params => {
+        this.ordinationService.getPendingOrdinations(element.project_id).then( params => {
             params = JSON.parse(params);
             params.forEach(ordination => {
                 this.addNotificationOrdination(ordination);
@@ -248,9 +243,8 @@ export class NavbarDashboardComponent implements OnInit {
   }
 
   getUser(){
-      this.projectService.getUserById(this.idUser).then(
+      this.userService.getUserById(this.idUser).then(
           params => {
-              console.log(params);
               this.user.name = params.first_name;
               this.user.old_pass = params.password;
               this.user.institution = params.institution;
@@ -264,7 +258,6 @@ export class NavbarDashboardComponent implements OnInit {
 
 confirmProject() {
     this.invalid = this.invalidProject();
-
     if(!this.invalid){
         this.uploadService.makeProjectRequest({ name_project:  this.project.name, description: this.project.description, id_user: this.idUser }).subscribe(data => {
             if (data.error == 'ok') {
@@ -275,7 +268,6 @@ confirmProject() {
                 this.sharedDatasetService.setNameProject(data.result);
                 document.getElementById('hideAddProject').click();
             }else {
-                console.log(data);
                 this.invalid = true;
                 this.error_msg = data.error;
             }
@@ -285,107 +277,82 @@ confirmProject() {
     }
 }
 
-error_update_msg = '';
-
-confirmUserUpdate(){
-
-    console.log("llegue a actualizar el user");
-    if(this.user.new_pass != '' && this.user.confirm_pass != ''){
-        if(this.user.new_pass != this.user.confirm_pass){
-            alert("Invalid password");
+    confirmUserUpdate(){
+        if(this.user.new_pass != '' && this.user.confirm_pass != ''){
+            if(this.user.new_pass != this.user.confirm_pass){
+                alert("Invalid password");
+            }
+        }else{
+            this.user.new_pass = this.user.old_pass;
         }
-    }else{
-        this.user.new_pass = this.user.old_pass;
-    }
-    console.log("llegue a actualizar el user");
-    this.userService.updateUser(this.user).subscribe(params => {
-        if(params.result != 'error'){
-            document.getElementById('hideUpdateProfile').click();
-        }
-        else{
-            this.error_update_msg = params.result;
-        }
-    })
-}
-
-selectedProject(e){
-    this.datasetEnable = false;
-    this.loadDataset(this.analyze.project_selected);
-}
-
-
-loadDataset(idProject){
-    this.projectService.getDatasetsByProject(idProject).then( (result) =>{
-        this.dataset_list = result;
-    })
-}
-
-  
-
-fileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>> fileInput.target.files;
-}
-
-
-
-upload() {
-    
-    this.invalid = this.invalidDataset();
-    if(!this.invalid){
-        this.processing = true;
-        this.invalid = false;
-        this.uploadService.makeFileRequest([], this.dataset, this.filesToUpload).then((result) => {
-            
-            if(result['error'] == undefined){
-                this.dataset = new Dataset('','',1);
-                this.sharedDatasetService.sendMessage(result);
-                this.processing = false;
-                this.filesToUpload = [];
-                this.invalid = false;
-                document.getElementById('hideAddDataset').click();
+        this.userService.updateUser(this.user).subscribe(params => {
+            if(params.result != 'error'){
+                document.getElementById('hideUpdateProfile').click();
             }
             else{
-                this.error_msg = result['error'];
-                this.invalid = true;
-                this.processing = false;
+                this.error_update_msg = params.result;
             }
-        }, (error) => {
-            this.processing = false;
-            this.error_msg = 'Please, add a new dataset file.';;
-            this.invalid = true;
-        });
-    }
-}
-
-error_msg = '';
-invalid = false;
-invalidProject(){
-    
-    if(this.project.name.length == 0){
-        this.error_msg = 'Project name is empty.'
-        return true;
-    }
-    if(this.project.description.length == 0){
-        this.error_msg = 'Project description is empty.'
-        return true;
-    }
-    return false;
-}
-
-invalidDataset(){
-    if(this.dataset.project_for_data === ''){
-        this.error_msg = 'Please, select a project.'
-        return true;
+        })
     }
 
-    if(this.dataset.dataset_name.length == 0){
-        this.error_msg = 'Dataset name is empty.'
-        return true;
+    loadDataset(idProject){
+        this.datasetService.getDatasetsByProject(idProject).then( (result) =>{
+            this.dataset_list = result;
+        })
     }
-    
-    
 
-    return false;
-}
+    fileChangeEvent(fileInput: any) {
+        this.filesToUpload = <Array<File>> fileInput.target.files;
+    }
 
+    upload() {
+        this.invalid = this.invalidDataset();
+        if(!this.invalid){
+            this.processing = true;
+            this.invalid = false;
+            this.uploadService.makeFileRequest([], this.dataset, this.filesToUpload).then((result) => {
+                if(result['error'] == undefined){
+                    this.dataset = new Dataset('','',1);
+                    this.sharedDatasetService.sendMessage(result);
+                    this.processing = false;
+                    this.filesToUpload = [];
+                    this.invalid = false;
+                    document.getElementById('hideAddDataset').click();
+                }
+                else{
+                    this.error_msg = result['error'];
+                    this.invalid = true;
+                    this.processing = false;
+                }
+            }, (error) => {
+                this.processing = false;
+                this.error_msg = 'Please, add a new dataset file.';;
+                this.invalid = true;
+            });
+        }
+    }
+
+    invalidProject(){
+        if(this.project.name.length == 0){
+            this.error_msg = 'Project name is empty.'
+            return true;
+        }
+        if(this.project.description.length == 0){
+            this.error_msg = 'Project description is empty.'
+            return true;
+        }
+        return false;
+    }
+
+    invalidDataset(){
+        if(this.dataset.project_for_data === ''){
+            this.error_msg = 'Please, select a project.'
+            return true;
+        }
+        if(this.dataset.dataset_name.length == 0){
+            this.error_msg = 'Dataset name is empty.'
+            return true;
+        }
+        return false;
+    }
 }

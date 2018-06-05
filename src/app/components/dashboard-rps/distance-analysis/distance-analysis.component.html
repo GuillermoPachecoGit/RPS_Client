@@ -1,0 +1,52 @@
+ <!-- Modal Distances -->
+ <div class="modal fade" id="runDistances" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+
+          <!--header modal-->
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+              <h3 class="modal-title" id="lineModalLabel">New Coherent Distance Matrix</h3> </div>
+          <!--body modal-->
+          <div class="modal-body">    
+              <form method="post"  enctype="multipart/form-data"> 
+                  <div class="form-group">
+                      <label for="datasets"  class="control-label">Selected Dataset: <a> {{selected_dataset}} </a></label>
+                  </div>
+                  <div class="form-group">
+                      <div class="radio">
+                          <label><input type="radio" name="algorithm" [(ngModel)]="distance.algorithm_selected" [value]=1 >Least-Squares Distance (LsD)</label>
+                        </div>
+                        <div class="radio">
+                          <label><input type="radio" name="algorithm" [(ngModel)]="distance.algorithm_selected" [value]=2 >Resistant Distance(rD)</label>
+                        </div>
+                  </div>
+
+                  <div class="form-group">
+                      <label for="country"  class="control-label">Tab Name: </label>
+                      <input type="text"  class="form-control"  id="distance.tab_name_analysis" required [(ngModel)]="distance.distance_name" name="tab_name_analysis_02" placeholder="" #name="ngModel">
+                  </div>
+
+                  <button type="button" class="btn btn-success btn-s"
+                          (click)="confirmDistance()">
+                      <span class="glyphicon glyphicon-upload"></span> Confirm
+                  </button>
+                  <!--<div id="rg_error"> <label *ngIf="invalid" id="error_message"> {{error_msg}}</label></div>-->
+                  <span *ngIf="processing"><h4>Analisys in process, please wait a few minutes...</h4></span>
+              </form>
+          </div>
+      
+          <!-- footer modal -->
+          <div class="modal-footer">
+              <div class="btn-group btn-group-justified" role="group" aria-label="group button">
+                  <div class="btn-group" role="group">
+                      <button type="button" id="hideRunAnalysisDistance" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
+                  </div>
+                  <div class="btn-group btn-delete hidden" role="group">
+                      <button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Close</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

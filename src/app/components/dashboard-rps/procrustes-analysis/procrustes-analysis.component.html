@@ -1,0 +1,85 @@
+<!-- Modal Nuevo Analisis procrustes -->
+<div class="modal fade" id="runProcrustes" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <!--header modal-->
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+              <h3 class="modal-title" id="lineModalLabel">New Procrustes Analysis</h3> </div>
+          <!--body modal-->
+          <div class="modal-body">    
+              <form method="post"  enctype="multipart/form-data"> 
+                  <div class="form-group">
+                      <label for="datasets"  class="control-label">Selected Dataset: <a> {{selected_dataset}} </a></label>
+                  </div>
+                  <div class="form-group">
+                      <label>Select the specimens to analize: </label>
+                      <div class="container">
+                          <div class="row">
+                               <div class="col-lg-6">
+                                  <div class="button-group">
+                                      <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span ></span>Specimens <span class="caret"></span></button>
+                                      <ul class="dropdown-menu" id="specimens">
+                                     </ul>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                  </div>
+
+                  <div class="form-group">
+                          <label>Select the landmarks to analize: </label>
+                          <div class="container">
+                              <div class="row">
+                                   <div class="col-lg-6">
+                                      <div class="button-group">
+                                          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span ></span>Landmarks<span class="caret"></span></button>
+                                          <ul class="dropdown-menu" id="landmarks" >
+                                          </ul>
+                                      </div>
+                                  </div>
+                              </div>
+                            </div>
+                      </div>
+
+                  <div class="form-group">
+                          <div class="radio">
+                          <label><input type="radio" (change)="handleChangeCM($event)"  name="algorithm"  [(ngModel)]="analyze.algorithm_selected" [value]=1 >Generalizaded Least-Squares Procrustes Superimposition (GlsP)</label>
+                        </div>
+                        <div class="radio">
+                          <label><input type="radio" (change)="handleChange($event)" name="algorithm" [(ngModel)]="analyze.algorithm_selected" [value]=2 >Generalizaded Resistant Procrustes Superimposition (GrP)</label>
+                          <div *ngIf="visibleParamsResistent">
+                                  <label> <b>Tolerance:</b> <input type="text"  class="input_r"  [(ngModel)]="analyze.iterations" (change)="handleChange($event)" name="tolerance" ></label>
+                                  <label> <b>Iterations:</b>  <input type="text" class="input_r" [(ngModel)]="analyze.tolerance" (change)="handleChange($event)" name="iterations"  ></label>
+                          </div>
+                          
+                        </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="radio">
+                          <input type="checkbox"  [(ngModel)]="analyze.show_consensus_selected" name="show_consensus_selected" [value]=true >  Show consensus 
+                        </div>
+                  </div>                  
+                  <div class="form-group">
+                      <label for="country"  class="control-label">Tab Name: </label>
+                      <input type="text"  class="form-control"  id="tab_name_analysis_01" required [(ngModel)]="analyze.dataset_name" name="tab_name_analysis_01" placeholder="" #name="ngModel">
+                  </div>
+                  <button type="button" class="btn btn-success btn-sm"
+                          (click)="confirmAnalysis()">
+                      <span class="glyphicon glyphicon-upload"></span> Confirm
+                  </button>
+                  <span *ngIf="processing"><h4>Analisys in process, please wait a few minutes...</h4></span>
+              </form>
+          </div>
+      
+          <!-- footer modal -->
+          <div class="modal-footer">
+              <div class="btn-group btn-group-justified" role="group" aria-label="group button">
+                  <div class="btn-group" role="group">
+                      <button type="button" id="hideRunAnalysis" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
+                  </div>
+                  <div class="btn-group btn-delete hidden" role="group">
+                      <button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Close</button>
+                  </div>
+              </div></div></div></div>
+</div>

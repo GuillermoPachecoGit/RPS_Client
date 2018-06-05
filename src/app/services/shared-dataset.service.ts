@@ -28,7 +28,7 @@ export class SharedDatasetService {
     }
 
     getServerIP(){
-        return "rps.pladema.net"
+        return "localhost:80"
     }
 
     getDistance() : Observable<any> {

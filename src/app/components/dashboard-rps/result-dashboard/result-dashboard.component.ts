@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-
-
 /*
  * Services
  */
@@ -23,20 +21,14 @@ export class ResultDashboardComponent implements OnInit {
   ordinations_showed = [];
   distance_showed = [];
 
-
   constructor(private sharedDatasetService: SharedDatasetService) { 
     this.count = 0;
-
     $(document).ready(function() {
-
       $('#tab_index_id_result').on('click', '.close', function() {
           var tabID = $(this).parents('a').attr('href');
           var isDataset = $(this).parents('a').attr('is_dataset');
           $(this).parents('li').remove();
           $(tabID).remove();
-          
-
-          console.log(isDataset);
           if(isDataset){
             sharedDatasetService.setDatasetViewDelete({ id: isDataset });
           }
@@ -48,7 +40,6 @@ export class ResultDashboardComponent implements OnInit {
             else{
               sharedDatasetService.setDistanceViewDelete( {id: $(this).parents('a').attr('is_distance')});
             }
-            
           }
         //display first tab
         var tabFirst = $('#tab_index_id_result a:first');
@@ -56,15 +47,11 @@ export class ResultDashboardComponent implements OnInit {
       });
     });
     var list = document.getElementById("tab_index_id_result");
-
-
     // subscribe to home component messages
     this.subscription = this.sharedDatasetService.getMessage().subscribe(
       params => {
-
         var found = this.datasets_showed.find(item => item === params.dataset_id);
         if(found === undefined){
-
           this.datasets_showed.push(params.dataset_id);
           const infoTab = this.generateTab(params.dataset_id,params.dataset_name,1);
           const containerGrap = infoTab.idGrap;
@@ -87,13 +74,10 @@ export class ResultDashboardComponent implements OnInit {
     });
 
     //FALTA LAS PROYECCTIONES
-
     this.subscription = this.sharedDatasetService.getOrdinationViewDelete().subscribe(
       params => {
-        console.log(params);
         if(params.source === undefined){
           var index  = this.ordinations_showed.indexOf(parseInt(params.id));
-          console.log(index);
           if (index > -1) {
             this.ordinations_showed.splice(index, 1);
           }
@@ -103,10 +87,8 @@ export class ResultDashboardComponent implements OnInit {
 
     this.subscription = this.sharedDatasetService.getDatasetViewDelete().subscribe(
       params => {
-        console.log(params);
         if(params.source === undefined){
           var index  = this.datasets_showed.indexOf(parseInt(params.id));
-          console.log(index);
           if (index > -1) {
             this.datasets_showed.splice(index, 1);
           }
@@ -116,10 +98,8 @@ export class ResultDashboardComponent implements OnInit {
 
     this.subscription = this.sharedDatasetService.getDistanceViewDelete().subscribe(
       params => {
-        console.log(params);
         if(params.source === undefined){
           var index  = this.distance_showed.indexOf(parseInt(params.id));
-          console.log(index);
           if (index > -1) {
             this.distance_showed.splice(index, 1);
           }
@@ -129,8 +109,6 @@ export class ResultDashboardComponent implements OnInit {
   }
 
   generateTab(dataset_id,dataset_name,type): any {
-    // tslint:disable-next-line:max-line-length
-   
     switch (type) {
       case 1:
       $('#tab_index_id_result').append('<li ><a data-toggle="tab" is_dataset="'+dataset_id+'" href="#tab_result_'+dataset_id + '"' + '>'+dataset_name+ '  <button class="close" type="button" title="Remove this page">×</button> </a></li>');
@@ -141,20 +119,16 @@ export class ResultDashboardComponent implements OnInit {
       case 3:
       $('#tab_index_id_result').append('<li ><a data-toggle="tab" is_ordination="'+dataset_id+'" href="#tab_result_'+dataset_id + '"' + '>'+dataset_name+ '  <button class="close" type="button" title="Remove this page">×</button> </a></li>');
         break;
-    
       default:
         break;
     }
    
-    
-    
     $('#tab_content_id_result').append(
         '<div id="tab_result_'+dataset_id+ '"' + 'class="tab-pane" >'
           +'<div class="table-responsive" style="width: auto;" >'
             + '<div id="dataset_result_'+dataset_id+ '"  style="height: 300px; width: auto;"></div>'
           +'</div>'
         +'</div>'
-
     );
     return { idGrap: ('dataset_result_'+dataset_id), id: ('tab_result_'+dataset_id)} ;
   }
@@ -163,39 +137,34 @@ export class ResultDashboardComponent implements OnInit {
     $('.nav-tabs a[href="#' + tab + '"]').tab('show');
   };
 
-
   generateDistanceMatrix(params,tab){
-    console.log(params);
-
     let data = params.data;
     let names = params['specimen_name'];
-
-    
     $('#'+tab).append(
           '<h2> Distance: '+params.distance_name+'</h2>'
     );
 
-      $('#'+tab).append(
+    $('#'+tab).append(
        ' <table id="table_'+ params.distance_id+'" class="table table-striped table-bordered">'
        + '<thead class="thead-default">'
        +  ' <tr id="headerRow_'+params.distance_id +'" >'
        +    '<th> Specimens </th>'
-      );
+    );
  
-      for (let index = 0; index < names.length; index++) {
-          const element = names[index];
-          $('#'+'headerRow_'+params.distance_id).append( 
-            '<th>'+ element +'</th>'
-          );
-      }
+    for (let index = 0; index < names.length; index++) {
+        const element = names[index];
+        $('#'+'headerRow_'+params.distance_id).append( 
+          '<th>'+ element +'</th>'
+        );
+    }
 
 
-      $('#table_'+ params.distance_id).append( ' </tr>'
+    $('#table_'+ params.distance_id).append( ' </tr>'
        + '</thead>'
        + '<tbody id="distance_'+params.distance_id+'">'
-      );
+    );
 
-      for (let index = 0; index < data.length; index++) {
+    for (let index = 0; index < data.length; index++) {
         const element = data[index];
         $('#distance_'+params.distance_id).append( 
           '<tr id="row_'+index+'_'+ params.distance_id+'" >'
@@ -213,12 +182,12 @@ export class ResultDashboardComponent implements OnInit {
         $('#distance_'+params.distance_id).append( 
           '</tr>'
         );
-      }
+    }
       
-      $('#distance_'+params.distance_id).append(
+    $('#distance_'+params.distance_id).append(
         '</tbody>'
         +'</table>'
-       );
+    );
   }
     
 
@@ -228,7 +197,6 @@ export class ResultDashboardComponent implements OnInit {
     let names = params['specimen_name'];
     for (let index = 0; index < specimens.length; index++) {
       const specimen = specimens[index]['specimen' + index];
-
       if(names.length > 0){
         $('#'+tab).append(
           '<h2> Specimen: '+names[index]+'</h2>'
@@ -251,7 +219,6 @@ export class ResultDashboardComponent implements OnInit {
        + '</thead>'
        + '<tbody id="specimen'+index+'_'+params.dataset_id+'">'
       );
-
 
       for (let i = 0; i < specimen.length; i++){
         if(params.dimention === 3){
@@ -282,7 +249,5 @@ export class ResultDashboardComponent implements OnInit {
        );
     }
   }
-  ngOnInit() {
-    
-  }
+  ngOnInit() {}
 }
