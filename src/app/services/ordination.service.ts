@@ -9,6 +9,8 @@ export class OrdinationService {
   private url_request_OrdinationById = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_ordinationById';
   private url_request_ordinations = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_ordinations';
   private url_request_ordination_pending = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_ordination_pending';
+  private url_request_PDFById = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_ordination_PDF';
+
 
   getPendingOrdinations(project_id: string) {
     return this.http
@@ -27,6 +29,13 @@ export class OrdinationService {
   getOrdinationById(ordination_id: string) {
     return this.http
     .get(this.generateRequest(this.url_request_OrdinationById,ordination_id))
+    .map((response) => response.json())
+    .toPromise();
+  }
+
+  getPDFById(ordination_id: string) {
+    return this.http
+    .get(this.generateRequest(this.url_request_PDFById,ordination_id))
     .map((response) => response.json())
     .toPromise();
   }

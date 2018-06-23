@@ -51,6 +51,7 @@
         <button *ngIf="!isProject" type="button" [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runProcrustes">Run Procrustes</button>
         <button *ngIf="!isProject"  type="button"  [disabled]="!isDataset" class="btn btn-success" data-toggle="modal" data-target="#runDistances">Run Distance</button>
         <button *ngIf="!isProject" type="button" [disabled]="!isDistance" class="btn btn-info" data-toggle="modal" data-target="#runOrdinations">Run Ordinations</button>
+        <button  *ngIf="!isProject"  class="btn btn-info" [disabled]="!isAnalysis"  (click)="export($event)">Download as PDF</button>
         <button *ngIf="!isProject" type="button" (click)="deleteData($event)" class="btn btn-info" data-toggle="modal" data-target="#xxx">Delete</button>
         </div>
         <div class="modal-footer">

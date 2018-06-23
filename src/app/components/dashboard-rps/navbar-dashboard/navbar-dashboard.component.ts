@@ -76,7 +76,7 @@ export class NavbarDashboardComponent implements OnInit {
             var IsOrdination = $(this).parents('li').attr('isOrdination');
             if(IsDataset){
                 datasetService.getDatasetsById(tabID).then((result) =>{
-                    sharedDatasetService.sendMessage(result);
+                    sharedDatasetService.sendAnalysis(result);
                   });
             }
             if(IsDistance){

@@ -11,7 +11,8 @@ export class DatasetService {
   private url_request_OnlyDatasetById = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_only_datasets';
   private url_request_dataset = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_datasets';
   private url_request_analisysById = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_analisys';
-    
+  private url_request_PDFById = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_analisys_PDF';
+   
   getPendingDatasets(project_id: string) {
     console.log(this.generateRequest(this.url_request_dataset_pending,project_id));
     return this.http
@@ -44,6 +45,13 @@ export class DatasetService {
   getAnalisysById(dataset_id: string,project_id: string) {
     return this.http
     .get(this.generateRequestAnalisys(this.url_request_analisysById,dataset_id,project_id))
+    .map((response) => response.json())
+    .toPromise();
+  }
+
+  getPDFById(dataset_id: string) {
+    return this.http
+    .get(this.generateRequest(this.url_request_PDFById,dataset_id))
     .map((response) => response.json())
     .toPromise();
   }

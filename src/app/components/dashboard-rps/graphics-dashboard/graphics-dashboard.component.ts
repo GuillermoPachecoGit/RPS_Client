@@ -162,7 +162,8 @@ export class GraphicsDashboardComponent implements OnInit {
 
   generateOrdinationGraphicsPlotly(params, tab){
     let colors = params['colors'];
-    let names = params['specimen_name'];
+    var names = params['specimen_name'];
+    console.log('NAMES:' +names);
     var data = params['data'];
     var dataResult = [];
 
@@ -173,8 +174,7 @@ export class GraphicsDashboardComponent implements OnInit {
         y: [element[1]],
         mode: 'markers',
         type: 'scatter',
-        text: names[index],
-
+        name: names[index],
         textposition: 'top center',
         textfont: {
           family:  'Raleway, sans-serif'

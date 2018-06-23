@@ -8,10 +8,11 @@ import { AnalyzeService } from '../../../services/analyze.service';
 import { Subscription } from 'rxjs';
 import { DatasetService } from '../../../services/dataset.service';
 
-
 // Declaramos las variables para jQuery
 declare var jQuery: any;
 declare var $: any;
+declare var pdfMake: any;
+
 
 @Component({
   selector: 'app-procrustes-analysis',
@@ -40,7 +41,12 @@ export class ProcrustesAnalysisComponent implements OnInit {
     private datasetService: DatasetService
   ) { 
 
+    
       
+    this.subscription = this.sharedDatasetService.isFinishedAnalisys().subscribe( params =>{
+      
+     });
+
     this.subscription = this.sharedDatasetService.getSelectedDataset().subscribe( params =>{
       this.selected_dataset = params.name;
       this.analyze.dataset_selected = params.dataset_id;
@@ -51,6 +57,43 @@ export class ProcrustesAnalysisComponent implements OnInit {
       this.generateSpecimensSelector(params.data);
       this.generateLandmarksSelector(params.data);  
      });
+
+     $(document).on('click', ':checkbox', function() {
+        sharedDatasetService.setExclutionObject(this);
+      });
+
+  this.subscription = this.sharedDatasetService.getExclutionObject().subscribe(
+     params => {
+      if(params.checked){
+          var elem = $( params );
+          if ( elem.attr( "isLandmark" )) {
+              var index  = this.landmarks_excluded.indexOf(elem.attr("value"));
+              if (index > -1) {
+                  this.landmarks_excluded.splice(index, 1);
+              }
+          }
+          if ( elem.attr( "isSpecimen" )) {
+              var index  = this.specimens_excluded.indexOf(elem.attr("value"));
+              console.log(index);
+              if (index > -1) {
+                  this.specimens_excluded.splice(index, 1);
+              }
+          }
+      }
+      else{
+          var elem = $( params );
+          
+          if ( elem.attr( "isLandmark" )) {
+            console.log('agregue landmark'+elem.attr("value"));
+              this.landmarks_excluded.push(elem.attr("value"));
+          }
+          if ( elem.attr( "isSpecimen" )) {
+            console.log('agregue specimen '+elem.attr("value"));
+              this.specimens_excluded.push(elem.attr("value"));
+
+          }
+      }
+  });
 
     }
 
@@ -74,7 +117,9 @@ confirmAnalysis(){
       this.processing = false;
       this.landmarks_excluded = [];
       this.specimens_excluded = [];
+      
       this.sharedDatasetService.finishedAnalisys(result);
+
   })
   document.getElementById('hideRunAnalysis').click();
   document.getElementById('buttonClose').click();

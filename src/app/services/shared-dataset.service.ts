@@ -21,6 +21,7 @@ export class SharedDatasetService {
     private notification_count = new Subject<any>();
     private error_login = new Subject<any>();
     private description_msg = new Subject<any>();
+    private subjectAnalysis = new Subject<any>();
 
     private exclutions  = new Subject<any>();
     setDistance(distance: any){
@@ -43,6 +44,13 @@ export class SharedDatasetService {
         return this.ordinationResult.asObservable();
     }
     
+    sendAnalysis(message: any){
+        this.subjectAnalysis.next(JSON.parse(message));
+    }
+
+    getAnalysis() : Observable<any> {
+        return this.subjectAnalysis.asObservable();
+    }
 
     sendMessage(message: any) {
         this.subject.next(JSON.parse(message));

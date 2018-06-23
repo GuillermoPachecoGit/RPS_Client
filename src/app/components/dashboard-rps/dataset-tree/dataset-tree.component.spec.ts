@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DatasetTreeComponent } from './dataset-tree.component';
+import { TreeViewComponent } from './dataset-tree.component';
 
-describe('DatasetTreeComponent', () => {
-  let component: DatasetTreeComponent;
-  let fixture: ComponentFixture<DatasetTreeComponent>;
+describe('TreeViewComponent', () => {
+  let component: TreeViewComponent;
+  let fixture: ComponentFixture<TreeViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DatasetTreeComponent ]
+      declarations: [ TreeViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DatasetTreeComponent);
+    fixture = TestBed.createComponent(TreeViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

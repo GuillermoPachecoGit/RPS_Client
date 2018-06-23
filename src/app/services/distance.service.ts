@@ -10,6 +10,7 @@ export class DistanceService {
   private url_request_distanceById = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_distanceById';
   private url_request_DistanceByProject = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_distances_by_project';
   private url_request_distance_pending = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_distance_pending';
+  private url_request_PDFById = 'http://'+this.shared.getServerIP()+'/db_request_dataset/get_distance_PDF';
   
   getPendingDistances(project_id: string) {
     return this.http
@@ -35,6 +36,13 @@ export class DistanceService {
   getDistanceById(distance_id: string) {
     return this.http
     .get(this.generateRequest(this.url_request_distanceById,distance_id))
+    .map((response) => response.json())
+    .toPromise();
+  }
+
+  getPDFById(distance_id: string) {
+    return this.http
+    .get(this.generateRequest(this.url_request_PDFById,distance_id))
     .map((response) => response.json())
     .toPromise();
   }
