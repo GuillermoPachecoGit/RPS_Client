@@ -1,6 +1,6 @@
 
 <div id="container_tree">
-  <h3>Projects: </h3>
+  <span><h3>Projects <button (click)="reload($event)"><span class="glyphicon glyphicon-refresh"></span></button>  </h3> </span> 
   <tree-root #tree [nodes]="nodes" (activate)="onClick($event)" (focus)="onRightClick($event)"
   [options]="options"
   [focused]="true">
@@ -9,6 +9,8 @@
       let-templates="templates" >
         <span *ngIf="node.isCollapsed && node.data.isProject" class="glyphicon glyphicon-folder-close"></span>
         <span *ngIf="node.isExpanded && node.data.isProject" class="glyphicon glyphicon-folder-open"></span>
+        <span *ngIf="node.isCollapsed && node.data.isRepository" class="glyphicon glyphicon-folder-close"></span>
+        <span *ngIf="node.isExpanded && node.data.isRepository" class="glyphicon glyphicon-folder-open"></span>
         <span *ngIf="node.isCollapsed && node.data.isFolderLandmark" class="glyphicon glyphicon-folder-close"></span>
         <span *ngIf="node.isExpanded && node.data.isFolderLandmark" class="glyphicon glyphicon-folder-open"></span>
         <span *ngIf="node.isCollapsed && node.data.isFolderSpecimen" class="glyphicon glyphicon-folder-close"></span>
@@ -51,7 +53,7 @@
         <button *ngIf="!isProject" type="button" [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runProcrustes">Run Procrustes</button>
         <button *ngIf="!isProject"  type="button"  [disabled]="!isDataset" class="btn btn-success" data-toggle="modal" data-target="#runDistances">Run Distance</button>
         <button *ngIf="!isProject" type="button" [disabled]="!isDistance" class="btn btn-info" data-toggle="modal" data-target="#runOrdinations">Run Ordinations</button>
-        <button  *ngIf="!isProject"  class="btn btn-info" [disabled]="!isAnalysis"  (click)="export($event)">Download as PDF</button>
+        <button *ngIf="!isProject"  class="btn btn-info" [disabled]="!isAnalysis"  (click)="export($event)">Download as PDF</button>
         <button *ngIf="!isProject" type="button" (click)="deleteData($event)" class="btn btn-info" data-toggle="modal" data-target="#xxx">Delete</button>
         </div>
         <div class="modal-footer">

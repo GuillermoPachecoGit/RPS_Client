@@ -61,6 +61,20 @@ export class ResultDashboardComponent implements OnInit {
         }
     });
 
+    // subscribe to home component messages
+    this.subscription = this.sharedDatasetService.getAnalysis().subscribe(
+      params => {
+        var found = this.datasets_showed.find(item => item === params.dataset_id);
+        if(found === undefined){
+          this.datasets_showed.push(params.dataset_id);
+          const infoTab = this.generateTab(params.dataset_id,params.dataset_name,1);
+          const containerGrap = infoTab.idGrap;
+          const tab = infoTab.id;
+          this.activaTab(tab);
+          this.generateTable(params, containerGrap);
+        }
+    });
+
     this.subscription = this.sharedDatasetService.getDistance().subscribe( params => {
       var found = this.distance_showed.find(item => item === params.distance_id);
         if(found === undefined){

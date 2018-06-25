@@ -59,7 +59,9 @@ export class TreeViewComponent implements OnInit {
   isDataset = false;
   isDistance = false;   
   isAnalysis = false;
-   description_msg = '';
+  idRepository = 0;
+  isRepository = false;
+  description_msg = '';
 
 
   options: ITreeOptions = {
@@ -90,7 +92,14 @@ export class TreeViewComponent implements OnInit {
         value.forEach(element => {
           this.addProject(element.project_id, element.project_name,element.user_id);
         });
+        
+        this.idRepository = this.getID()
+        this.nodes.push( { id: this.idRepository,isRepository:true , name: 'Analysis repository', children: []});
+        this.tree.treeModel.update();
     });
+
+
+
 
     this.subscription = this.sharedDatasetService.getMessage().subscribe(
       value => {
@@ -231,13 +240,13 @@ export class TreeViewComponent implements OnInit {
   }
   
   addDistance(id,params){
-    const node = this.tree.treeModel.getNodeById(id);
+    const node = this.tree.treeModel.getNodeById(this.idRepository);
     node.data.children.push( { id: this.getID(), name: params.distance_name, dataset_id: params.dataset_id_ref, project_id: params.project_id_ref , distance_id: params.distance_id, children: [], isDistance : true ,isAnalysis:true} );
     this.tree.treeModel.update();
   }
 
   addOrdination(id,params): any {
-    const node = this.tree.treeModel.getNodeById(id);
+    const node = this.tree.treeModel.getNodeById(this.idRepository);
     node.data.children.push( { id: this.getID(), name: params.ordination_name, ordination_id: params.ordination_id, dataset_id: params.dataset_id_ref, project_id: params.project_id_ref, children: [], isOrdination: true, isAnalysis:true } );
     this.tree.treeModel.update();
   }
@@ -286,8 +295,8 @@ export class TreeViewComponent implements OnInit {
   }
 
   addAnalisys(idProject, element){
-    let i = this.getIndexByProjectId(idProject);
-    this.nodes[i].children.push({ id: this.getID(), name: element.dataset_name, project_id: element.project_id ,dataset_id: element.dataset_id, children: [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(element.specimens.data, element.specimen_name, element.dimention, element.numbers_of_specimen,element.numbers_of_landmark), isFolderSpecimen: true}], isDataset : true, isAnalysis: true });
+    const node = this.tree.treeModel.getNodeById(this.idRepository);
+    node.data.children.push({ id: this.getID(), name: element.dataset_name, project_id: element.project_id ,dataset_id: element.dataset_id, children: [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(element.specimens.data, element.specimen_name, element.dimention, element.numbers_of_specimen,element.numbers_of_landmark), isFolderSpecimen: true}], isDataset : true, isAnalysis: true });
     this.tree.treeModel.update();
   }
 
@@ -416,21 +425,24 @@ export class TreeViewComponent implements OnInit {
         this.isAnalysis = true;
       }
       this.isProject = false;
+      this.isRepository = false;
     }
 
+    if(currentNode.isRepository){
+      this.isRepository = true;
+    }
    
 
     if(currentNode.isDistance){
-      console.log("PASE POR ACA "+currentNode);
       //this.selected_node = currentNode.id;
       this.sharedDatasetService.setSelectedDistance({ name: currentNode.name, dataset_id: currentNode.dataset_id, project_id: currentNode.project_id, distance_id: currentNode.distance_id});
       this.isDistance = true;
       this.isAnalysis = true;
       this.isProject = false;
+      this.isRepository = false;
     }    
 
     if(currentNode.isProject){
-      console.log("PASE POR ACA "+currentNode);
       this.editDescription = false;
       this.invalid = false;
       this.error_msg = '';
@@ -442,6 +454,7 @@ export class TreeViewComponent implements OnInit {
         this.user_id_project = currentNode.user_id;
       });
 
+      this.isRepository = false;
       this.isAnalysis = false;
       this.isProject = true;
     } 
@@ -455,7 +468,6 @@ export class TreeViewComponent implements OnInit {
         //Logic to delete the item
         const node = this.tree.treeModel.getNodeById(this.selected_node);
         var index;
-        console.log(node);
         if(node.data.isProject){
 
           index = this.nodes.findIndex(x => x.id === node.data.id);
@@ -469,12 +481,10 @@ export class TreeViewComponent implements OnInit {
           return;
         }
 
-        var parent_id = node.parent.id;
-        const nodeParent = this.tree.treeModel.getNodeById(parent_id);
-        console.log(nodeParent);
-        index = nodeParent.data.children.findIndex(x => x.id === node.data.id);
-       console.log(index);
-       nodeParent.data.children.splice(index,1);
+      var parent_id = node.parent.id;
+      const nodeParent = this.tree.treeModel.getNodeById(parent_id);
+      index = nodeParent.data.children.findIndex(x => x.id === node.data.id);
+      nodeParent.data.children.splice(index,1);
       this.tree.treeModel.update();
 
       if(node.data.isDataset){
@@ -513,8 +523,6 @@ export class TreeViewComponent implements OnInit {
     if(currentNode.data.isDistance){
       this.distanceService.getPDFById(currentNode.data.distance_id).then( (params) => {
         var aux = JSON.parse(params)
-        console.log('DISTANCE PDF: ');
-        console.log(aux);
         pdfMake.createPdf(aux.pdf).download(aux.distance_name+'.pdf');
         document.getElementById('buttonClose').click();
       })
@@ -523,8 +531,6 @@ export class TreeViewComponent implements OnInit {
     if(currentNode.data.isOrdination){
       this.ordinationService.getPDFById(currentNode.data.ordination_id).then( (params) => {
         var aux = JSON.parse(params)
-        console.log('Ordination PDF: ');
-        console.log(aux);
         pdfMake.createPdf(aux.pdf).download(aux.ordination_name+'.pdf');
         document.getElementById('buttonClose').click();
       })
@@ -533,11 +539,20 @@ export class TreeViewComponent implements OnInit {
   }
 
 
+
+  
+  reload(e){
+    const node = this.tree.treeModel.getNodeById(this.idRepository);
+    node.data.children = [];
+    node.isCollapsed = true;
+    this.tree.treeModel.update();
+  }
+
   //onclik events. The output depends of clicked item.
   onClick(e) {
     var currentNode = e.node.data;
 
-    if(currentNode.isProject && !this.expanded_nodes.includes(currentNode.id)){
+    if(currentNode.isProject && (currentNode.folder_opened === undefined) && !this.expanded_nodes.includes(currentNode.id)){
         console.log(e.index);        
         this.loadDatasetsByProject(currentNode);
     }
@@ -587,6 +602,12 @@ export class TreeViewComponent implements OnInit {
       
     }
 
+
+
+    if(currentNode.folder_opened){
+      this.isRepository = true;
+    }
+
     if(currentNode.isOrdination && !this.expanded_nodes_ordination.includes(currentNode.ordinaton_id)){
       //this.expanded_nodes_ordination.push(currentNode.ordinaton_id);
       //mirar request
@@ -598,7 +619,7 @@ export class TreeViewComponent implements OnInit {
         this.ordinationService.getOrdinationById(currentNode.ordination_id).then((result) =>{
           this.sharedDatasetService.setOrdination(result);
         });
-      } 
+    } 
     }
   }
 }

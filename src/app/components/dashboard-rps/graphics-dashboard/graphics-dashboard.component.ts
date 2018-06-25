@@ -77,6 +77,31 @@ export class GraphicsDashboardComponent implements OnInit {
          
       });
 
+
+       // subscribe to home component messages
+       this.subscription = this.sharedDatasetService.getAnalysis().subscribe(
+        params => {
+
+          var found = this.datasets_showed.find(item => item === params.dataset_id);
+          if(found === undefined){
+            this.datasets_showed.push(params.dataset_id);
+            const infoTab = this.generateTab(params);
+            const containerGrap = infoTab.idGrap;
+            const tab = infoTab.id;
+            this.activaTab(tab);
+            this.count++;
+
+            if(params.dimention === 2){
+                this.generateGraphicsPlotly2D(params, containerGrap);
+            }
+            else{
+                this.generateGraphicsPlotly(params, containerGrap);
+            }
+          }
+         
+         
+      });
+
       this.subscription = this.sharedDatasetService.getOrdination().subscribe(
         params => {
           var found = this.ordinations_showed.find( item => item === params.ordination_id);

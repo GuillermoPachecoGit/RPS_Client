@@ -15,10 +15,17 @@
 #tree_dataset{
     height:100%;
     width:20%;
+    border-right: 10px;
+    border-top: 0px;
+    border-left: 0px;
+    border-bottom: 0px;
+    border-style: double;
+    border-color:  #02264b;
 }
 
 #dashboard{
     margin-bottom: 15px;
+    width: 100%;
 }
 
 #container_results{
@@ -28,5 +35,5 @@
 }
 
 #result{
-      width: 98%; margin-bottom: 10px;
+      width: 100%; 
 }

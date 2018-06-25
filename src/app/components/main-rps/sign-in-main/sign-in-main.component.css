@@ -3,15 +3,21 @@
     padding: 20px;
     max-width: 350px;
     width: 100% !important;
-    background-color: rgb(31, 11, 11);
+    border-color: #02264b;
     margin: auto;
     border-radius: 5px;
+    border-style: double;
+    border-width: 10px;
   }
 
   label  {
-      color: aliceblue
+      color:  #02264b
   }
 
   #emailHelp {
-    color: aliceblue
+    color:  #02264b
   }  
+
+  button {
+    background-color: #02264b;
+  }

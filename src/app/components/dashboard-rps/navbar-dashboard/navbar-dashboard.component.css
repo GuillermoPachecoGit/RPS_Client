@@ -6,7 +6,13 @@
 .modal-footer {
     	padding: 0;
 	}
-    
+  
+.modal-content{
+  border-color: #02264b;
+  border-width: 10px;
+  border-radius: 5px;
+  border-style: double
+}
 .modal-footer .btn-group button {
 	height:40px;
 	border-top-left-radius : 0;
@@ -19,32 +25,9 @@
 	border-right: 0;
 }
 
-
-@import url(http://fonts.googleapis.com/css?family=Roboto);
-
-/****** LOGIN MODAL ******/
-.loginmodal-container {
-  padding: 30px;
-  max-width: 350px;
-  width: 100% !important;
-  background-color: #F7F7F7;
-  margin: 0 auto;
-  border-radius: 2px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
-  font-family: roboto;
-}
-
-.loginmodal-container h1 {
-  text-align: center;
-  font-size: 1.8em;
-  font-family: roboto;
-}
-
-
 .loginmodal {
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   font-family: 'Arial', sans-serif;
   font-weight: 700;
   height: 36px;
@@ -62,7 +45,7 @@
   background-color: #4d90fe;
   padding: 17px 0px;
   font-family: roboto;
-  font-size: 14px;
+  font-size: 12px;
   /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#4787ed)); */
 }
 
@@ -77,6 +60,9 @@
 .loginmodal-container a {
   text-decoration: none;
   color: #666;
+  border-color: #02264b;
+  border-width: 10px;
+  border-radius: 5px;
   font-weight: 400;
   text-align: center;
   display: inline-block;
@@ -115,7 +101,7 @@
 }
 
 #id_navbar{
-  position: relative; top: 0px; width: 98%; margin-bottom: 10px;
+ top: 0px; width: 100%;
 }
 
 @import url(http://fonts.googleapis.com/css?family=Roboto);
@@ -133,11 +119,6 @@
   font-family: roboto;
 }
 
-.loginmodal-container h1 {
-  text-align: center;
-  font-size: 1.8em;
-  font-family: roboto;
-}
 
 
 .loginmodal {
@@ -164,23 +145,8 @@
   /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#4787ed)); */
 }
 
-.loginmodal-submit:hover {
-  /* border: 1px solid #2f5bb7; */
-  border: 0px;
-  text-shadow: 0 1px rgba(0,0,0,0.3);
-  background-color: #357ae8;
-  /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#357ae8)); */
-}
 
-.loginmodal-container a {
-  text-decoration: none;
-  color: #666;
-  font-weight: 400;
-  text-align: center;
-  display: inline-block;
-  opacity: 0.6;
-  transition: opacity ease 0.5s;
-} 
+
 
 .login-help{
   font-size: 12px;
@@ -198,4 +164,8 @@
 
 #error_Register {
   color: red;
+}
+
+.navbar{
+  background-color: #02264b;
 }
