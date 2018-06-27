@@ -1,6 +1,6 @@
 
 <div id="container_tree">
-  <span><h3>Projects <button (click)="reload($event)"><span class="glyphicon glyphicon-refresh"></span></button>  </h3> </span> 
+  <span><h3>Projects <button id="btn_clear" (click)="reload($event)"><span class="glyphicon glyphicon-refresh"></span></button>  </h3> </span> 
   <tree-root #tree [nodes]="nodes" (activate)="onClick($event)" (focus)="onRightClick($event)"
   [options]="options"
   [focused]="true">
@@ -50,14 +50,17 @@
                     </button>
                     <div id="rg_error"> <label *ngIf="invalid" id="error_message"> {{error_msg}}</label></div>
             </div>
-        <button *ngIf="!isProject" type="button" [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runProcrustes">Run Procrustes</button>
-        <button *ngIf="!isProject"  type="button"  [disabled]="!isDataset" class="btn btn-success" data-toggle="modal" data-target="#runDistances">Run Distance</button>
-        <button *ngIf="!isProject" type="button" [disabled]="!isDistance" class="btn btn-info" data-toggle="modal" data-target="#runOrdinations">Run Ordinations</button>
-        <button *ngIf="!isProject"  class="btn btn-info" [disabled]="!isAnalysis"  (click)="export($event)">Download as PDF</button>
-        <button *ngIf="!isProject" type="button" (click)="deleteData($event)" class="btn btn-info" data-toggle="modal" data-target="#xxx">Delete</button>
+        <div class="container">
+            <div class="row"> <button *ngIf="!isProject" type="button" [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runProcrustes">Run Procrustes</button> </div>
+            <div class="row"><button *ngIf="!isProject"  type="button"  [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runDistances">Run Distance</button> </div>
+            <div class="row"><button *ngIf="!isProject" type="button" [disabled]="!isDistance" class="btn btn-primary" data-toggle="modal" data-target="#runOrdinations">Run Ordinations</button> </div>
+            <div class="row"><button *ngIf="!isProject"  class="btn btn-primary" [disabled]="!isAnalysis"  (click)="export($event)">Download as PDF</button> </div>
+            <div class="row"> <button *ngIf="!isProject" type="button" (click)="deleteData($event)" class="btn btn-primary" data-toggle="modal" data-target="#xxx">Delete</button> </div>
+
+        </div>        
         </div>
         <div class="modal-footer">
-          <button type="button" id="buttonClose" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" id="buttonClose" class="btn btn-primary" data-dismiss="modal">Close</button>
         </div>
       </div>
       

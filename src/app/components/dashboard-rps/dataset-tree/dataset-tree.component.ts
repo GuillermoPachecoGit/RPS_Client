@@ -544,7 +544,6 @@ export class TreeViewComponent implements OnInit {
   reload(e){
     const node = this.tree.treeModel.getNodeById(this.idRepository);
     node.data.children = [];
-    node.isCollapsed = true;
     this.tree.treeModel.update();
   }
 

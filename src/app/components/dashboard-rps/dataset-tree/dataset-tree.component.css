@@ -1,4 +1,26 @@
 #container_tree{
     margin-top: 5px;
-    height: 75%;
 }
+
+button {
+    margin: 15px;
+    background-color: #02264b;
+}
+
+
+#btn_clear{
+    background-color: #0f6ece;
+}
+
+.modal-dialog {
+    width: 300px;
+    margin: auto;
+}
+
+
+.modal-content{
+    border-color: #02264b;
+    border-width: 10px;
+    border-radius: 5px;
+    border-style: double
+  }

@@ -4,3 +4,7 @@
     border-radius: 5px;
     border-style: double
   }
+
+  button {
+    border-color: #02264b;
+  }

@@ -151,7 +151,7 @@ export class GraphicsDashboardComponent implements OnInit {
     $('#tab_index_id').append('<li ><a data-toggle="tab" is_dataset="'+params.dataset_id+'" href="#tab'+'_'+params.dataset_id + '"' + '>'+params.dataset_name+ ' <button class="close" (click)="closeTab($event)" type="button" title="Remove this page">×</button> </a></li>');
     $('#tab_content_id').append(
       '<div id="tab'+'_'+params.dataset_id + '"' + 'class="tab-pane"  >'
-       + '<div id="dataset'+'_'+params.dataset_id  + '"  "></div>'
+       + '<div  id="dataset'+'_'+params.dataset_id  + '"  "></div>'
     + '</div>'
 
     );

@@ -7,6 +7,10 @@
     	padding: 0;
 	}
   
+  button {
+    background-color: #02264b;
+  }
+
 .modal-content{
   border-color: #02264b;
   border-width: 10px;

@@ -29,12 +29,12 @@ export class SharedDatasetService {
     }
 
     getServerIP(){
-        return "localhost:80"
+        return "10.1.6.31:80"
     }
 
     getDistance() : Observable<any> {
         return this.distanceResult.asObservable();
-    }
+    } 
 
     setOrdination(ordination: any){
         this.ordinationResult.next(JSON.parse(ordination));
