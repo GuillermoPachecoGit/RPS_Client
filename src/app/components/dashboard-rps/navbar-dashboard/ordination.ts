@@ -6,6 +6,7 @@ export class Ordination {
         public distance_id: string,
         public ordination_name: string,
         public isOrdination: boolean,
-        public user_id: string
+        public user_id: string,
+        public node_tree: string
     ){ }
 }

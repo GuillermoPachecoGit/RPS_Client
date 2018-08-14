@@ -18,7 +18,6 @@ declare var Plotly: any;
   styleUrls: ['./graphics-dashboard.component.css']
 })
 export class GraphicsDashboardComponent implements OnInit {
-
   subscription: Subscription;
   private count;
 
@@ -67,10 +66,10 @@ export class GraphicsDashboardComponent implements OnInit {
             this.count++;
 
             if(params.dimention === 2){
-                this.generateGraphicsPlotly2D(params, containerGrap);
+                this.generateGraphicPlotly(params, containerGrap);
             }
             else{
-                this.generateGraphicsPlotly(params, containerGrap);
+                this.generateGraphicPlotly(params, containerGrap);
             }
           }
          
@@ -92,10 +91,10 @@ export class GraphicsDashboardComponent implements OnInit {
             this.count++;
 
             if(params.dimention === 2){
-                this.generateGraphicsPlotly2D(params, containerGrap);
+                this.generateGraphicPlotly(params, containerGrap);
             }
             else{
-                this.generateGraphicsPlotly(params, containerGrap);
+                this.generateGraphicPlotly(params, containerGrap);
             }
           }
          
@@ -112,14 +111,13 @@ export class GraphicsDashboardComponent implements OnInit {
             const tab = infoTab.id;
             this.activaTab(tab);
             this.count++;
-            this.generateOrdinationGraphicsPlotly(params, containerGrap);
+            this.generateGraphicPlotly(params, containerGrap);
           }
         }
       );
 
       this.subscription = this.sharedDatasetService.getDatasetViewDelete().subscribe(
         params => {
-          console.log(params);
           if(params.source == "graphics"){
             var index  = this.datasets_showed.indexOf(parseInt(params.id));
             console.log(index);
@@ -132,7 +130,6 @@ export class GraphicsDashboardComponent implements OnInit {
 
       this.subscription = this.sharedDatasetService.getOrdinationViewDelete().subscribe(
         params => {
-          console.log(params);
           if(params.source == "graphics"){
             var index  = this.ordinations_showed.indexOf(parseInt(params.id));
             console.log(index);
@@ -186,156 +183,14 @@ export class GraphicsDashboardComponent implements OnInit {
   }
 
   generateOrdinationGraphicsPlotly(params, tab){
-    let colors = params['colors'];
-    var names = params['specimen_name'];
-    console.log('NAMES:' +names);
-    var data = params['data'];
-    var dataResult = [];
-
-    for (let index = 0; index < data.length; index++) {
-      const element = data[index];
-      var trace = {
-        x: [element[0]],
-        y: [element[1]],
-        mode: 'markers',
-        type: 'scatter',
-        name: names[index],
-        textposition: 'top center',
-        textfont: {
-          family:  'Raleway, sans-serif'
-        },
-        marker: { 
-          size: 6,
-          color: colors[index]
-        }
-      };
-      dataResult.push(trace);
-
-    }
-
-    var ran = params['range'];
-    var layout = {
-      margin: 5,
-      gridwidth: 0,
-      xaxis: { nticks: 10} ,
-      yaxis: { scaleanchor: "x"},
-      title: 'Universal Multidimensional Scaling'
-    };
-
-
-    Plotly.newPlot(tab, dataResult, layout);
-
+    Plotly.newPlot(tab, params.data_plotly, params.layout);
   }
 
   generateGraphicsPlotly2D(params, tab){
-    let data = [];
-    let specimens = params['specimens'];
-    let colors = params['colors'];
-    let names = params['specimen_name'];
-
-    console.log("PASE POR ACA   "+ JSON.stringify(specimens));
-
-    for (let index = 0; index < specimens.data.length; index++) {
-      const element = specimens.data[index]['specimen' + index];
-
-     let resultArray = this.generateArrayPlot(element, params.dimention);
-      var trace = {
-        x: resultArray[0],
-        y: resultArray[1],
-        mode: 'markers',
-        marker: {
-          size: 4,
-          line: {
-          color: colors[index]}
-        },
-        type: 'scatter',
-        name: names[index],
-        text: this.namesLandmaks(params)
-      };
-      data.push(trace);
-    }
-
-    var layout = {
-      margin: 2,
-      xaxis: { nticks: 10 , showline: false} ,
-      yaxis: { scaleanchor: "x" , showline: false}
-    };
-    Plotly.newPlot(tab, data, layout);
+    Plotly.newPlot(tab, params.data_plotly, params.layout);
   }
 
-  namesLandmaks(params){
-    var result = [];
-    for (let index = 0; index < params.specimens.root_number_landmarks; index++) {
-      if(!params.specimens.excluded_land.includes(index.toString())){
-          result.push('LM_'+(index+1).toString());
-      }
-    }
-    console.log(result);
-    return result;
-  }
-
-  generateGraphicsPlotly(params, tab){
-        let data = [];
-        let specimens = params['specimens'];
-        let colors = params['colors'];
-        let names = params['specimen_name'];
-
-        for (let index = 0; index < specimens.data.length; index++) {
-          const element = specimens.data[index]['specimen' + index];
-
-         let resultArray = this.generateArrayPlot(element, params.dimention);
-
-          var trace = {
-            x: resultArray[0],
-            y: resultArray[1],
-            z: resultArray[2],
-            mode: 'markers',
-            marker: {
-              size: 4,
-              line: {
-              color: colors[index],
-              width: 0.5},
-              opacity: 0.8},
-            type: 'scatter3d',
-            name: names[index],
-            text: this.namesLandmaks(params)
-          };
-          data.push(trace);
-        }
-
-        var layout = {
-          margin: {
-            l: 2,
-            r: 2,
-            b: 2,
-            t: 2
-          },
-          xaxis: { nticks: 10, showline: false} ,
-          yaxis: { scaleanchor: "x", showline: false},
-          zaxis: { scaleanchor: "x", showline: false}
-        };
-        Plotly.newPlot(tab, data, layout);
-      }
-
-
-  generateArrayPlot(specimen, dim) {
-        let result = [[], [], []];
-        for (let index = 0; index < specimen.length; index++) {
-          const element = specimen[index];
-
-              result[0].push(element[0]);
-              result[1].push(element[1]);
-
-
-              console.log('Dimension: '+dim);
-              if (dim === 3) {
-                result[2].push(element[2]);
-              } 
-              else 
-              {
-                result[2].push(0);
-              }
-        }
-        return result;
+  generateGraphicPlotly(params, tab){
+        Plotly.newPlot(tab, params.data_plotly, params.layout);
       }
 }

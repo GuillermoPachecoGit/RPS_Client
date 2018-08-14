@@ -5,7 +5,7 @@
           <!--header modal-->
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-              <h3 class="modal-title" id="lineModalLabel">New Procrustes Analysis</h3> </div>
+              <h3 class="modal-title" id="lineModalLabel">Run Procrustes Superimposition</h3> </div>
           <!--body modal-->
           <div class="modal-body">    
               <form method="post"  enctype="multipart/form-data"> 
@@ -13,7 +13,7 @@
                       <label for="datasets"  class="control-label">Selected Dataset: <a> {{selected_dataset}} </a></label>
                   </div>
                   <div class="form-group">
-                      <label>Select the specimens to analize: </label>
+                      <label>Unselect the objects to drop from the analysis: </label>
                       <div class="container">
                           <div class="row">
                                <div class="col-lg-6">
@@ -28,7 +28,7 @@
                   </div>
 
                   <div class="form-group">
-                          <label>Select the landmarks to analize: </label>
+                          <label>Unselect the landmarks to drop from the analysis: </label>
                           <div class="container">
                               <div class="row">
                                    <div class="col-lg-6">
@@ -44,13 +44,13 @@
 
                   <div class="form-group">
                           <div class="radio">
-                          <label><input type="radio" (change)="handleChangeCM($event)"  name="algorithm"  [(ngModel)]="analyze.algorithm_selected" [value]=1 >Generalizaded Least-Squares Procrustes Superimposition (GlsP)</label>
+                          <label><input type="radio" (change)="handleChangeCM()"  name="algorithm"  [(ngModel)]="analyze.algorithm_selected" [value]=1 >Generalizaded Least-Squares Procrustes Superimposition (GlsP)</label>
                         </div>
                         <div class="radio">
-                          <label><input type="radio" (change)="handleChange($event)" name="algorithm" [(ngModel)]="analyze.algorithm_selected" [value]=2 >Generalizaded Resistant Procrustes Superimposition (GrP)</label>
+                          <label><input type="radio" (change)="handleChange()" name="algorithm" [(ngModel)]="analyze.algorithm_selected" [value]=2 >Generalizaded Resistant Procrustes Superimposition (GrP)</label>
                           <div *ngIf="visibleParamsResistent">
                                   <label> <b>Tolerance:</b> <input type="text"  class="input_r"  [(ngModel)]="analyze.iterations" (change)="handleChange($event)" name="tolerance" ></label>
-                                  <label> <b>Iterations:</b>  <input type="text" class="input_r" [(ngModel)]="analyze.tolerance" (change)="handleChange($event)" name="iterations"  ></label>
+                                  <label> <b>Max. Iterations:</b>  <input type="text" class="input_r" [(ngModel)]="analyze.tolerance" (change)="handleChange($event)" name="iterations"  ></label>
                           </div>
                           
                         </div>
@@ -68,7 +68,8 @@
                           (click)="confirmAnalysis()">
                       <span class="glyphicon glyphicon-upload"></span> Confirm
                   </button>
-                  <span *ngIf="processing"><h4>Analisys in process, please wait a few minutes...</h4></span>
+                  <span *ngIf="invalid"><h6>{{error_msg}}</h6></span>
+                  <span *ngIf="processing"><h4>Analysis in progress, please wait a few minutes...</h4></span>
               </form>
           </div>
       

@@ -22,6 +22,13 @@ export class SharedDatasetService {
     private error_login = new Subject<any>();
     private description_msg = new Subject<any>();
     private subjectAnalysis = new Subject<any>();
+    private subjectResultProcrustes = new Subject<any>();
+    private subjectResultOrdination = new Subject<any>();
+    private subjectResultPDistance = new Subject<any>();
+
+    private hiddenPr = new Subject<any>();
+    private hiddenDis = new Subject<any>();
+    private hiddenOrd = new Subject<any>();
 
     private exclutions  = new Subject<any>();
     setDistance(distance: any){
@@ -29,10 +36,10 @@ export class SharedDatasetService {
     }
 
     getServerIP(){
-        return "10.1.6.31:80"
+        return "localhost:80"
     }
 
-    getDistance() : Observable<any> {
+    getDistance() : Observable<any>{
         return this.distanceResult.asObservable();
     } 
 
@@ -40,39 +47,40 @@ export class SharedDatasetService {
         this.ordinationResult.next(JSON.parse(ordination));
     }
 
-    getOrdination() : Observable<any> {
+    getOrdination() : Observable<any>{
         return this.ordinationResult.asObservable();
     }
     
+
     sendAnalysis(message: any){
         this.subjectAnalysis.next(JSON.parse(message));
     }
 
-    getAnalysis() : Observable<any> {
+    getAnalysis() : Observable<any>{
         return this.subjectAnalysis.asObservable();
     }
 
-    sendMessage(message: any) {
+    sendMessage(message: any){
         this.subject.next(JSON.parse(message));
     }
 
-    setNameProject(value: any) {
+    setNameProject(value: any){
         this.subjectProject.next(value);
     }
 
-    getNewProject(): Observable<any> {
+    getNewProject(): Observable<any>{
         return this.subjectProject.asObservable();
     }
 
-    clearMessage() {
+    clearMessage(){
         this.subject.next();
     }
 
-    getMessage(): Observable<any> {
+    getMessage(): Observable<any>{
         return this.subject.asObservable();
     }
 
-    setProjects(value: any) {
+    setProjects(value: any){
         this.userProjects.next(value);
     }
 
@@ -168,4 +176,30 @@ export class SharedDatasetService {
     getExclutionObject(): Observable<any> {
         return this.exclutions.asObservable();
     }
+
+
+
+    hiddenProcrustes(value: any) {
+        this.hiddenPr.next(value);
+    }
+
+    isHiddenProcrustes(): Observable<any> {
+        return this.hiddenPr.asObservable();
+    }
+
+    hiddenDistance(value: any) {
+        this.hiddenDis.next(value);
+    }
+
+    isHiddenDistance(): Observable<any> {
+        return this.hiddenDis.asObservable();
+    }
+    hiddenOrdination(value: any) {
+        this.hiddenOrd.next(value);
+    }
+
+    isHiddenOrdination(): Observable<any> {
+        return this.hiddenOrd.asObservable();
+    }
+    
 }

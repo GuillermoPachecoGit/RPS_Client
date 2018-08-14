@@ -1,5 +1,5 @@
 import { Injectable  } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, ResponseContentType } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Dataset } from '../components/dashboard-rps/navbar-dashboard/dataset';
 import { SharedDatasetService } from './shared-dataset.service';
@@ -11,7 +11,7 @@ export class UploadFileService {
 
     url = 'http://'+this.shared.getServerIP()+'/uploadFile';
     url_project = 'http://'+this.shared.getServerIP()+'/db_request_project_w/addProject';
-
+    url_tutorial = 'http://'+this.shared.getServerIP()+'/downloadTutorial';
     makeFileRequest(params: Array<string>, data: Dataset, files: Array<File>) {
         return new Promise((resolve, reject) => {
             const formData: any = new FormData();
@@ -42,6 +42,13 @@ export class UploadFileService {
         console.log(JSON.stringify(project));
         return this.http.post(this.url_project, JSON.stringify(project), { headers : headers })
                             .map( response => response.json());
+    }
+
+    downloadPDF(): any {
+        return this.http.get(this.url_tutorial, { responseType: ResponseContentType.Blob }).map(
+        (res) => {
+                return new Blob([res.blob()], { type: 'application/pdf' })
+            });
     }
 }
 

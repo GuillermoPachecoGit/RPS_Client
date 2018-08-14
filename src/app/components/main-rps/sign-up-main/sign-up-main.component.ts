@@ -17,7 +17,7 @@ import { UserService } from '../../../services/user.service';
 })
 
 export class SignUpMainComponent implements OnInit {
-  public userRPS = new UserRps('', '', '', '', '', '', '');
+  public userRPS = new UserRps('', '', '', '', '', '', '','','');
   public countries: CountryRps[];
 
   constructor( private initTemplate: InitTemplateService, private userService: UserService, private router : Router) { }
@@ -52,9 +52,16 @@ export class SignUpMainComponent implements OnInit {
     }
 
     invalidUserEntry() : boolean {
-        console.log(this.userRPS.name.length);
+        if(this.userRPS.nick.length == 0){
+          this.error_msg = 'Nick is empty.';
+          return true; 
+        }
         if(this.userRPS.name.length == 0){
-          this.error_msg = 'Username is empty.';
+          this.error_msg = 'Fist name is empty.';
+          return true; 
+        }
+        if(this.userRPS.last_name.length == 0){
+          this.error_msg = 'Last name is empty.';
           return true; 
         }
         if(this.userRPS.email.length == 0){

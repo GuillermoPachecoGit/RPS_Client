@@ -61,7 +61,7 @@ export class SignInMainComponent implements OnInit {
         console.log(params);
         console.log(params.result );
         if(params.result == 'ok'){
-          var result = confirm('Your new password was sent to your account email. Please sign in again.');
+          var result = confirm('Your new password was sent to your email account. Please sign in again.');
           $('#hideRecovery').click();
         }else{
           console.log("seteo el error");

@@ -144,6 +144,7 @@ export class ResultDashboardComponent implements OnInit {
           +'</div>'
         +'</div>'
     );
+   
     return { idGrap: ('dataset_result_'+dataset_id), id: ('tab_result_'+dataset_id)} ;
   }
 

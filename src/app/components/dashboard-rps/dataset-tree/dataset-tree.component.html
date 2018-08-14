@@ -31,17 +31,17 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 *ngIf="!isProject" class="modal-title">Analisys</h4>
+          <h4 *ngIf="!isProject" class="modal-title">Main Menu</h4>
           <h4 *ngIf="isProject" class="modal-title">Project</h4>
         </div>
         <div class="modal-body"> 
             <div *ngIf="isProject" >
                 <div>
-                    <label for="Description"  class="control-label">Project name: </label>
+                    <label for="Description"  class="control-label">Project Name: </label>
                     <input type="text" (ngModelChange)="changeDescription($event)"  id="name_msg_id" required [(ngModel)]="name_msg" name="name_msg"  #name="ngModel">
                 </div>
                 <div>
-                    <label for="Description"  class="control-label">Project description: </label>
+                    <label for="Description"  class="control-label">Project Description: </label>
                     <input type="text" (ngModelChange)="changeDescription($event)"  id="description_msg_id" required [(ngModel)]="description_msg" name="description_msg"  #name="ngModel">
                 </div>
                 <button type="button" *ngIf="editDescription" class="btn btn-success btn-sm"
@@ -51,9 +51,9 @@
                     <div id="rg_error"> <label *ngIf="invalid" id="error_message"> {{error_msg}}</label></div>
             </div>
         <div class="container">
-            <div class="row"> <button *ngIf="!isProject" type="button" [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runProcrustes">Run Procrustes</button> </div>
-            <div class="row"><button *ngIf="!isProject"  type="button"  [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runDistances">Run Distance</button> </div>
-            <div class="row"><button *ngIf="!isProject" type="button" [disabled]="!isDistance" class="btn btn-primary" data-toggle="modal" data-target="#runOrdinations">Run Ordinations</button> </div>
+            <div class="row"> <button *ngIf="!isProject" type="button" [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runProcrustes">Run Procrustes Superimposition</button> </div>
+            <div class="row"><button *ngIf="!isProject"  type="button"  [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runDistances">Compute Distance Matrix</button> </div>
+            <div class="row"><button *ngIf="!isProject" type="button" [disabled]="!isDistance" class="btn btn-primary" data-toggle="modal" data-target="#runOrdinations">Run Ordination</button> </div>
             <div class="row"><button *ngIf="!isProject"  class="btn btn-primary" [disabled]="!isAnalysis"  (click)="export($event)">Download as PDF</button> </div>
             <div class="row"> <button *ngIf="!isProject" type="button" (click)="deleteData($event)" class="btn btn-primary" data-toggle="modal" data-target="#xxx">Delete</button> </div>
 

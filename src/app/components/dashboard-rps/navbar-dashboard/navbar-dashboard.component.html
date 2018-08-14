@@ -6,6 +6,7 @@
                 <li><a class="navbar-brand"  >RPS Online</a></li>
                 <li><a (click)="openPopUp($event)" data-toggle="modal" data-target="#addProject"  ><span class="glyphicon glyphicon-plus"></span>Add Project</a></li>
                 <li><a (click)="openPopUp($event)" data-toggle="modal" data-target="#uploadFile"  ><span class="glyphicon glyphicon-open"></span>Upload Dataset</a></li>
+                <li><a (click)="downloadPDF($event)" data-toggle="modal"   ><span class="glyphicon glyphicon-education"></span>Tutorial</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">  
                 
@@ -17,19 +18,19 @@
                     </ul>
                     </li>
                     <li id="info_notification" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
-                        class="glyphicon glyphicon-envelope"></span>Inbox <span class="label label-info">{{new_notification}}</span>
+                        class="glyphicon glyphicon-check"></span>Processing completed <span class="label label-info">{{new_notification}}</span>
                      </a>
                      <ul id="notifications"  class="dropdown-menu">
                            
                     </ul>
                     </li>
                     
-                <li   class="dropdown"><a   class="dropdown-toggle" data-toggle="dropdown"><span
-                    class="glyphicon glyphicon-user"></span>Admin <b class="caret"></b></a>
+                <li   class="dropdown"><a   class="dropdown-toggle" data-toggle="dropdown">{{nick}} <span
+                    class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a  data-toggle="modal" data-target="#profile" ><span  class="glyphicon glyphicon-user"></span>Profile</a></li>
                         <li class="divider"></li>
-                        <li><a href="/"><span class="glyphicon glyphicon-off"></span>Logout</a></li>
+                        <li><a href="/" (click)="closeSession($event)"><span class="glyphicon glyphicon-off"></span>Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -57,7 +58,7 @@
           <div class="modal-body">    
               <form  #form method="post"  enctype="multipart/form-data"> 
                       <div class="form-group">
-                      <label for="project_for_data"  class="control-label">Select Project to dataset</label>
+                      <label for="project_for_data"  class="control-label">Select Project:</label>
                           <div>
                               <select  id="project_for_data"   class="form-control"  required [(ngModel)]="dataset.project_for_data" name="project_for_data" #project_for_data="ngModel">
                                   <option *ngFor="let procj of project_list" [value]="procj.project_id">{{procj.project_name}}</option>
@@ -80,11 +81,11 @@
                                   </div>
                       </div>
                       <div class="form-group">
-                      <label>Input file</label>
+                      <label>Input File:</label>
                       <input type="file" (change)="fileChangeEvent($event)" placeholder="Upload file..." />
                       </div>  
                       <div class="form-group">
-                        <label>Dataset name: </label>
+                        <label>Dataset Name: </label>
                         <input type="text"  class="form-control"  id="name_dataset" required [(ngModel)]="dataset.dataset_name" name="name_dataset" placeholder="Name" #name_dataset="ngModel"> 
                       </div>
                       <button type="button" class="btn btn-primary btn-s"
@@ -160,8 +161,10 @@
                 <div class="modal-body">    
                     <form method="post"  enctype="multipart/form-data"> 
                     <div class="form-group">
-                        <label for="country"  class="control-label">User Name: </label>
-                        <input type="text"  class="form-control"  id="name_project" required [(ngModel)]="user.name" name="name"  #name="ngModel">
+                        <label for="country"  class="control-label">First Name: </label>    
+                        <input type="text"  class="form-control"  id="name_project" required [(ngModel)]="user.name" name="name"  #name="ngModel">  
+                        <label for="country"  class="control-label">Last Name: </label>
+                        <input type="text"  class="form-control"  id="last_project" required [(ngModel)]="user.last_name" name="lastname"  #name="ngModel">
                         <label for="country"  class="control-label">Old Password: </label>
                         <input type="text"  class="form-control"  id="old_pass" required [(ngModel)]="user.old_pass" name="old_pass"  #name="ngModel"> 
                         <label for="country"  class="control-label">New Password: </label>

@@ -5,6 +5,7 @@ export class Distance {
         public project_id: string,
         public distance_name: string,
         public isDistance: boolean,
-        public user_id: string
+        public user_id: string,
+        public node_tree: string
     ){ }
 }

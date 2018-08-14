@@ -6,6 +6,8 @@ export class UserRps {
         public pass_conf : string,
         public area : string,
         public institution : string,
-        public country : string
+        public country : string,
+        public last_name: string,
+        public nick: string
     ){}
 }

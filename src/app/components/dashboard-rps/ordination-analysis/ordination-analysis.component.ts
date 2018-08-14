@@ -9,6 +9,9 @@ import { AnalyzeService } from '../../../services/analyze.service';
 import { DatasetService } from '../../../services/dataset.service';
 import { DistanceService } from '../../../services/distance.service';
 
+
+declare var $: any;
+
 @Component({
   selector: 'app-ordination-analysis',
   templateUrl: './ordination-analysis.component.html',
@@ -26,7 +29,7 @@ export class OrdinationAnalysisComponent implements OnInit {
   processing = false;
 
 
-  ordination = new Ordination(false,'','','','',true,'');
+  ordination = new Ordination(false,'','','','',true,'','');
   subscription: Subscription;
 
   selected_dataset = "";
@@ -47,7 +50,19 @@ export class OrdinationAnalysisComponent implements OnInit {
         this.ordination.dataset_id = params.dataset_id;
         this.ordination.distance_id = params.distance_id;
         this.ordination.project_id = params.project_id;
+        this.node_id = params.node;
     });
+
+
+    $(window).on('hidden.bs.modal', function() { 
+      $('#runOrdinations').modal('hide');
+      sharedDatasetService.hiddenOrdination(" ");
+    });
+      
+  this.subscription = this.sharedDatasetService.isHiddenOrdination().subscribe(
+    params => { 
+      this.ordination = new Ordination(false,'','','','',true,'','');
+  });
 
      }
 
@@ -62,11 +77,18 @@ confirmOrdination(){
   this.processing = true;
   this.sharedDatasetService.newAnalisys(this.ordination);
   this.ordination.user_id = this.idUser;
+  this.ordination.node_tree = this.node_id;
   this.analizeService.runAnalyzeOrdination(this.ordination).subscribe(result => {
-      this.ordination = new Ordination(false,'','','','',true,'');
-      this.distanceEnable = false;
-      this.processing = false;
-      this.sharedDatasetService.finishedAnalisys(result)
+    if(result.error){
+      alert(result.error);
+    }else{
+      result = JSON.parse(result);
+      result.node_tree = this.node_id.toString();
+      this.sharedDatasetService.finishedAnalisys(JSON.stringify(result));
+    }
+    this.ordination = new Ordination(false,'','','','',true,'','');
+    this.distanceEnable = false;
+    this.processing = false;
   })
   document.getElementById('hideAnalysisOrdination').click();
   document.getElementById('buttonClose').click();
@@ -97,6 +119,14 @@ loadDistance(idProject){
   this.distanceService.getDistaceByProjectId(idProject).then( (result) =>{
       this.distance_list = result;
   })
+}
+
+handleChangeCM(evt) {
+  this.ordination.ordination_name = "lsUMDS_"+this.selected_distance; 
+}
+
+handleChange(evt) {
+  this.ordination.ordination_name = "rUMDS_"+this.selected_distance; 
 }
 
 }

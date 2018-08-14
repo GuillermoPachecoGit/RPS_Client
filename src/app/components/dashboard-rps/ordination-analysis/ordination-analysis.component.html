@@ -7,20 +7,20 @@
           <!--header modal-->
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-              <h3 class="modal-title" id="lineModalLabel">New Universal Multidimensional Scaling</h3> </div>
+              <h3 class="modal-title" id="lineModalLabel">Run Ordination</h3> </div>
           <!--body modal-->
           <div class="modal-body">    
               <form method="post"  enctype="multipart/form-data"> 
                   <div class="form-group">
                       <label for="datasets"  class="control-label">Selected Distance Matrix: <a> {{selected_distance}} </a></label>
                   </div>
-
+                  Universal Multidimensional Scaling
                   <div class="form-group">
                       <div class="radio">
-                          <label><input type="radio" name="algorithm" [(ngModel)]="ordination.algorithm_selected" [value]=1 >Universal Least-Squares MDS (lsUMDS)</label>
+                          <label><input type="radio" (change)="handleChangeCM($event)" name="algorithm" [(ngModel)]="ordination.algorithm_selected" [value]=1 checked>Least-Squares Universal MDS (lsUMDS)</label>
                         </div>
                         <div class="radio">
-                          <label><input type="radio" name="algorithm" [(ngModel)]="ordination.algorithm_selected" [value]=2 >Universal Resistant MDS (rUMDS)</label>
+                          <label><input type="radio" (change)="handleChange($event)" name="algorithm" [(ngModel)]="ordination.algorithm_selected" [value]=2 >Resistant Universal MDS (rUMDS)</label>
                         </div>
                   </div>
 
@@ -34,7 +34,7 @@
                       <span class="glyphicon glyphicon-upload"></span> Confirm
                   </button>
                   <!--<div id="rg_error"> <label *ngIf="invalid" id="error_message"> {{error_msg}}</label></div>-->
-                  <span *ngIf="processing"><h4>Analisys in process, please wait a few minutes...</h4></span>
+                  <span *ngIf="processing"><h4>Analysis in progress, please wait a few minutes...</h4></span>
               </form></div>
       
           <!-- footer modal -->

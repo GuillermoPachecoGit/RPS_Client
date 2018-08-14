@@ -3,12 +3,13 @@ import { AnalyzeService } from '../../../services/analyze.service';
 import { ProjectService } from '../../../services/get-projects.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { SharedDatasetService } from '../../../services/shared-dataset.service';
-import { UploadFileService } from '../../../services/upload-file.service';
 import { Analyze } from '../navbar-dashboard/analyze';
 import { Subscription } from 'rxjs';
 import { Distance } from '../navbar-dashboard/distance';
 import { DistanceService } from '../../../services/distance.service';
 import { DatasetService } from '../../../services/dataset.service';
+
+declare var $: any;
 
 @Component({
   selector: 'app-distance-analysis',
@@ -16,10 +17,8 @@ import { DatasetService } from '../../../services/dataset.service';
   styleUrls: ['./distance-analysis.component.css']
 })
 export class DistanceAnalysisComponent implements OnInit {
-  distance = new Distance(false,'','','',true,'');
-
+  distance = new Distance(false,'','','',true,'','');
   project_list = [];
-  
   idUser = '';
   dataset_list = [];
   distance_list = [];
@@ -29,11 +28,8 @@ export class DistanceAnalysisComponent implements OnInit {
   landmarks_excluded = [];
   specimens_excluded = [];
   selected_dataset = "";
-
-  analyze = new Analyze('','','',false,false,'', true,[],[],'','');
- 
+  analyze = new Analyze('','','','',false,'', true,[],[],'','','');
   subscription: Subscription;
- 
   node_id = "";
 
   constructor(
@@ -57,6 +53,16 @@ export class DistanceAnalysisComponent implements OnInit {
         this.specimens_excluded = []; 
       });
 
+
+      $(window).on('hidden.bs.modal', function() { 
+        $('#runDistances').modal('hide');
+        sharedDatasetService.hiddenDistance(" ");
+      });
+        
+    this.subscription = this.sharedDatasetService.isHiddenDistance().subscribe(params => { 
+        this.distance = new Distance(false,'','','',true,'','');
+    });
+
     }
 
   ngOnInit() {
@@ -65,15 +71,23 @@ export class DistanceAnalysisComponent implements OnInit {
   })
 }
 
-  confirmDistance(){
+confirmDistance(){
     this.processing = true;
     this.distance.user_id = this.idUser;
+    this.distance.node_tree = this.node_id;
     this.sharedDatasetService.newAnalisys(this.distance);
     this.analizeService.runAnalyzeDistance(this.distance).subscribe(result => {
-        this.distance = new Distance(false,'','','',true,this.idUser);
+
+        if(result.error){
+          alert(result.error);
+        }else{
+          result = JSON.parse(result);
+          result.node_tree = this.node_id.toString();
+          this.sharedDatasetService.finishedAnalisys(JSON.stringify(result));
+        }
+        this.distance = new Distance(false,'','','',true,this.idUser,this.node_id);
         this.datasetEnable = false;
         this.processing = false;
-        this.sharedDatasetService.finishedAnalisys(result);
     })
     document.getElementById('hideRunAnalysisDistance').click();
     document.getElementById('buttonClose').click();
@@ -94,6 +108,14 @@ loadDataset(idProject){
   this.datasetService.getDatasetsByProject(idProject).then( (result) =>{
       this.dataset_list = result;
   })
+}
+
+handleChangeCM(evt) {
+  this.distance.distance_name = "lsD_"+this.selected_dataset; 
+}
+
+handleChange(evt) {
+  this.distance.distance_name = "rD_"+this.selected_dataset; 
 }
 
 }

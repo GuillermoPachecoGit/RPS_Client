@@ -1,6 +1,6 @@
-import { Component, OnInit, Output, EventEmitter, Input, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import {ParamMap, ActivatedRoute, Params } from '@angular/router';
+import {ActivatedRoute, Params } from '@angular/router';
 
 /**
  * Data Components
@@ -13,18 +13,12 @@ import { Dataset } from './dataset';
 import { UploadFileService } from '../../../services/upload-file.service';
 import { SharedDatasetService } from '../../../services/shared-dataset.service';
 import { ProjectService } from '../../../services/get-projects.service';
-import { AnalyzeService } from "../../../services/analyze.service";
 import { UserService } from "../../../services/user.service";
-import { Analyze } from './analyze';
-import { Distance } from './distance';
-import { Ordination } from './ordination';
 import {User} from './user';
 import { DatasetService } from '../../../services/dataset.service';
 import { OrdinationService } from '../../../services/ordination.service';
 import { DistanceService } from '../../../services/distance.service';
 
-// Declaramos las variables para jQuery
-declare var jQuery: any;
 declare var $: any;
 
 @Component({
@@ -48,10 +42,11 @@ export class NavbarDashboardComponent implements OnInit {
   new_notification = 0;
   new_in_progress = 0;
   error_update_msg = '';
+  nick = '';
 
   project = new Project('', '', '');
   dataset = new Dataset('', '',1);
-  user = new User('','','','','','','','');
+  user = new User('','','','','','','','','','');
 
   error_msg = '';
   invalid = false;
@@ -61,7 +56,6 @@ export class NavbarDashboardComponent implements OnInit {
     private sharedDatasetService: SharedDatasetService,
     private route: ActivatedRoute,
     private datasetService: DatasetService,
-    private analizeService: AnalyzeService,
     private userService: UserService,
     private projectService: ProjectService,
     private ordinationService: OrdinationService,
@@ -74,19 +68,38 @@ export class NavbarDashboardComponent implements OnInit {
             var IsDataset = $(this).parents('li').attr('isDataset');
             var IsDistance = $(this).parents('li').attr('isDistance');
             var IsOrdination = $(this).parents('li').attr('isOrdination');
+            var node_tree = $(this).parents('li').attr('node')
+            console.log('Datos del LI: '+tabID);
+            console.log(node_tree);
             if(IsDataset){
                 datasetService.getDatasetsById(tabID).then((result) =>{
+                    if(node_tree){
+                        result = JSON.parse(result);
+                        result.node_tree = node_tree;
+                        result = JSON.stringify(result);
+                    }
+                    console.log("comparto el dataset: "+ result);
                     sharedDatasetService.sendAnalysis(result);
                   });
             }
             if(IsDistance){
                 distanceService.getDistanceById(tabID).then((result) =>{
+                    if(node_tree){
+                        result = JSON.parse(result);
+                        result.node_tree = node_tree;
+                        result = JSON.stringify(result);
+                    }
                     sharedDatasetService.setDistance(result);
                   });
             }
 
             if(IsOrdination){
                 ordinationService.getOrdinationById(tabID).then((result) =>{
+                    if(node_tree){
+                        result = JSON.parse(result);
+                        result.node_tree = node_tree;
+                        result = JSON.stringify(result);
+                    }
                     sharedDatasetService.setOrdination(result);
                   });
             }
@@ -96,7 +109,7 @@ export class NavbarDashboardComponent implements OnInit {
     });
 
     this.subscription = this.sharedDatasetService.getNotificationCount().subscribe(
-        params => {
+        () => {
             this.new_notification--;
         }
     )
@@ -130,7 +143,7 @@ export class NavbarDashboardComponent implements OnInit {
 
   @ViewChild('form') form;
 
-  openPopUp(e){
+  openPopUp(){
     this.invalid = false;
     this.processing = false;
     this.project = new Project('','','');
@@ -144,7 +157,12 @@ export class NavbarDashboardComponent implements OnInit {
         this.new_in_progress--;
         $('#'+params.name).remove();
     }
-    $('#notifications').append('<li id="'+params.dataset_id +'"  isDataset="true"  ><a> New Analisys: '+params.dataset_name+'   <span > <button class="btn btn-info btn-xs view "   (click)="viewDataset()"> View </button> </span>  </a> </li>'); 
+    if(params.node_tree) {
+        $('#notifications').append('<li  id="'+params.dataset_id +'"  isDataset="true" node="'+params.node_tree+'" ><a> New Analisys: '+params.dataset_name+'   <span > <button class="btn btn-info btn-xs view "   (click)="viewDataset()"> View </button> </span>  </a> </li>'); 
+  
+    }else{
+          $('#notifications').append('<li id="'+params.dataset_id +'"  isDataset="true" ><a> New Analisys: '+params.dataset_name+'   <span > <button class="btn btn-info btn-xs view "   (click)="viewDataset()"> View </button> </span>  </a> </li>'); 
+    }
   }
   addNotificationOrdination(params) {
     if(this.new_in_progress > 0){
@@ -152,7 +170,12 @@ export class NavbarDashboardComponent implements OnInit {
         $('#'+params.name).remove();
     }
     this.new_notification++;
-    $('#notifications').append('<li id="'+params.ordination_id +'" isOrdination="true" ><a> New Ordination: '+params.ordination_name+'  <span><button class="btn btn-info btn-xs view" (click)="viewDataset()"> View </button> </span>  </a> </li>'); 
+    if(params.node_tree) {
+        $('#notifications').append('<li  id="'+params.ordination_id +'" isOrdination="true" node="'+params.node_tree+'" ><a> New Ordination: '+params.ordination_name+'  <span><button class="btn btn-info btn-xs view" (click)="viewDataset()"> View </button> </span>  </a> </li>'); 
+    }
+    else{
+        $('#notifications').append('<li id="'+params.ordination_id +'" isOrdination="true" ><a> New Ordination: '+params.ordination_name+'  <span><button class="btn btn-info btn-xs view" (click)="viewDataset()"> View </button> </span>  </a> </li>'); 
+    }
   }
   addNotificationDistance(params) {
     if(this.new_in_progress > 0){
@@ -160,8 +183,14 @@ export class NavbarDashboardComponent implements OnInit {
         $('#'+params.name).remove();
     }
     this.new_notification++;
-    $('#notifications').append('<li id="'+params.distance_id +'" isDistance="true" ><a> New Distance: '+params.distance_name+'  <span> <button class="btn btn-info btn-xs view" (click)="viewDataset()"> View </button>  </a> </span> </li>'); 
-  }
+
+    if(params.node_tree) {
+        $('#notifications').append('<li  id="'+params.distance_id +'" isDistance="true" node="'+params.node_tree+'" ><a> New Distance: '+params.distance_name+'  <span> <button class="btn btn-info btn-xs view" (click)="viewDataset()"> View </button>  </a> </span> </li>'); 
+    }
+    else{
+        $('#notifications').append('<li id="'+params.distance_id +'" isDistance="true" ><a> New Distance: '+params.distance_name+'  <span> <button class="btn btn-info btn-xs view" (click)="viewDataset()"> View </button>  </a> </span> </li>'); 
+    }
+    }
   
 
   addInProcessDataset(params) {
@@ -170,11 +199,11 @@ export class NavbarDashboardComponent implements OnInit {
   }
   addInProcessDistance(params) {
     this.new_in_progress++;
-    $('#in_progress').append('<li id="'+params.distance_name +'" isOrdination="true" ><a>Ordination in progress : '+params.distance_name+'  </a> </li>'); 
+    $('#in_progress').append('<li id="'+params.distance_name +'" isDistance="true" ><a>Distance in progress : '+params.distance_name+'  </a> </li>'); 
   }
   addInProcessOrdination(params) {
     this.new_in_progress++;
-    $('#in_progress').append('<li id="'+params.ordination_name +'" isDistance="true" ><a>Distance in progress : '+params.ordination_name+'  </a> </li>'); 
+    $('#in_progress').append('<li id="'+params.ordination_name +'" isOrdenation="true" ><a>Ordination in progress : '+params.ordination_name+'  </a> </li>'); 
   }
 
   loadPendingAnalisys(){
@@ -205,6 +234,12 @@ export class NavbarDashboardComponent implements OnInit {
         });
       });
 
+  }
+
+  closeSession(){
+    this.userService.closeSession("").then(response => {
+        console.log(response);
+    });
   }
 
   loadPendingOrdinations(){
@@ -242,6 +277,7 @@ export class NavbarDashboardComponent implements OnInit {
        });
   }
 
+  
   getUser(){
       this.userService.getUserById(this.idUser).then(
           params => {
@@ -250,6 +286,8 @@ export class NavbarDashboardComponent implements OnInit {
               this.user.institution = params.institution;
               this.user.area = params.area;
               this.user.email = params.email_address;
+              this.nick = params.nick;
+              this.user.last_name = params.last_name;
           }
       )
   }
@@ -324,11 +362,12 @@ confirmProject() {
                     this.invalid = true;
                     this.processing = false;
                 }
-            }, (error) => {
-                this.processing = false;
-                this.error_msg = 'Please, add a new dataset file.';;
-                this.invalid = true;
-            });
+            }, () => {
+                    this.processing = false;
+                    this.error_msg = 'Please, add a new dataset file.';
+                    ;
+                    this.invalid = true;
+                });
         }
     }
 
@@ -354,5 +393,14 @@ confirmProject() {
             return true;
         }
         return false;
+    }
+
+    downloadPDF(){
+        this.uploadService.downloadPDF().subscribe(
+            (res) => {
+            var fileURL = URL.createObjectURL(res);
+            window.open(fileURL);
+            }
+        );
     }
 }
