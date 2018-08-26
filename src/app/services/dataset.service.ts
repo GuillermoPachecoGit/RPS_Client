@@ -42,9 +42,9 @@ export class DatasetService {
     .toPromise();
   }
 
-  getAnalisysById(dataset_id: string,project_id: string) {
+  getAnalisysById(dataset_id: string) {
     return this.http
-    .get(this.generateRequestAnalisys(this.url_request_analisysById,dataset_id,project_id))
+    .get(this.generateRequest(this.url_request_analisysById,dataset_id))
     .map((response) => response.json())
     .toPromise();
   }

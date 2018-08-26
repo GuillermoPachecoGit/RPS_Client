@@ -16,7 +16,6 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { UploadFileService } from '../../services/upload-file.service';
 import { ProjectService } from '../../services/get-projects.service';
 import { AnalyzeService  } from "../../services/analyze.service";
-ProjectService
 /**
  * Tree view
  */

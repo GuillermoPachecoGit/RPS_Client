@@ -22,6 +22,7 @@
     "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/router": "^5.0.0",
     "angular-tree-component": "^7.0.1",
+    "angular2-json2csv": "^1.1.2",
     "core-js": "^2.4.1",
     "express": "^4.16.3",
     "html2canvas": "^1.0.0-alpha.12",

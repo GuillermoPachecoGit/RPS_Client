@@ -199,7 +199,7 @@ generateSpecimensSelector(params){
   var key = 0;
   $('#specimens li').remove();
   this.specimens_excluded = [];
-  params.specimen_name.forEach(element => {
+  params.objects_name.forEach(element => {
       $('#specimens').append('<li><a  class="small" data-value="'+key+'" tabIndex="-1"><input type="checkbox" value="'+key +'" isSpecimen="true"  checked />'+element+'</a></li>');    
       key++;
   });
@@ -225,8 +225,8 @@ generateLandmarksSelector(params){
   $('#landmarks li').remove();
   var count = 0;
   this.landmarks_excluded = [];
-  for (let index = 0; index < params.specimens.root_number_landmarks; index++) {  
-      if(!params.specimens.excluded_land.includes(index.toString())){
+  for (let index = 0; index < params.data.root_number_landmarks; index++) {  
+      if(!params.data.excluded_land.includes(index.toString())){
           $('#landmarks').append('<li><a  class="small" data-value="'+index+'" tabIndex="-1"><input type="checkbox" value="'+index +'" isLandmark="true" checked />LM_'+(index+1)+'</a></li>');     
           count++;
       }

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Params } from '@angular/router';
 import { TreeNode, TreeModel, TREE_ACTIONS, KEYS, IActionMapping, ITreeOptions } from 'angular-tree-component';
 
+
 const actionMapping:IActionMapping = {
   mouse: {
     contextMenu: (tree, node, $event) => {
@@ -37,6 +38,7 @@ import { RemoveService } from '../../../services/remove.service';
 import { DatasetService } from '../../../services/dataset.service';
 import { DistanceService } from '../../../services/distance.service';
 import { OrdinationService } from '../../../services/ordination.service';
+
  // Declaramos las variables para jQuery
  declare var jQuery: any;
  declare var $: any;
@@ -78,7 +80,7 @@ export class TreeViewComponent implements OnInit {
      private datasetService :   DatasetService, 
      private distanceService : DistanceService,
      private ordinationService : OrdinationService,
-     private route: ActivatedRoute    
+     private route: ActivatedRoute
     ) {
        
     this.cache = new CacheStatementRPS();
@@ -107,7 +109,6 @@ export class TreeViewComponent implements OnInit {
       value => {
         if(!this.expanded_nodes_dataset.includes(value.dataset_id)){
           //lo expando
-          console.log("AGREGO EL NUEVO DATASET: "+value.dataset_id);
           this.expanded_nodes_dataset.push(value.dataset_id); 
           this.loaded_dataset.push(value.dataset_id);
           if(this.selected_node != 0){
@@ -115,13 +116,13 @@ export class TreeViewComponent implements OnInit {
             this.cache.AddDataset(value.dataset_id,value);
             this.selected_node = 0;
             this.addDataset(value.project_id, value);
-            //node.data.children.push({ id: this.getID(), name: value.dataset_name, project_id: value.project_id ,dataset_id: value.dataset_id, children: [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(value.specimens.data, value.specimen_name, value.dimention, value.numbers_of_specimen,value.numbers_of_landmark), isFolderSpecimen: true}], isDataset : true });
+            //node.data.children.push({ id: this.getID(), name: value.dataset_name, project_id: value.project_id ,dataset_id: value.dataset_id, children: [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(value.specimens.data, value.objects_name, value.dimention, value.number_of_objects,value.number_of_landmarks), isFolderSpecimen: true}], isDataset : true });
             this.tree.treeModel.update();
           }
           else{       
             this.cache.AddDataset(value.dataset_id,value);
             this.selected_node = 0;
-            //node.data.children.push({ id: this.getID(), name: value.dataset_name, project_id: value.project_id ,dataset_id: value.dataset_id, children: [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(value.specimens.data, value.specimen_name, value.dimention, value.numbers_of_specimen,value.numbers_of_landmark), isFolderSpecimen: true}], isDataset : true });
+            //node.data.children.push({ id: this.getID(), name: value.dataset_name, project_id: value.project_id ,dataset_id: value.dataset_id, children: [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(value.specimens.data, value.objects_name, value.dimention, value.number_of_objects,value.number_of_landmarks), isFolderSpecimen: true}], isDataset : true });
             this.addDataset(value.project_id, value);
             this.tree.treeModel.update();
           }
@@ -295,7 +296,7 @@ export class TreeViewComponent implements OnInit {
 
   addAnalisysOnly(id,element){
     const node = this.tree.treeModel.getNodeById(id);
-    node.data.children.push( { id: this.getID(), name: element.dataset_name, project_id: element.project_id, dataset_id: element.dataset_id, children: [], isDataset : true, isAnalysis: true });
+    node.data.children.push( { id: this.getID(), name: element.dataset_name, project_id: element.project_id_ref, dataset_id: element.dataset_id, children: [], isDataset : true, isAnalysis: true });
     this.tree.treeModel.update();
   }
 
@@ -317,19 +318,19 @@ export class TreeViewComponent implements OnInit {
 
   addDataset(idProject, element){
     let i = this.getIndexByProjectId(idProject);
-    this.nodes[i].children.push({ id: this.getID(), name: element.dataset_name, project_id: element.project_id ,dataset_id: element.dataset_id, children: [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(element.specimens.data, element.specimen_name, element.dimention, element.numbers_of_specimen,element.numbers_of_landmark), isFolderSpecimen: true}], isDataset : true });
+    this.nodes[i].children.push({ id: this.getID(), name: element.dataset_name, project_id: element.project_id ,dataset_id: element.dataset_id, children: [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(element.data.data, element.objects_name, element.dimention, element.number_of_objects,element.number_of_landmarks), isFolderSpecimen: true}], isDataset : true });
     this.tree.treeModel.update();
   }
 
   addAnalisys(idProject, element){
     if(element.node_tree){
       const node = this.tree.treeModel.getNodeById(element.node_tree);
-      node.data.children.push({ id: this.getID(), name: element.dataset_name, project_id: element.project_id ,dataset_id: element.dataset_id, children: [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(element.specimens.data, element.specimen_name, element.dimention, element.numbers_of_specimen,element.numbers_of_landmark), isFolderSpecimen: true}], isDataset : true, isAnalysis: true });
+      node.data.children.push({ id: this.getID(), name: element.dataset_name, project_id: element.project_id_ref ,dataset_id: element.dataset_id, children: [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(element.data.data, element.objects_name, element.dimention, element.number_of_objects,element.number_of_landmarks), isFolderSpecimen: true}], isDataset : true, isAnalysis: true });
       this.tree.treeModel.update();
     }
     else{
       const node = this.tree.treeModel.getNodeById(this.idRepository);
-      node.data.children.push({ id: this.getID(), name: element.dataset_name, project_id: element.project_id ,dataset_id: element.dataset_id, children: [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(element.specimens.data, element.specimen_name, element.dimention, element.numbers_of_specimen,element.numbers_of_landmark), isFolderSpecimen: true}], isDataset : true, isAnalysis: true });
+      node.data.children.push({ id: this.getID(), name: element.dataset_name, project_id: element.project_id_ref ,dataset_id: element.dataset_id, children: [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(element.data.data, element.objects_name, element.dimention, element.number_of_objects,element.number_of_landmarks), isFolderSpecimen: true}], isDataset : true, isAnalysis: true });
       this.tree.treeModel.update();
     }
     
@@ -341,11 +342,11 @@ export class TreeViewComponent implements OnInit {
          //MIRAR ACA, IMPLEMENTAR MECANISMO DE CARGA UNA SOLA VEZ EN EL TREE
           this.loaded_dataset.push(values.dataset_id);
           const node = this.tree.treeModel.getNodeById(id);
-          var specimen = [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(values.specimens.data, values.specimen_name, values.dimention, values.numbers_of_specimen,values.numbers_of_landmark), isFolderSpecimen: true}];
+          var specimen = [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(values.data.data, values.objects_name, values.dimention, values.number_of_objects,values.number_of_landmarks), isFolderSpecimen: true}];
           node.data.children = specimen.concat(node.data.children);
           
           //ajustes
-          this.datasetService.getAnalisysById(values.dataset_id,values.project_id).then((result) =>{
+          this.datasetService.getAnalisysById(values.dataset_id).then((result) =>{
             result.forEach(element => {
               if(!this.expanded_nodes_dataset.includes(element.dataset_id)){    
                 this.addAnalisysOnly(id,element);
@@ -354,7 +355,7 @@ export class TreeViewComponent implements OnInit {
             });
           });
           //distances
-            this.distanceService.getDistaceByDatasets(values.dataset_id,values.project_id).then((result) =>{
+            this.distanceService.getDistaceByDatasets(values.dataset_id).then((result) =>{
               result.forEach(element => {
                 if(!this.expanded_nodes_distance.includes(element.distance_id)){
                   this.addDistance(id,element);
@@ -373,11 +374,11 @@ export class TreeViewComponent implements OnInit {
          //MIRAR ACA, IMPLEMENTAR MECANISMO DE CARGA UNA SOLA VEZ EN EL TREE
           this.loaded_dataset.push(values.dataset_id);
           const node = this.tree.treeModel.getNodeById(id);
-          var specimen = [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(values.specimens.data, values.specimen_name, values.dimention, values.numbers_of_specimen,values.numbers_of_landmark), isFolderSpecimen: true}];
+          var specimen = [{id: this.getID(), name: 'Specimens', children: this.generateSpecimenArray(values.data.data, values.objects_name, values.dimention, values.number_of_objects,values.number_of_landmarks), isFolderSpecimen: true}];
           node.data.children = specimen.concat(node.data.children);
           
           //ajustes
-          this.datasetService.getAnalisysById(values.dataset_id,values.project_id).then((result) =>{
+          this.datasetService.getAnalisysById(values.dataset_id).then((result) =>{
             result.forEach(element => {
               if(!this.expanded_nodes_dataset.includes(element.dataset_id)){    
                 this.addAnalisysOnly(id,element);
@@ -386,7 +387,7 @@ export class TreeViewComponent implements OnInit {
             });
           });
           //distances
-            this.distanceService.getDistaceByDatasets(values.dataset_id,values.project_id).then((result) =>{
+            this.distanceService.getDistaceByDatasets(values.dataset_id).then((result) =>{
               result.forEach(element => {
                   this.addDistanceClick(id,element);
               });
@@ -545,7 +546,7 @@ export class TreeViewComponent implements OnInit {
     }
     
   }
-
+  
   reload(e){
     this.nodes = [];
     this.projectService.getProjectsByData(this.idUser).then
@@ -637,6 +638,102 @@ export class TreeViewComponent implements OnInit {
     }
   }
 
+  exportCSV(){
+  const node = this.tree.treeModel.getNodeById(this.selected_node);
+  if(node.data.isDataset){
+      this.datasetService.getDatasetsById(node.data.dataset_id).then(result => {
+        var value = JSON.parse(result);
+        this.download(this.ConvertToCSVDataset(value.data.data,value.objects_name),value.dataset_name);
+    });
+  }
+
+  if(node.data.isDistance){
+    this.distanceService.getDistanceById(node.data.distance_id).then( result => {
+        var value = JSON.parse(result);
+        this.download(this.ConvertToCSVDistance(value.data,value.objects_name),value.distance_name);
+    });
+  }
+
+  if(node.data.isOrdination){
+    this.ordinationService.getOrdinationById(node.data.ordination_id).then( result => {
+      var value = JSON.parse(result);
+      this.download(this.ConvertToCSVDistance(value.data,value.objects_name),value.ordination_name);
+    });
+  }
+
+  document.getElementById('buttonClose').click();
+  }
+  
+    // Download CSV
+    download(csvData:any, filename:string){
+      var a: any = document.createElement("a");
+      a.setAttribute('style', 'display:none;');
+      document.body.appendChild(a);
+      var blob = new Blob([csvData], { type: 'text/csv' });
+      var url= window.URL.createObjectURL(blob);
+      a.href = url;
+      
+      var isIE = /*@cc_on!@*/false || !!(<any> document).documentMode;
+      
+      if (isIE)
+      {   
+          var retVal = navigator.msSaveBlob(blob, filename+'.csv');
+      }
+      else{
+          a.download = filename+'.csv';
+      }
+      // If you will any error in a.download then dont worry about this. 
+      a.click();
+  }
+
+
+    // convert Json to CSV data
+    ConvertToCSVDataset(data,names) {
+        var file = "";
+        console.log(data);
+        console.log(names);
+        for (var i = 0; i < names.length; i++) {
+            
+            var object = data[i]["specimen"+i];
+            console.log(object);
+            file += names[i] + '\r\n';
+            for(var j=0; j <object.length; j++ ){
+              file += this.buildRow(object[j]);
+            }
+            file += '\r\n';
+        }
+        return file;
+    }
+
+    // convert Json to CSV data
+    ConvertToCSVDistance(data,names) {
+      var file = "";
+      console.log(data);
+      console.log(names);
+      for (var i = 0; i < data.length; i++) {
+          file += this.buildRowDistance(data[i],names[i]);
+      }
+      return file;
+  }
+    
+  buildRow(array){
+    var line = "";
+    for (var i = 0; i < array.length; i++) {
+      line += array[i]+',';
+        }
+    line += '\r\n';
+    return line;
+  }
+
+  buildRowDistance(array,name){
+    var line = name+",";
+    for (var i = 0; i < array.length; i++) {
+      line += array[i]+',';
+        }
+    line += '\r\n';
+    return line;
+  }
+
   onRightClick(e){
     console.log(e.node.data);
     var currentNode = e.node.data;
@@ -667,6 +764,14 @@ export class TreeViewComponent implements OnInit {
       this.isRepository = true;
     }
    
+    if(currentNode.isOrdination){
+      //this.selected_node = currentNode.id;
+      this.isDataset = false;
+      this.isDistance = false;
+      this.isAnalysis = true;
+      this.isProject = false;
+      this.isRepository = false;
+    }  
 
     if(currentNode.isDistance){
       //this.selected_node = currentNode.id;
@@ -694,4 +799,6 @@ export class TreeViewComponent implements OnInit {
       this.isProject = true;
     } 
   }
+
+  
 }

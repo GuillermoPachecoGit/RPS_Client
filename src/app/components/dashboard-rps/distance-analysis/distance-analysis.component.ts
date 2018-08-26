@@ -35,13 +35,11 @@ export class DistanceAnalysisComponent implements OnInit {
   constructor(
     private sharedDatasetService: SharedDatasetService,
     private route: ActivatedRoute,
-    private projectService: ProjectService,
     private analizeService: AnalyzeService,
     private distanceService: DistanceService,
     private datasetService: DatasetService  
   ) { 
 
-      
       this.subscription = this.sharedDatasetService.getSelectedDataset().subscribe( params =>{
         this.selected_dataset = params.name;
         this.analyze.dataset_selected = params.dataset_id;

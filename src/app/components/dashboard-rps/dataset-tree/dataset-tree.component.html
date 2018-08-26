@@ -55,6 +55,7 @@
             <div class="row"><button *ngIf="!isProject"  type="button"  [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runDistances">Compute Distance Matrix</button> </div>
             <div class="row"><button *ngIf="!isProject" type="button" [disabled]="!isDistance" class="btn btn-primary" data-toggle="modal" data-target="#runOrdinations">Run Ordination</button> </div>
             <div class="row"><button *ngIf="!isProject"  class="btn btn-primary" [disabled]="!isAnalysis"  (click)="export($event)">Download as PDF</button> </div>
+            <div class="row"><button *ngIf="!isProject"  class="btn btn-primary" [disabled]="!isAnalysis"  (click)="exportCSV()">Download as CSV</button> </div>
             <div class="row"> <button *ngIf="!isProject" type="button" (click)="deleteData($event)" class="btn btn-primary" data-toggle="modal" data-target="#xxx">Delete</button> </div>
 
         </div>        

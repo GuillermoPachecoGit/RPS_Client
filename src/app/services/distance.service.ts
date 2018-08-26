@@ -26,9 +26,9 @@ export class DistanceService {
     .toPromise();
   }
 
-  getDistaceByDatasets(dataset_id: string ,project_id: string) {
+  getDistaceByDatasets(dataset_id: string ) {
     return this.http
-    .get(this.generateRequestAnalisys(this.url_request_distances,dataset_id,project_id))
+    .get(this.generateRequest(this.url_request_distances,dataset_id))
     .map((response) => response.json())
     .toPromise();
   }

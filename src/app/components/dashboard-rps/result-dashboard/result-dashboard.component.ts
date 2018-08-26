@@ -154,7 +154,7 @@ export class ResultDashboardComponent implements OnInit {
 
   generateDistanceMatrix(params,tab){
     let data = params.data;
-    let names = params['specimen_name'];
+    let names = params['objects_name'];
     $('#'+tab).append(
           '<h2> Distance: '+params.distance_name+'</h2>'
     );
@@ -208,8 +208,8 @@ export class ResultDashboardComponent implements OnInit {
 
   generateTable(params, tab){
     let data = [];
-    let specimens = params['specimens']['data'];
-    let names = params['specimen_name'];
+    let specimens = params['data']['data'];
+    let names = params['objects_name'];
     for (let index = 0; index < specimens.length; index++) {
       const specimen = specimens[index]['specimen' + index];
       if(names.length > 0){
