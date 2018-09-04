@@ -29,7 +29,7 @@
         <div class="modal-body">    
             <form  id="lg_formrecovery" enctype="multipart/form-data"> 
                     <div class="form-group">
-                      <label>Do you want to recover your password? Please, enter your email account and confirm the operation. Your password will be sent at your email account.  </label>
+                      <label>If you can't remember your password please enter your email and then press Confirm. Your password will be sent.</label>
                       <input type="text"  class="form-control"  id="email_recovery" required [(ngModel)]="email_recovery" name="email_recovery" placeholder="Email" #name_email="ngModel"> 
                     </div>
                     <div id="rg_error"> <label *ngIf="invalid_recovery" id="error_message"> {{error_msg_recovery}}</label></div>
