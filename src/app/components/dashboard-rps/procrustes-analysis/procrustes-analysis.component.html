@@ -18,7 +18,7 @@
                           <div class="row">
                                <div class="col-lg-6">
                                   <div class="button-group">
-                                      <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span ></span>Specimens <span class="caret"></span></button>
+                                      <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span ></span>Objects <span class="caret"></span></button>
                                       <ul class="dropdown-menu" id="specimens">
                                      </ul>
                                   </div>
@@ -44,20 +44,20 @@
 
                   <div class="form-group">
                           <div class="radio">
-                          <label><input type="radio" (change)="handleChangeCM()"  name="algorithm"  [(ngModel)]="analyze.algorithm_selected" [value]=1 >Generalizaded Least-Squares Procrustes Superimposition (GlsP)</label>
+                          <label><input type="radio" (change)="handleChangeCM()"  name="algorithm"  [(ngModel)]="analyze.algorithm_selected" [value]=1 >Generalized Least-squares Procrustes Superimposition (GlsP)</label>
                         </div>
                         <div class="radio">
-                          <label><input type="radio" (change)="handleChange()" name="algorithm" [(ngModel)]="analyze.algorithm_selected" [value]=2 >Generalizaded Resistant Procrustes Superimposition (GrP)</label>
+                          <label><input type="radio" (change)="handleChange()" name="algorithm" [(ngModel)]="analyze.algorithm_selected" [value]=2 >Generalized Resistant Procrustes Superimposition (GrP)</label>
                           <div *ngIf="visibleParamsResistent">
-                                  <label> <b>Tolerance:</b> <input type="text"  class="input_r"  [(ngModel)]="analyze.iterations" (change)="handleChange($event)" name="tolerance" ></label>
-                                  <label> <b>Max. Iterations:</b>  <input type="text" class="input_r" [(ngModel)]="analyze.tolerance" (change)="handleChange($event)" name="iterations"  ></label>
+                                  <label> <b>Maximum number of iterations:</b> <input type="text"  class="input_r"  [(ngModel)]="analyze.iterations" (change)="handleChange($event)" name="tolerance" ></label>
+                                  <label> <b>Tolerance:</b>  <input type="text" class="input_r" [(ngModel)]="analyze.tolerance" (change)="handleChange($event)" name="iterations"  ></label>
                           </div>
                           
                         </div>
                   </div>
                   <div class="form-group">
                       <div class="radio">
-                          <input type="checkbox"  [(ngModel)]="analyze.show_consensus_selected" name="show_consensus_selected" [value]=true >  Show consensus 
+                          <input type="checkbox"  [(ngModel)]="analyze.show_consensus_selected" name="show_consensus_selected" [value]=true >  Show final Consensus configuration
                         </div>
                   </div>                  
                   <div class="form-group">
