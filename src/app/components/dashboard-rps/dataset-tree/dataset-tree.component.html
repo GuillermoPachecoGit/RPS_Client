@@ -51,9 +51,9 @@
                     <div id="rg_error"> <label *ngIf="invalid" id="error_message"> {{error_msg}}</label></div>
             </div>
         <div class="container">
-            <div class="row"> <button *ngIf="!isProject" type="button" [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runProcrustes">Run Procrustes Superimposition</button> </div>
-            <div class="row"><button *ngIf="!isProject"  type="button"  [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runDistances">Compute Distance Matrix</button> </div>
-            <div class="row"><button *ngIf="!isProject" type="button" [disabled]="!isDistance" class="btn btn-primary" data-toggle="modal" data-target="#runOrdinations">Run Ordination</button> </div>
+            <div class="row"> <button *ngIf="!isProject" type="button" [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runProcrustes">Procrustes Superimposition</button> </div>
+            <div class="row"><button *ngIf="!isProject"  type="button"  [disabled]="!isDataset" class="btn btn-primary" data-toggle="modal" data-target="#runDistances">Distance Matrix</button> </div>
+            <div class="row"><button *ngIf="!isProject" type="button" [disabled]="!isDistance" class="btn btn-primary" data-toggle="modal" data-target="#runOrdinations">Ordination</button> </div>
             <div class="row"><button *ngIf="!isProject"  class="btn btn-primary" [disabled]="!isAnalysis"  (click)="export($event)">Download as PDF</button> </div>
             <div class="row"><button *ngIf="!isProject"  class="btn btn-primary" [disabled]="!isAnalysis"  (click)="exportCSV()">Download as CSV</button> </div>
             <div class="row"> <button *ngIf="!isProject" type="button" (click)="deleteData($event)" class="btn btn-primary" data-toggle="modal" data-target="#xxx">Delete</button> </div>
