@@ -151,7 +151,7 @@ confirmAnalysis(){
   this.analyze.node_tree = this.node_id.toString();
   this.sharedDatasetService.newAnalisys(this.analyze);
   if(this.analyze.algorithm_selected  == "2"){
-    alert("Warning: depending on the number of objects/landmarks, the processing time of the resistant superimposition may take between a few minutes and a couple of hours due to its combinatoric complexity.")
+    alert("Warning: Might take from several minutes to a few hours to finish, depending on the number of objects and/or landmarks of your dataset.")
   
   }
   this.analizeService.runAnalyze(this.analyze).subscribe(result => {
